@@ -51,13 +51,15 @@ body{overflow:hidden;font-family:'Segoe UI','Hiragino Sans',sans-serif;backgroun
 .event-law{color:#fc6}
 
 /* Bottom bar - controls */
-#bottom-bar{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:8px;pointer-events:auto}
+#bottom-bar{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:8px;pointer-events:auto;z-index:21}
 .ctrl-btn{background:rgba(15,15,30,0.9);border:1px solid rgba(100,120,200,0.3);border-radius:8px;padding:8px 16px;font-size:13px;color:#e0e0e0;cursor:pointer;transition:all 0.2s;backdrop-filter:blur(8px)}
 .ctrl-btn:hover{background:rgba(40,40,80,0.9);border-color:rgba(100,120,200,0.6)}
 .ctrl-btn.active{background:rgba(60,80,160,0.6);border-color:#6af}
+.ctrl-btn.locked{background:rgba(160,60,60,0.5);border-color:#f66;cursor:not-allowed}
+.ctrl-btn.locked:hover{background:rgba(160,60,60,0.5)}
 
 /* Agent detail modal */
-#agent-detail{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:600px;max-width:90vw;background:rgba(15,15,30,0.95);border:1px solid rgba(100,120,200,0.4);border-radius:12px;padding:16px;pointer-events:auto;display:none;backdrop-filter:blur(12px);max-height:300px;overflow-y:auto}
+#agent-detail{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:600px;max-width:90vw;background:rgba(15,15,30,0.95);border:1px solid rgba(100,120,200,0.4);border-radius:12px;padding:16px;pointer-events:auto;display:none;backdrop-filter:blur(12px);max-height:300px;overflow-y:auto;z-index:12}
 
 /* マウスホバー時のミニ情報カード */
 #hover-tip{position:absolute;top:0;left:0;pointer-events:none;background:rgba(10,10,25,0.92);border:1px solid rgba(120,140,220,0.5);border-radius:8px;padding:8px 12px;font-size:12px;line-height:1.6;z-index:30;display:none;white-space:nowrap;backdrop-filter:blur(6px);box-shadow:0 2px 10px rgba(0,0,0,0.4)}
@@ -68,6 +70,20 @@ body{overflow:hidden;font-family:'Segoe UI','Hiragino Sans',sans-serif;backgroun
 #hover-tip .h-bar-fill{height:100%;border-radius:3px}
 #hover-tip .h-val{color:#ccc;width:30px;text-align:right;flex-shrink:0}
 #agent-detail.show{display:block}
+
+/* 設定パネル（グラフィック品質など） */
+#settings-panel{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:340px;max-width:90vw;background:rgba(15,15,30,0.97);border:1px solid rgba(100,120,200,0.4);border-radius:12px;padding:16px;pointer-events:auto;display:none;backdrop-filter:blur(12px);z-index:40}
+#settings-panel.show{display:block}
+#settings-panel h3{font-size:14px;margin-bottom:4px}
+#settings-panel .settings-desc{font-size:11px;color:#888;margin-bottom:10px}
+#settings-panel .settings-row{margin-bottom:14px}
+#settings-panel .settings-label{font-size:12px;color:#aaa;margin-bottom:6px}
+#settings-panel .quality-options{display:flex;gap:6px}
+#settings-panel .quality-btn{flex:1;background:rgba(40,40,70,0.6);border:1px solid rgba(100,120,200,0.3);border-radius:6px;padding:8px 4px;font-size:12px;color:#ccc;cursor:pointer;text-align:center}
+#settings-panel .quality-btn:hover{background:rgba(60,60,110,0.7)}
+#settings-panel .quality-btn.active{background:rgba(60,80,160,0.7);border-color:#6af;color:#fff;font-weight:bold}
+#settings-panel .settings-hint{font-size:10px;color:#789;margin-top:8px;line-height:1.5}
+#settings-close{width:100%;margin-top:12px}
 .detail-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .detail-avatar{width:32px;height:32px;border-radius:50%}
 .detail-name{font-size:16px;font-weight:bold}
@@ -85,6 +101,9 @@ body{overflow:hidden;font-family:'Segoe UI','Hiragino Sans',sans-serif;backgroun
 #loading{position:absolute;top:0;left:0;width:100%;height:100%;background:#1a1a2e;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100}
 #loading .spinner{width:48px;height:48px;border:4px solid rgba(100,120,200,0.2);border-top-color:#6cf;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:16px}
 #loading .text{font-size:14px;color:#888}
+#loading .bar-bg{width:240px;max-width:70vw;height:8px;background:rgba(100,120,200,0.15);border-radius:4px;overflow:hidden;margin-top:14px}
+#loading .bar-fill{height:100%;width:0%;background:linear-gradient(90deg,#6cf,#8f8);border-radius:4px;transition:width 0.35s ease-out}
+#loading .pct{font-size:11px;color:#678;margin-top:6px}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* Scrollbar */
@@ -98,6 +117,11 @@ body{overflow:hidden;font-family:'Segoe UI','Hiragino Sans',sans-serif;backgroun
 
 /* 住民として生活中のプレイヤーHUD */
 #player-hud{position:absolute;bottom:44px;left:8px;width:230px;background:rgba(15,15,30,0.92);border:1px solid rgba(120,200,140,0.5);border-radius:10px;padding:8px 12px;pointer-events:none;backdrop-filter:blur(8px);display:none}
+
+/* 自分（一人称視点）が喋った時に画面中央下に出る吹き出し */
+#player-speech-bubble{position:absolute;bottom:78px;left:50%;max-width:min(70vw,480px);background:var(--bubble-bg,rgba(20,20,40,0.92));border:1px solid rgba(150,170,255,0.5);border-radius:14px;padding:10px 18px;font-size:14px;line-height:1.4;color:#fff;text-align:center;pointer-events:none;z-index:22;opacity:0;transform:translate(-50%,8px);transition:opacity 0.18s ease,transform 0.18s ease;box-shadow:0 4px 14px rgba(0,0,0,0.4)}
+#player-speech-bubble::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:8px solid transparent;border-top-color:var(--bubble-bg,rgba(20,20,40,0.92))}
+#player-speech-bubble.show{opacity:1;transform:translate(-50%,0)}
 #player-hud.show{display:block}
 #player-hud .ph-title{font-size:12px;font-weight:bold;color:#8f8;margin-bottom:6px;display:flex;justify-content:space-between}
 #player-hud .ph-row{display:flex;align-items:center;gap:6px;margin-bottom:4px}
@@ -133,13 +157,19 @@ body{overflow:hidden;font-family:'Segoe UI','Hiragino Sans',sans-serif;backgroun
 #joy-knob{position:absolute;top:50%;left:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:rgba(120,160,255,0.35);border:2px solid rgba(150,180,255,0.65);transition:transform 0.03s linear}
 .touch-action-btn{position:fixed;width:58px;height:58px;border-radius:50%;background:rgba(15,15,30,0.85);border:1px solid rgba(120,140,220,0.55);color:#fff;font-size:23px;align-items:center;justify-content:center;pointer-events:auto;z-index:16;backdrop-filter:blur(6px);display:none;touch-action:manipulation}
 #btnTouchInteract{right:18px;bottom:130px}
-#btnTouchGun{right:18px;bottom:200px}
+#btnTouchJob{right:18px;bottom:200px}
+#btnTouchGun{right:18px;bottom:270px}
+#btnTouchPush{right:18px;bottom:270px}
+#btnTouchArson{right:18px;bottom:340px}
 .touch-action-btn.armed{background:rgba(140,20,20,0.85);border-color:#f66}
 
 body.touch-device #controls-hint,body.touch-device #lock-hint{display:none!important}
 body.touch-device #touch-hint{display:block}
 body.touch-device.possessing #btnTouchInteract{display:flex}
+body.touch-device.possessing #btnTouchJob{display:flex}
 body.touch-device.possessing.is-police #btnTouchGun{display:flex}
+body.touch-device.possessing:not(.is-police) #btnTouchPush{display:flex}
+body.touch-device.possessing:not(.is-police) #btnTouchArson{display:flex}
 
 @media (max-width:860px){
   #top-bar{gap:4px;top:6px;left:6px;right:6px}
@@ -158,13 +188,14 @@ body.touch-device.possessing.is-police #btnTouchGun{display:flex}
   .ctrl-btn{padding:6px 10px;font-size:10.5px;flex-shrink:0;white-space:nowrap}
   #player-hud{width:170px;bottom:48px;padding:6px 9px}
   #player-hud .ph-hint{display:none}
+  #player-speech-bubble{bottom:64px;font-size:12.5px;padding:8px 14px}
   #agent-detail{width:94vw;max-height:38vh}
 }
 </style>
 </head>
 <body>
 <canvas id="renderCanvas"></canvas>
-<div id="loading"><div class="spinner"></div><div class="text" id="loadText"> Emergence World を初期化中...</div></div>
+<div id="loading"><div class="spinner"></div><div class="text" id="loadText"> Emergence World を初期化中...</div><div class="bar-bg"><div class="bar-fill" id="loadBarFill"></div></div><div class="pct" id="loadPct">0%</div></div>
 
 <div id="ui-overlay">
   <div id="top-bar">
@@ -209,7 +240,35 @@ body.touch-device.possessing.is-police #btnTouchGun{display:flex}
     <button class="ctrl-btn" id="btnXray">🔍 建物を透視</button>
     <button class="ctrl-btn active" id="btnTTS">🔊 音声ON</button>
     <button class="ctrl-btn" id="btnPossess">🧑 スペクターから住民になる</button>
+    <button class="ctrl-btn" id="btnSettings">⚙ 設定</button>
     <button class="ctrl-btn" id="btnCloseDetail" style="display:none">✖ 閉じる</button>
+  </div>
+
+  <div id="settings-panel">
+    <h3>⚙ 設定</h3>
+    <div class="settings-desc">グラフィック品質を下げると動作が軽くなります</div>
+    <div class="settings-row">
+      <div class="settings-label">グラフィック品質</div>
+      <div class="quality-options">
+        <div class="quality-btn" id="qualityLow" data-quality="low">低</div>
+        <div class="quality-btn" id="qualityMid" data-quality="medium">中</div>
+        <div class="quality-btn active" id="qualityHigh" data-quality="high">高</div>
+      </div>
+      <div class="settings-hint">低：影・ブルーム・雨や炎の粒子を完全オフ、解像度も大幅ダウン、当たり判定やUI更新も間引いてかなり軽量化<br>中：解像度と粒子数を抑えつつ見た目は維持<br>高：初期設定（フル品質）</div>
+      </div>
+    <div class="settings-row">
+      <div class="settings-label">🌱 一人の住民として生きる</div>
+      <button class="ctrl-btn" id="btnNewLife" style="width:100%;background:#264;">🌱 家も職もない新しい住民として人生をスタート</button>
+      <div class="settings-hint">家も仕事もない新しい住民としてこの街に生まれ、そのまま憑依した状態で始まります。空き家でEキーを押すと入居でき、農場・市場・警察署・病院・図書館・道場などの近くでJキーを押すとその仕事に就職できます。</div>
+      <button class="ctrl-btn" id="btnNewLifeChild" style="width:100%;background:#246;margin-top:8px;">🧒 子供として人生をスタート（子供版）</button>
+      <div class="settings-hint">家族のいない子供としてこの街に生まれます。公園（滑り台・ブランコ・砂場）に近づいてEキーを押すと実際に遊べます。もう一度Eキーで遊びをやめられます。</div>
+    </div>
+    <div class="settings-row">
+      <div class="settings-label">データのリセット</div>
+      <button class="ctrl-btn" id="btnResetData" style="width:100%;background:#622;">🗑 データをリセットしてやり直す</button>
+      <div class="settings-hint">人口・出産の記録などを消去し、街を最初からやり直します（グラフィック設定は保持されます）。この操作は取り消せません。</div>
+    </div>
+    <button class="ctrl-btn" id="settings-close" style="width:100%">閉じる</button>
   </div>
 
   <div id="agent-detail">
@@ -251,7 +310,21 @@ body.touch-device.possessing.is-police #btnTouchGun{display:flex}
   <div id="touch-hint">🕹️ 左側ドラッグ：移動 ／ 右側ドラッグ：視点回転 ／ タップ：選択・発砲</div>
   <div id="joy-base"><div id="joy-knob"></div></div>
   <button class="touch-action-btn" id="btnTouchInteract">✋</button>
+  <button class="touch-action-btn" id="btnTouchJob">💼</button>
   <button class="touch-action-btn" id="btnTouchGun">🔫</button>
+  <button class="touch-action-btn" id="btnTouchPush">👐</button>
+  <button class="touch-action-btn" id="btnTouchArson">🔥</button>
+
+  <div id="player-speech-bubble"></div>
+
+  <div id="parkourUI" style="display:none;position:absolute;left:50%;bottom:150px;transform:translateX(-50%);width:min(320px,80vw);background:rgba(15,15,30,0.9);border:1px solid rgba(255,180,80,0.6);border-radius:10px;padding:10px 16px;text-align:center;pointer-events:none;z-index:50;">
+    <div style="font-size:12px;color:#fc6;margin-bottom:8px;">🤸 良いタイミングでEキー（タップ）でジャンプ！</div>
+    <div style="position:relative;height:16px;background:rgba(255,255,255,0.15);border-radius:8px;overflow:hidden;">
+      <div id="parkourGoodZone" style="position:absolute;top:0;bottom:0;background:rgba(100,220,120,0.55);"></div>
+      <div id="parkourMarker" style="position:absolute;top:-2px;bottom:-2px;left:0%;width:4px;background:#fff;box-shadow:0 0 6px #fff;transition:background 0.15s;"></div>
+    </div>
+    <div id="parkourProgress" style="font-size:11px;color:#9cf;margin-top:6px;">1 / 1</div>
+  </div>
 
   <div id="player-hud">
     <div class="ph-title"><span id="phName">-</span><span id="phJob">-</span></div>
@@ -261,7 +334,7 @@ body.touch-device.possessing.is-police #btnTouchGun{display:flex}
     <div class="ph-money">💰 所持金: <span id="phMoney">-</span>G</div>
     <div class="ph-money" id="phGunRow" style="display:none;color:#f66">🔫 拳銃：構え中（クリックで発砲）</div>
     <div class="ph-msg" id="phMsg"></div>
-    <div class="ph-hint">Eキー: 近くの建物とやり取り（自宅で休む/食事、職場で働く 等）</div>
+    <div class="ph-hint">Eキー: 近くの建物とやり取り（自宅で休む/食事、職場で働く 等）／近くの遺体を担いで病院へ搬送</div>
   </div>
 </div>
 
@@ -277,6 +350,10 @@ window.addEventListener('error', (e) => {
       '<br><span style="font-size:11px;color:#999">開発者ツール(F12)のConsoleタブに詳細が出ています。</span>';
     const spinner = document.querySelector('#loading .spinner');
     if (spinner) spinner.style.display = 'none';
+    const barBg = document.querySelector('#loading .bar-bg');
+    if (barBg) barBg.style.display = 'none';
+    const pctEl = document.getElementById('loadPct');
+    if (pctEl) pctEl.style.display = 'none';
   }
 });
 // ============================================================
@@ -288,6 +365,7 @@ window.addEventListener('error', (e) => {
 const GAME = {
   canvas: null, engine: null, scene: null, camera: null,
   agents: [], buildings: [], particles: [],
+  activeDebris: [],  // 崩落直後で当たり判定が有効な瓦礫破片のリスト
   guiTexture: null,
   pipeline: null,
   groundMesh: null,
@@ -330,20 +408,32 @@ const GAME = {
   ttsEnabled: true,
   ttsVoice: null,
   ttsSpeaking: 0,
+  ttsBusyUntil: 0,   // 音声キューが実際に空くと推定される時刻（performance.now()基準）
   streetlights: [],
   hoveredAgent: null,
   eventLogCameraLock: false,
   mouseLocked: false,
   possessedAgent: null, // 住民として乗っ取り中のエージェント（スペクター中はnull）
+  hardcoreLife: false,  // 設定から「新しい住民として人生をスタート」した場合true。死ぬまでスペクターに戻れない
   possessMsgTimer: 0,
+  playerBubbleTimer: 0, // 画面中央下の自分の発言吹き出しを表示している残り秒数
   interactCooldown: 0,
   buildingLabels: [],
   hoveredBuilding: null,
   totalRevenue: 0,   // 街全体でこれまでに生み出された総額（経済規模の指標）
   gunDrawn: false,   // 警察官として拳銃を構えているか（1キーで切替）
   shootCooldown: 0,
+  pushCooldown: 0,   // 市民として人を手で押す動作のクールダウン
+  arsonCooldown: 0,  // 市民として建物に放火する動作のクールダウン
   maxPopulation: 60,   // 街の人口上限（出産で増える住人の上限、チンピラは含まない）
   birthRecords: [],    // これまでに生まれた住人の記録（localStorageに保存され、再訪問時に復元される）
+  graphicsQuality: 'high',   // グラフィック品質: low / medium / high（localStorageに保存され、次回も引き継がれる）
+  particleQualityMul: 1,     // 品質設定に応じて雨・炎などのパーティクル数を減らすための倍率
+  particlesEnabled: true,    // 低品質設定では雨・炎パーティクルの生成自体を止める
+  uiUpdateInterval: 10,      // UI更新を何フレームに1回行うか（低品質ほど間隔を空ける）
+  hoverSkip: 1,              // クロスヘア当たり判定・建物ラベル更新を間引くフレーム数
+  cullDistanceSq: 999999,    // この距離(の2乗)より遠いエージェントのメッシュを非表示にする（カリング）
+  farUpdateSkip: 1,          // カリングされた（画面に映っていない）エージェントのAI更新を何フレームに1回に間引くか
 };
 
 // ---------- 名前データ ----------
@@ -365,6 +455,22 @@ const JOBS = {
   student:   { name:'生徒',   color:[0.95,0.85,0.3],salary:0, workplace:'school' },
   swordsman: { name:'剣士',   color:[0.2,0.25,0.35],salary:12, workplace:'dojo' },
   thug:      { name:'チンピラ',color:[0.12,0.12,0.14],salary:0, workplace:null },
+  yankee:    { name:'ヤンキー',color:[0.85,0.55,0.1],salary:0, workplace:null },
+};
+
+// 「敵対NPC」として住人と同じ扱いから除外すべき職業（人口カウント・移住対象など）をまとめて判定するための一覧
+const HOSTILE_JOBS = ['thug', 'yankee'];
+function isHostileJob(job) { return HOSTILE_JOBS.includes(job); }
+
+// プレイヤー（住民として乗っ取り中）が近くの建物でJキーを押した時に就ける職業
+// （市場は商人/建設員2職の職場だが、Jキーでは分かりやすさのため商人として就職する）
+const HIRE_JOB_BY_BUILDING = {
+  farm: 'farmer',
+  market: 'merchant',
+  policeStation: 'police',
+  hospital: 'doctor',
+  library: 'librarian',
+  dojo: 'swordsman',
 };
 
 const BUILDING_TYPES = {
@@ -380,6 +486,7 @@ const BUILDING_TYPES = {
   school:       { name:'学校',    w:16, d:12, h:7,  color:[0.85,0.75,0.5],roofColor:[0.5,0.2,0.2] },
   dojo:         { name:'道場',    w:14, d:10, h:6,  color:[0.5,0.35,0.25],roofColor:[0.15,0.1,0.05] },
   hotel:        { name:'ホテル',  w:28, d:20, h:18, color:[0.75,0.7,0.62],roofColor:[0.4,0.22,0.16], capacity:30 },
+  park:         { name:'公園',    w:20, d:16, h:1,  color:[0.4,0.62,0.32],roofColor:[0.4,0.62,0.32] },
 };
 
 const CHAT_LINES = ['最近どう？','天気がいいね','聞いてよ、実は…','今度食事でもどう？','この街も賑やかになったね'];
@@ -390,12 +497,23 @@ const BUMP_LINES = ['お前なんで当たんだよ','痛っ！前見て歩け�
 const APOLOGIZE_LINES = ['ごめんなさい！','わっ、すみません！','ごめんなさい、大丈夫ですか？','すみませんでした…','あ、ごめんなさい！'];
 const QUESTION_LINES = ['やってません…','つい、かっとなってしまって…','本当に反省しています','早く出してくれ…','もう二度としません'];
 const PAIN_LINES = ['うわあああ、痛い！','ぐああっ、痛い…！','いてえ！うわああ！','痛い！やめてくれ！'];
+const GUNSHOT_RAGDOLL_LINES = ['痛い、痛いよぉ…','いたいよぉ…','痛いよぉ、助けて…'];
+const TRIP_LINES = ['うわっ！痛い！','うわっ、痛い…！'];
 const THUG_LINES = ['ここは俺たちの縄張りだぞ！','うろちょろしてんじゃねえ！','痛い目に遭いたいのか？','近づくんじゃねえ！','舐めた真似すんな！'];
 const THUG_VICTIM_LINES = ['助けて！市民がならず者に襲われている！','誰か助けて！ならず者に襲われている！','痛い！ならず者に襲われている！'];
 const SWORD_LINES = ['やあっ！','とう！','覚悟！','エイッ！','くらえ！'];
 const SLEEPY_LINES = ['あー、眠いなあ…','そろそろ眠いよ、もう寝よう','眠いよ…家に帰って寝よう','瞼が重い…そろそろ寝ないと','うとうとしてきた、寝よう'];
 const PREGNANCY_LINES = ['あれ、もしかして赤ちゃんができたかも…','私たち、赤ちゃんを授かったみたい','嬉しい…赤ちゃんができたんだ'];
 const BIRTH_LINES = ['生まれた…！本当に嬉しい！','ついに赤ちゃんが生まれた！','この子を大切に育てよう'];
+// 公園のパルクール施設に挑戦する時と、クリア・落下失敗時のセリフ
+const PARKOUR_START_LINES = ['よし、パルクールに挑戦しよう！','この施設、面白そうだな！','体がなまってるし、やってみるか！'];
+const PARKOUR_CLEAR_LINES = ['やった、クリアした！','よし、完璧だ！','思ったよりうまくいった！'];
+// 公園での子供同士の口げんか（暴力にはならない、子供らしい軽いけんか）と仲直りのセリフ
+const KID_ARGUE_LINES = ['ずるいよ、ぼくの番だったのに！','それかしてって言ったでしょ！','もう一緒に遊ばない！','なんでいじわるするの！','せんせいに言いつけるから！','先に使ってたのに！'];
+const KID_PUSH_LINES = ['もう、どいてよ！','えいっ！','そっちがどいてよ！','いい加減にしてよ！','押さないでよ！'];
+const KID_MAKEUP_LINES = ['ごめんね、なかなおりしよ？','もう怒ってないよ','一緒に遊ぼう！','なかなおりできてよかった'];
+// 子供同士のけんかが白熱した時、興奮しすぎてたまに目を回して座り込んでしまう時のセリフ
+const KID_FAINT_LINES = ['あれ…目の前がまっしろに…','う…頭がくらくらする…','ちょっと…目が回っちゃった…'];
 
 // ---------- ヘルパー関数 ----------
 function rand(min, max) { return Math.random()*(max-min)+min; }
@@ -439,15 +557,7 @@ function initEngine() {
   GAME.shadowGen.blurKernel = 16;
 
   // ブルーム（発光）ポストプロセス
-  GAME.pipeline = new BABYLON.DefaultRenderingPipeline('defaultPipeline', true, GAME.scene, [GAME.camera]);
-  GAME.pipeline.bloomEnabled = true;
-  GAME.pipeline.bloomThreshold = 0.55;
-  GAME.pipeline.bloomWeight = 0.6;
-  GAME.pipeline.bloomKernel = 64;
-  GAME.pipeline.bloomScale = 0.5;
-  GAME.pipeline.imageProcessingEnabled = true;
-  GAME.pipeline.imageProcessing.exposure = 1.25;
-  GAME.pipeline.imageProcessing.contrast = 1.1;
+  createPostProcessPipeline();
 
   // モーションブラー
   // モーションブラーは吹き出しや建物ラベルなどのGUIテキストまで巻き込んでぼかしてしまうため無効化
@@ -480,12 +590,92 @@ function initEngine() {
     { mass: 0, friction: 0.6, restitution: 0.1 }, GAME.scene
   );
   GAME.corpses = [];
+  GAME.cropBoxes = [];
 
   // 道路
   createRoads();
 
   // 吹き出し用GUI
   GAME.guiTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI('speechUI', true, GAME.scene);
+
+  // 一人称視点の自分の手（住民として乗り移っている間だけ表示）
+  createPlayerHands();
+}
+
+// 一人称視点で見える自分自身の腕・手を作成する。
+// カメラの子ノードにすることで視点の動きにそのまま追従させ、
+// 専用レンダリンググループ＋深度クリアで建物などにめり込んで消えないようにする。
+function createPlayerHands() {
+  const HAND_GROUP = 2;
+  GAME.scene.setRenderingAutoClearDepthStencil(HAND_GROUP, true, true, true);
+
+  const rig = new BABYLON.TransformNode('handsRig', GAME.scene);
+  rig.parent = GAME.camera;
+  rig.position = new BABYLON.Vector3(0, -0.42, 0.5);
+  rig.setEnabled(false); // 通常はスペクター状態なので非表示スタート
+  GAME.handsRig = rig;
+
+  const skinMat = new BABYLON.StandardMaterial('handSkinMat', GAME.scene);
+  skinMat.diffuseColor = new BABYLON.Color3(0.9, 0.75, 0.6);
+  skinMat.specularColor = new BABYLON.Color3(0.05, 0.05, 0.05);
+  GAME.handSkinMat = skinMat;
+
+  const sleeveMat = new BABYLON.StandardMaterial('handSleeveMat', GAME.scene);
+  sleeveMat.diffuseColor = new BABYLON.Color3(0.5, 0.5, 0.5);
+  sleeveMat.specularColor = new BABYLON.Color3(0.05, 0.05, 0.05);
+  GAME.handSleeveMat = sleeveMat;
+
+  GAME.handArms = {};
+
+  function buildArm(side) {
+    const sign = side === 'left' ? -1 : 1;
+    const armRoot = new BABYLON.TransformNode('arm' + side, GAME.scene);
+    armRoot.parent = rig;
+    armRoot.position = new BABYLON.Vector3(sign * 0.17, -0.03, 0);
+    armRoot.rotation = new BABYLON.Vector3(0.22, sign * -0.3, sign * 0.14);
+
+    // 袖口（職業の服の色を反映）
+    const sleeve = BABYLON.MeshBuilder.CreateBox(side + 'Sleeve', { width: 0.16, height: 0.16, depth: 0.1 }, GAME.scene);
+    sleeve.parent = armRoot;
+    sleeve.position = new BABYLON.Vector3(0, 0, 0.05);
+    sleeve.material = sleeveMat;
+
+    // 前腕
+    const forearm = BABYLON.MeshBuilder.CreateBox(side + 'Forearm', { width: 0.13, height: 0.13, depth: 0.32 }, GAME.scene);
+    forearm.parent = armRoot;
+    forearm.position = new BABYLON.Vector3(0, 0, 0.26);
+    forearm.material = skinMat;
+
+    // 手
+    const hand = BABYLON.MeshBuilder.CreateBox(side + 'Hand', { width: 0.15, height: 0.08, depth: 0.15 }, GAME.scene);
+    hand.parent = armRoot;
+    hand.position = new BABYLON.Vector3(0, -0.01, 0.44);
+    hand.material = skinMat;
+
+    for (const m of [sleeve, forearm, hand]) {
+      m.renderingGroupId = HAND_GROUP;
+      m.isPickable = false;
+      m.receiveShadows = false;
+      m.doNotSyncBoundingInfo = true;
+    }
+
+    GAME.handArms[side] = { root: armRoot, sleeve, forearm, hand };
+  }
+
+  buildArm('left');
+  buildArm('right');
+}
+
+// 乗り移り中の住人の職業・見た目に合わせて手の色を更新する
+function updatePlayerHandsAppearance(agent) {
+  if (!GAME.handSleeveMat) return;
+  const jdef = JOBS[agent.job] || JOBS.unemployed;
+  GAME.handSleeveMat.diffuseColor = new BABYLON.Color3(...jdef.color);
+}
+
+// 手の表示・非表示を切り替える
+function setPlayerHandsVisible(visible) {
+  if (GAME.handsRig) GAME.handsRig.setEnabled(!!visible);
 }
 
 function updateSkybox() {
@@ -493,9 +683,9 @@ function updateSkybox() {
   let r,g,b,nightFactor;
   if (t < 5 || t >= 20) { // 夜
     r=0.03; g=0.03; b=0.08;
-    GAME.sunLight.intensity = 0.1;
-    GAME.sunLight.diffuse = new BABYLON.Color3(0.3,0.3,0.5);
-    GAME.hemiLight.intensity = 0.15;
+    GAME.sunLight.intensity = 0.22;
+    GAME.sunLight.diffuse = new BABYLON.Color3(0.35,0.35,0.55);
+    GAME.hemiLight.intensity = 0.32;
     GAME.scene.fogColor = new BABYLON.Color3(0.03,0.03,0.08);
     nightFactor = 1;
   } else if (t < 7) { // 夜明け
@@ -599,7 +789,7 @@ function createStreetlights() {
     const light = new BABYLON.PointLight('lampLight'+i, new BABYLON.Vector3(p.x + 0.85, 4.1, p.z), GAME.scene);
     light.diffuse = new BABYLON.Color3(1.0, 0.82, 0.4);
     light.specular = new BABYLON.Color3(0.2, 0.17, 0.1);
-    light.range = 11;
+    light.range = 14;
     light.intensity = 0;
 
     GAME.streetlights.push({ mat: headMat, light });
@@ -612,7 +802,7 @@ function updateStreetlights(nightFactor) {
   const color = new BABYLON.Color3(1.0*i, 0.82*i, 0.4*i);
   for (const lamp of GAME.streetlights) {
     lamp.mat.emissiveColor = color;
-    if (lamp.light) lamp.light.intensity = i * 0.9;
+    if (lamp.light) lamp.light.intensity = i * 1.4;
   }
 }
 
@@ -645,6 +835,7 @@ function createBuilding(type, x, z, ownerAgent) {
     paddyBounds: null,
     revenue: 0,       // この建物がこれまでに生み出した累計金額(G)
     dailyRevenue: 0,  // 本日この建物が生み出した金額(G)
+    debrisMeshes: null, // 全焼時に物理エンジンで生成される瓦礫の破片
   };
 
   // 農場は建物ではなく水田として表現する
@@ -699,6 +890,30 @@ function createBuilding(type, x, z, ownerAgent) {
     field.metadata = { building: building };
     applyBuildingXray(building, GAME.xrayMode);
     createBuildingLabel(building, field);
+
+    GAME.buildings.push(building);
+    return building;
+  }
+
+  // 公園は壁のある建物ではなく、広場＋遊具（滑り台・ブランコ・砂場）として表現する
+  if (type === 'park') {
+    const plazaMat = new BABYLON.StandardMaterial('bMat'+building.id, GAME.scene);
+    plazaMat.diffuseColor = new BABYLON.Color3(0.4, 0.62, 0.32);
+    plazaMat.specularColor = new BABYLON.Color3(0,0,0);
+    const plaza = BABYLON.MeshBuilder.CreateGround('b'+building.id, {width:w, height:d}, GAME.scene);
+    plaza.position.set(x, 0.03, z);
+    plaza.material = plazaMat;
+    plaza.receiveShadows = true;
+    plaza.metadata = { building: building };
+    building.mesh = plaza;
+    building.mat = plazaMat;
+    building.roofMesh = plaza; // xray等の既存処理と互換を持たせる
+    building.roofMat = plazaMat;
+
+    createParkPlayground(building);
+    createParkourCourse(building);
+    applyBuildingXray(building, GAME.xrayMode);
+    createBuildingLabel(building, plaza);
 
     GAME.buildings.push(building);
     return building;
@@ -875,6 +1090,191 @@ function addHotelFurniture(building) {
   building.furniture = root;
 }
 
+// ---------- 公園の遊具（滑り台・ブランコ・砂場）----------
+// 子供が実際にそこへ移動して遊べるよう、各遊具の「利用位置(playSpots)」も記録する
+function createParkPlayground(building) {
+  const x = building.x, z = building.z, id = building.id;
+  const root = new BABYLON.TransformNode('parkEquip' + id, GAME.scene);
+
+  const woodMat = new BABYLON.StandardMaterial('parkWoodMat' + id, GAME.scene);
+  woodMat.diffuseColor = new BABYLON.Color3(0.55, 0.35, 0.2);
+  woodMat.specularColor = new BABYLON.Color3(0, 0, 0);
+
+  const metalMat = new BABYLON.StandardMaterial('parkMetalMat' + id, GAME.scene);
+  metalMat.diffuseColor = new BABYLON.Color3(0.75, 0.15, 0.15);
+  metalMat.specularColor = new BABYLON.Color3(0.2, 0.2, 0.2);
+
+  const sandMat = new BABYLON.StandardMaterial('parkSandMat' + id, GAME.scene);
+  sandMat.diffuseColor = new BABYLON.Color3(0.85, 0.75, 0.5);
+  sandMat.specularColor = new BABYLON.Color3(0, 0, 0);
+
+  // --- 砂場 ---
+  const sandX = x - building.w / 2 + 4, sandZ = z - building.d / 2 + 4;
+  const sand = BABYLON.MeshBuilder.CreateGround('parkSand' + id, { width: 4, height: 4 }, GAME.scene);
+  sand.position.set(sandX, 0.06, sandZ);
+  sand.material = sandMat;
+  sand.parent = root;
+  [[-2, -2, 0], [2, -2, Math.PI / 2], [2, 2, Math.PI], [-2, 2, -Math.PI / 2]].forEach((e, idx) => {
+    const wall = BABYLON.MeshBuilder.CreateBox('parkSandWall' + id + '_' + idx, { width: 4.2, height: 0.3, depth: 0.15 }, GAME.scene);
+    wall.position.set(sandX + e[0], 0.15, sandZ + e[1]);
+    wall.rotation.y = e[2];
+    wall.material = woodMat;
+    wall.parent = root;
+  });
+
+  // --- すべり台 ---
+  const slideX = x + building.w / 2 - 4, slideZ = z - building.d / 2 + 3;
+  const platform = BABYLON.MeshBuilder.CreateBox('parkPlatform' + id, { width: 1.6, height: 0.2, depth: 1.6 }, GAME.scene);
+  platform.position.set(slideX, 1.6, slideZ);
+  platform.material = woodMat;
+  platform.parent = root;
+  for (let li = 0; li < 3; li++) {
+    const rung = BABYLON.MeshBuilder.CreateBox('parkLadder' + id + '_' + li, { width: 1.2, height: 0.08, depth: 0.15 }, GAME.scene);
+    rung.position.set(slideX - 0.9, 0.4 + li * 0.5, slideZ + 0.9);
+    rung.material = metalMat;
+    rung.parent = root;
+  }
+  const slideBoard = BABYLON.MeshBuilder.CreateBox('parkSlide' + id, { width: 1.2, height: 0.1, depth: 3.2 }, GAME.scene);
+  slideBoard.position.set(slideX, 0.9, slideZ - 1.8);
+  slideBoard.rotation.x = -Math.PI / 5.5;
+  slideBoard.material = metalMat;
+  slideBoard.parent = root;
+
+  // --- ブランコ ---
+  const swingX = x, swingZ = z + building.d / 2 - 4;
+  [-1.5, 1.5].forEach((sx) => {
+    const pole = BABYLON.MeshBuilder.CreateCylinder('parkSwingPole' + id + '_' + sx, { diameter: 0.18, height: 2.4 }, GAME.scene);
+    pole.position.set(swingX + sx, 1.2, swingZ);
+    pole.material = woodMat;
+    pole.parent = root;
+  });
+  const topBar = BABYLON.MeshBuilder.CreateCylinder('parkSwingBar' + id, { diameter: 0.15, height: 3.2 }, GAME.scene);
+  topBar.rotation.z = Math.PI / 2;
+  topBar.position.set(swingX, 2.35, swingZ);
+  topBar.material = woodMat;
+  topBar.parent = root;
+
+  const swingSeats = [];
+  [-0.9, 0.9].forEach((offx, idx) => {
+    const chainL = BABYLON.MeshBuilder.CreateCylinder('parkChainL' + id + '_' + idx, { diameter: 0.03, height: 1.4 }, GAME.scene);
+    chainL.position.set(swingX + offx - 0.15, 1.6, swingZ);
+    chainL.material = metalMat;
+    chainL.parent = root;
+    const chainR = BABYLON.MeshBuilder.CreateCylinder('parkChainR' + id + '_' + idx, { diameter: 0.03, height: 1.4 }, GAME.scene);
+    chainR.position.set(swingX + offx + 0.15, 1.6, swingZ);
+    chainR.material = metalMat;
+    chainR.parent = root;
+    const seat = BABYLON.MeshBuilder.CreateBox('parkSeat' + id + '_' + idx, { width: 0.45, height: 0.06, depth: 0.25 }, GAME.scene);
+    seat.position.set(swingX + offx, 0.88, swingZ);
+    seat.material = woodMat;
+    seat.parent = root;
+    swingSeats.push(seat);
+  });
+
+  // --- ベンチ（見守る保護者用の装飾）---
+  const bench = BABYLON.MeshBuilder.CreateBox('parkBench' + id, { width: 2.2, height: 0.5, depth: 0.6 }, GAME.scene);
+  bench.position.set(x - building.w / 2 + 2, 0.25, z + building.d / 2 - 2);
+  bench.material = woodMat;
+  bench.parent = root;
+
+  root.getChildMeshes().forEach(m => { m.receiveShadows = true; GAME.shadowGen.addShadowCaster(m); });
+
+  // 子供が実際に移動して「遊ぶ」ための具体的な立ち位置
+  building.playSpots = [
+    { x: sandX, z: sandZ, type: 'sandbox' },
+    { x: slideX, z: slideZ - 1.8, type: 'slide' },
+    { x: swingX - 1.5, z: swingZ, type: 'swing', seat: swingSeats[0] },
+    { x: swingX + 1.5, z: swingZ, type: 'swing', seat: swingSeats[1] },
+  ];
+  building.furniture = root;
+}
+
+// ---------- 公園のパルクール施設 ----------
+// 通常のWASD移動では届かない高さの台を跳び移る施設。Botは自動で挑戦し、失敗すると足を滑らせて落下・ラグドールになる。
+// プレイヤーはコース入口でEキー（タイミングタップ）を押すと自動でジャンプし、同じく良いタイミングでEキーを押し続けないと失敗する。
+function createParkourCourse(building) {
+  const id = building.id;
+  const root = new BABYLON.TransformNode('parkourEquip' + id, GAME.scene);
+
+  const frameMat = new BABYLON.StandardMaterial('parkourFrameMat' + id, GAME.scene);
+  frameMat.diffuseColor = new BABYLON.Color3(0.25, 0.28, 0.32);
+  frameMat.specularColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+
+  const padMat = new BABYLON.StandardMaterial('parkourPadMat' + id, GAME.scene);
+  padMat.diffuseColor = new BABYLON.Color3(0.9, 0.55, 0.15);
+  padMat.specularColor = new BABYLON.Color3(0.2, 0.2, 0.2);
+
+  // 公園の遊具エリアとは重ならない、東側の空き地に配置する
+  const startX = building.x + building.w / 2 + 4;
+  const courseZ = building.z;
+  const platformHeights = [0.6, 1.4, 2.1, 1.4, 0.6]; // 台の高さ（地面からの積み上げ量）
+  const spacing = 3.2;
+
+  const platforms = [];
+  platformHeights.forEach((h, i) => {
+    const px = startX + (i + 1) * spacing;
+    const platform = BABYLON.MeshBuilder.CreateBox('parkourPlatform' + id + '_' + i, { width: 1.3, height: 0.2, depth: 1.3 }, GAME.scene);
+    platform.position.set(px, h, courseZ);
+    platform.material = padMat;
+    platform.parent = root;
+
+    // 台を支える脚
+    const legHeight = Math.max(h - 0.1, 0.05);
+    [[-0.5, -0.5], [0.5, -0.5], [-0.5, 0.5], [0.5, 0.5]].forEach((off, li) => {
+      const leg = BABYLON.MeshBuilder.CreateBox('parkourLeg' + id + '_' + i + '_' + li, { width: 0.12, height: legHeight, depth: 0.12 }, GAME.scene);
+      leg.position.set(px + off[0], legHeight / 2, courseZ + off[1]);
+      leg.material = frameMat;
+      leg.parent = root;
+    });
+
+    platforms.push({ x: px, z: courseZ, y: h });
+  });
+
+  root.getChildMeshes().forEach(m => { m.receiveShadows = true; GAME.shadowGen.addShadowCaster(m); });
+
+  // 入口を目立たせる光る円形マーカー＋案内表示（判定位置が分かりにくいという声を受けて追加）
+  const entranceMat = new BABYLON.StandardMaterial('parkourEntranceMat' + id, GAME.scene);
+  entranceMat.diffuseColor = new BABYLON.Color3(0.95, 0.55, 0.1);
+  entranceMat.emissiveColor = new BABYLON.Color3(0.95, 0.55, 0.1);
+  entranceMat.alpha = 0.85;
+  const entranceRing = BABYLON.MeshBuilder.CreateTorus('parkourEntranceRing' + id, { diameter: 2.4, thickness: 0.14, tessellation: 24 }, GAME.scene);
+  entranceRing.position.set(startX, 0.06, courseZ);
+  entranceRing.rotation.x = Math.PI / 2;
+  entranceRing.material = entranceMat;
+  entranceRing.parent = root;
+  entranceRing.isPickable = false;
+
+  const signNode = new BABYLON.TransformNode('parkourSignNode' + id, GAME.scene);
+  signNode.position.set(startX, 2.2, courseZ);
+  signNode.parent = root;
+
+  const signRect = new BABYLON.GUI.Rectangle('parkourSign' + id);
+  signRect.width = '170px';
+  signRect.height = '34px';
+  signRect.cornerRadius = 8;
+  signRect.color = 'rgba(255,255,255,0.5)';
+  signRect.thickness = 1;
+  signRect.background = 'rgba(120,60,10,0.85)';
+  GAME.guiTexture.addControl(signRect);
+  signRect.linkWithMesh(signNode);
+  signRect.linkOffsetY = -20;
+
+  const signText = new BABYLON.GUI.TextBlock('parkourSignText' + id);
+  signText.text = '🤸 パルクール入口（ここでE）';
+  signText.color = '#ffe';
+  signText.fontSize = 13;
+  signRect.addControl(signText);
+
+  // Botが実際に踏破する経路（地面の入口 → 台を順に跳び移る → 地面の出口）
+  building.parkourStart = { x: startX, z: courseZ, y: 0 };
+  building.parkourSpots = [
+    { x: startX, z: courseZ, y: 0 },
+    ...platforms,
+    { x: startX + (platformHeights.length + 1) * spacing, z: courseZ, y: 0 },
+  ];
+  building.parkourFurniture = root;
+}
+
 // ---------- 住居の割り当て（家・ホテル共通）----------
 function getBuildingCapacity(building) {
   const spec = BUILDING_TYPES[building.type];
@@ -960,6 +1360,9 @@ function setupTown() {
   createBuilding('dojo', -25, 42);
   // ホテル（住人30人まで住める共同住宅）
   createBuilding('hotel', 55, -50);
+  // 公園（常に出現。滑り台・ブランコ・砂場があり、子供が実際に遊びに行く）
+  // チンピラのアジト(84,84・追跡範囲55)からも大きく離れた、街の反対側に配置する
+  createBuilding('park', -52, 58);
 
   // 初期住宅何件か
   const housePositions = [
@@ -974,7 +1377,7 @@ function setupTown() {
 // ---------- 建物の名前ラベル（施設の場所がひと目でわかるように）----------
 const BUILDING_LABEL_ICON = {
   townHall:'🏛️', policeStation:'🚔', market:'🛒', farm:'🌾', hospital:'🏥',
-  library:'📚', restaurant:'🍽️', school:'🏫', dojo:'⚔️', hotel:'🏨',
+  library:'📚', restaurant:'🍽️', school:'🏫', dojo:'⚔️', hotel:'🏨', park:'🛝',
 };
 function createBuildingLabel(building, linkMesh) {
   const icon = BUILDING_LABEL_ICON[building.type];
@@ -1013,6 +1416,104 @@ function updateBuildingLabels() {
   }
 }
 
+// ブルーム等のポストプロセスパイプラインを生成する（グラフィック設定切り替え時に破棄・再生成できるよう関数化）
+function createPostProcessPipeline() {
+  GAME.pipeline = new BABYLON.DefaultRenderingPipeline('defaultPipeline', true, GAME.scene, [GAME.camera]);
+  GAME.pipeline.bloomEnabled = true;
+  GAME.pipeline.bloomThreshold = 0.55;
+  GAME.pipeline.bloomWeight = 0.6;
+  GAME.pipeline.bloomKernel = 64;
+  GAME.pipeline.bloomScale = 0.5;
+  GAME.pipeline.imageProcessingEnabled = true;
+  GAME.pipeline.imageProcessing.exposure = 1.25;
+  GAME.pipeline.imageProcessing.contrast = 1.1;
+}
+
+// ---------- グラフィック設定（品質を下げて動作を軽くする） ----------
+const GRAPHICS_STORAGE_KEY = 'emergenceWorld_graphicsQuality_v1';
+
+function loadGraphicsQuality() {
+  try {
+    const saved = localStorage.getItem(GRAPHICS_STORAGE_KEY);
+    if (saved === 'low' || saved === 'medium' || saved === 'high') GAME.graphicsQuality = saved;
+  } catch (e) {
+    // localStorageが使えない環境ではデフォルト（高品質）のまま
+  }
+}
+
+function saveGraphicsQuality() {
+  try {
+    localStorage.setItem(GRAPHICS_STORAGE_KEY, GAME.graphicsQuality);
+  } catch (e) {
+    // 保存できない環境ではスキップ
+  }
+}
+
+// 品質設定を実際の描画設定へ反映する（低設定ほど裏側の処理・描画負荷を軽くする）
+function applyGraphicsQuality(quality) {
+  GAME.graphicsQuality = quality;
+
+  if (quality === 'low') {
+    GAME.engine.setHardwareScalingLevel(2.2); // 解像度を約45%まで下げ、描画負荷を大幅削減
+    GAME.scene.shadowsEnabled = false;         // 影の描画を完全に停止
+    GAME.scene.fogEnabled = false;
+    if (GAME.pipeline) { GAME.pipeline.dispose(); GAME.pipeline = null; } // ポストプロセス自体を丸ごと破棄
+    GAME.particleQualityMul = 0;
+    GAME.particlesEnabled = false;   // 雨・炎パーティクルは生成自体を行わない
+    GAME.uiUpdateInterval = 20;      // UI更新の頻度を落とす（既定は10フレームに1回）
+    GAME.hoverSkip = 4;              // クロスヘアの当たり判定・建物ラベル更新を4フレームに1回に間引く
+    GAME.cullDistanceSq = 40*40;     // カメラから40m以上離れたエージェントは描画・アニメーションを止める
+    GAME.farUpdateSkip = 6;          // 画面外エージェントのAI更新（思考・経路探索等）を6フレームに1回まで間引く
+  } else if (quality === 'medium') {
+    GAME.engine.setHardwareScalingLevel(1.15);
+    GAME.scene.shadowsEnabled = true;
+    GAME.scene.fogEnabled = true;
+    if (!GAME.pipeline) createPostProcessPipeline();
+    GAME.pipeline.bloomEnabled = true;
+    GAME.pipeline.fxaaEnabled = true;
+    GAME.pipeline.imageProcessingEnabled = true;
+    GAME.particleQualityMul = 0.5;
+    GAME.particlesEnabled = true;
+    GAME.uiUpdateInterval = 10;
+    GAME.hoverSkip = 2;
+    GAME.cullDistanceSq = 80*80;     // 80m以上離れたエージェントを間引く
+    GAME.farUpdateSkip = 3;          // 画面外エージェントのAI更新を3フレームに1回まで間引く
+  } else { // high（初期設定）
+    GAME.engine.setHardwareScalingLevel(1);
+    GAME.scene.shadowsEnabled = true;
+    GAME.scene.fogEnabled = true;
+    if (!GAME.pipeline) createPostProcessPipeline();
+    GAME.pipeline.bloomEnabled = true;
+    GAME.pipeline.fxaaEnabled = true;
+    GAME.pipeline.imageProcessingEnabled = true;
+    GAME.particleQualityMul = 1;
+    GAME.particlesEnabled = true;
+    GAME.uiUpdateInterval = 10;
+    GAME.hoverSkip = 1;
+    GAME.cullDistanceSq = 150*150;   // 高品質でも遠すぎるエージェントはカリングして負荷を抑える
+    GAME.farUpdateSkip = 2;          // 画面外エージェントのAI更新を2フレームに1回に間引く（高品質でも軽く間引く）
+  }
+
+  // カリング距離の設定変更を、次フレームで全エージェントに反映させる
+  for (const a of GAME.agents) a._culled = null;
+
+  // 雨が降っている最中に設定変更した場合は、新しい設定で降らせ直す（低品質なら消える）
+  if (GAME.rainParticles) {
+    GAME.rainParticles.stop();
+    GAME.rainParticles = null;
+    GAME.weatherTimer = 0.01; // 次のupdateWeatherですぐ再判定させる
+  }
+
+  saveGraphicsQuality();
+
+  // UIのボタン表示を更新
+  ['low','medium','high'].forEach(q => {
+    const id = q === 'low' ? 'qualityLow' : q === 'medium' ? 'qualityMid' : 'qualityHigh';
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('active', q === quality);
+  });
+}
+
 // ---------- 人口・出産データの記録（localStorageに保存し、再読み込み後も引き継ぐ） ----------
 // 注意：このゲームは GAME.agents[agent.id] で直接エージェントを引く箇所が多数あるため、
 // 新しく生まれる住人のIDは必ず「GAME.agents.length（＝配列に追加された時点のインデックス）」に
@@ -1021,33 +1522,96 @@ function updateBuildingLabels() {
 const BIRTH_STORAGE_KEY = 'emergenceWorld_birthRecords_v1';
 
 function getPopulation() {
-  return GAME.agents.filter(a => a.alive && a.job !== 'thug').length;
+  return GAME.agents.filter(a => a.alive && !isHostileJob(a.job)).length;
 }
 
 function loadBirthRecords() {
   try {
     const raw = localStorage.getItem(BIRTH_STORAGE_KEY);
-    GAME.birthRecords = raw ? JSON.parse(raw) : [];
+    const parsed = raw ? JSON.parse(raw) : null;
+    if (Array.isArray(parsed)) {
+      // 旧形式（出産記録のみの配列）との互換性維持
+      GAME.birthRecords = parsed;
+    } else if (parsed) {
+      GAME.birthRecords = parsed.birthRecords || [];
+      if (typeof parsed.day === 'number' && parsed.day > GAME.day) GAME.day = parsed.day;
+    } else {
+      GAME.birthRecords = [];
+    }
   } catch (e) {
     GAME.birthRecords = [];
   }
 }
 
+// 出産・移住の記録に加え、現在の日数も一緒にlocalStorageへ自動保存する
+// （出産・移住が発生するたび、および日付が進むたびに毎回呼び出される）
 function saveBirthRecords() {
   try {
-    localStorage.setItem(BIRTH_STORAGE_KEY, JSON.stringify(GAME.birthRecords));
+    localStorage.setItem(BIRTH_STORAGE_KEY, JSON.stringify({ day: GAME.day, birthRecords: GAME.birthRecords }));
   } catch (e) {
     // localStorageが使えない環境（プライベートブラウズ等）では記録をスキップする
   }
 }
 
-// 過去のセッションで生まれた住人を、記録データをもとに街へ復元する
+// ---------- 「新しい人生」モード（設定から開始）のセーブデータ ----------
+// 家も職もない住人として人生をスタートした場合、そのエージェントIDだけを保存しておき、
+// 次回訪問時に自動で同じ住人へ乗り移った状態から再開できるようにする。
+// 死亡した時点でこのデータは消去され、また最初から「新しい人生」を選び直すことになる。
+const PLAYER_LIFE_KEY = 'emergenceWorld_playerLife_v1';
+
+function savePlayerLifeState(agent) {
+  try {
+    localStorage.setItem(PLAYER_LIFE_KEY, JSON.stringify({ agentId: agent.id }));
+  } catch (e) {
+    // localStorageが使えない環境では保存をスキップする
+  }
+}
+
+function loadPlayerLifeState() {
+  try {
+    const raw = localStorage.getItem(PLAYER_LIFE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function clearPlayerLifeState() {
+  try {
+    localStorage.removeItem(PLAYER_LIFE_KEY);
+  } catch (e) {
+    // localStorageが使えない環境では何もしない
+  }
+}
+
+// 過去のセッションで「新しい人生」を開始していた場合、そのまま同じ住人として復帰する
+// （restoreBornAgents() の後、住人のIDが前回と同じ並びで復元された状態で呼び出すこと）
+function restorePlayerLifeIfAny() {
+  const saved = loadPlayerLifeState();
+  if (!saved) return;
+  const agent = GAME.agents[saved.agentId];
+  if (!agent || !agent.alive) {
+    // 前回のセッション中に死亡していた場合などは、セーブデータをクリアしてやり直せるようにする
+    clearPlayerLifeState();
+    return;
+  }
+  GAME.hardcoreLife = true;
+  enterPossession(agent);
+  const btn = document.getElementById('btnPossess');
+  if (btn) { btn.textContent = '🔒 死ぬまでこの人生を生きる'; btn.classList.add('active', 'locked'); }
+  showPlayerMsg('🌱 前回の続きから、' + agent.name + 'として人生を再開した');
+}
+
+// 過去のセッションで生まれた／移り住んできた住人を、記録データをもとに街へ復元する
 // （呼び出し順は必ず「初期住人40人 → チンピラ6人 → restoreBornAgents()」を守ること）
 function restoreBornAgents() {
   for (const rec of GAME.birthRecords) {
     if (getPopulation() >= GAME.maxPopulation) break;
     const id = GAME.agents.length; // 配列インデックスと一致させる
-    const child = createAgent(id);
+    const opts = rec.immigrant
+      ? (rec.isChild ? { forceChild: true, jobOverride: rec.job, ageOverride: rec.age } : { forceAdult: true, jobOverride: rec.job, ageOverride: rec.age })
+      : {};
+    const child = createAgent(id, opts);
     child.name = rec.name;
     child.gender = rec.gender;
     child.motherId = rec.motherId;
@@ -1055,19 +1619,104 @@ function restoreBornAgents() {
   }
 }
 
-function createAgent(i) {
+function spawnChildImmigrant() {
+  if (getPopulation() >= GAME.maxPopulation) return null;
+  const id = GAME.agents.length; // 配列インデックスと一致させる
+  const agent = createAgent(id, { forceChild: true, ageOverride: randInt(5, 15) });
+
+  agent.diary.push({ day: GAME.day, text: 'この街に一人でやってきた。少し不安だけど、新しい生活を始めよう。' });
+  showBubble(agent, 'この街にやってきました！', '#2a6a5a', 3, 0);
+  addEvent('🚶 新しい子供の住人「' + agent.name + '」がこの街にやってきた（街の人口: ' + getPopulation() + '人）', 'birth');
+
+  // 移住記録を保存し、次回訪問時にもこの住人が復元されるようにする
+  GAME.birthRecords.push({
+    id: agent.id, name: agent.name, gender: agent.gender,
+    motherId: null, fatherId: null, day: GAME.day,
+    immigrant: true, isChild: true, job: agent.job, age: agent.age,
+  });
+  saveBirthRecords();
+  return agent;
+}
+
+// ---------- チンピラの日次出現（1日3人。上限を超えた分は子供として街にやってくる） ----------
+const MAX_THUGS = 5; // 街に存在できるチンピラの上限
+
+function spawnDailyThugsOrChildren() {
+  for (let n = 0; n < 3; n++) {
+    const thugCount = GAME.agents.filter(a => a.alive && a.job === 'thug').length;
+    if (thugCount < MAX_THUGS) {
+      const thug = createThug(GAME.agents.length);
+      addEvent('🗡️ チンピラ「' + thug.name + '」が街外れのアジトに現れた（チンピラ: ' + (thugCount + 1) + '人）', 'crime');
+    } else {
+      // チンピラの上限に達している場合、代わりに子供が街にやってくる
+      spawnChildImmigrant();
+    }
+  }
+}
+
+// ---------- ヤンキーの日次出現（1日2人。体力は住人の2倍、攻撃力は剣士の3倍の強敵） ----------
+const MAX_YANKEES = 4; // 街に存在できるヤンキーの上限
+
+function spawnDailyYankeesOrChildren() {
+  for (let n = 0; n < 2; n++) {
+    const yankeeCount = GAME.agents.filter(a => a.alive && a.job === 'yankee').length;
+    if (yankeeCount < MAX_YANKEES) {
+      const yankee = createYankee(GAME.agents.length);
+      addEvent('🏍️ ヤンキー「' + yankee.name + '」が街外れのたまり場に現れた（ヤンキー: ' + (yankeeCount + 1) + '人）', 'crime');
+    } else {
+      // ヤンキーの上限に達している場合、代わりに子供が街にやってくる
+      spawnChildImmigrant();
+    }
+  }
+}
+
+
+const MIN_POLICE_COUNT = 4; // 街に最低限必要な警察官の人数
+
+function spawnImmigrant() {
+  if (getPopulation() >= GAME.maxPopulation) return null;
+  const id = GAME.agents.length; // 配列インデックスと一致させる
+
+  // 警察官の数が不足している場合、新しく来た人は強制的に警察官として配属する
+  const policeCount = GAME.agents.filter(a => a.alive && a.job === 'police').length;
+  const job = policeCount < MIN_POLICE_COUNT
+    ? 'police'
+    : pick(['farmer', 'merchant', 'builder', 'librarian', 'doctor', 'unemployed']);
+  const agent = createAgent(id, { forceAdult: true, jobOverride: job });
+
+  agent.diary.push({ day: GAME.day, text: 'この街に移り住んできた。新しい生活を始めよう。' });
+  showBubble(agent, 'この街にやってきました！', '#2a6a5a', 3, 0);
+  addEvent('🚶 新しい住人「' + agent.name + '」（' + JOBS[agent.job].name + '）がこの街に移り住んできた（街の人口: ' + getPopulation() + '人）', 'birth');
+
+  // 移住記録を保存し、次回訪問時にもこの住人が復元されるようにする
+  GAME.birthRecords.push({
+    id: agent.id, name: agent.name, gender: agent.gender,
+    motherId: null, fatherId: null, day: GAME.day,
+    immigrant: true, job: agent.job, age: agent.age,
+  });
+  saveBirthRecords();
+  return agent;
+}
+
+function createAgent(i, opts) {
+  opts = opts || {};
   const fn = FIRST_NAMES[i % FIRST_NAMES.length];
   const ln = LAST_NAMES[i % LAST_NAMES.length];
   const name = fn + '・' + ln;
 
   // 子供にするかどうか（住人の一部を子供にする）
-  const isChild = i >= 34;
-  const age = isChild ? randInt(5, 15) : randInt(18, 70);
+  // opts.forceAdult が指定された場合（＝街への移住者など）は常に大人として生成する
+  // opts.forceChild が指定された場合（＝子供としてこの街にやってきた場合）は常に子供として生成する
+  const isChild = opts.forceChild ? true : (opts.forceAdult ? false : i >= 34);
+  const age = opts.ageOverride != null ? opts.ageOverride : (isChild ? randInt(5, 15) : randInt(18, 70));
   const gender = i % 2 === 0 ? 'M' : 'F';
 
   // 職業決定（子供もこの世界で働くが、10歳までは学校に通う）
   let job;
-  if (isChild) {
+  if (opts.jobOverride) {
+    job = opts.jobOverride;
+  }
+  else if (isChild) {
     // 子供は武道（剣士）を優先的に割り当てる（子供6人中5人）
     const childIdx = i - 34;
     job = childIdx < 5 ? 'swordsman' : (age <= 10 ? 'student' : pick(['farmer','merchant','builder','librarian']));
@@ -1251,8 +1900,9 @@ function createAgent(i) {
   };
 
   // 初期の家割り当て（家 or ホテルの空きに割り当てる）
+  // opts.noHome が指定された場合（プレイヤーが「新しい人生」を始める時など）は、あえて家なしで生成する
   const vacantHomes = GAME.buildings.filter(b => (b.type === 'house' || b.type === 'hotel') && hasVacancy(b));
-  if (vacantHomes.length > 0 && Math.random() < 0.5) {
+  if (!opts.noHome && vacantHomes.length > 0 && Math.random() < 0.5) {
     assignHome(agent, pick(vacantHomes));
   }
 
@@ -1307,7 +1957,7 @@ function createAgent(i) {
 
 // ---------- 恋愛・妊娠・出産 ----------
 function updatePregnancy(agent, dt) {
-  if (agent.job === 'thug' || !agent.alive) return;
+  if (isHostileJob(agent.job) || !agent.alive) return;
 
   // 出産中（妊娠中）は時間経過で進行させる
   if (agent.isPregnant) {
@@ -1397,6 +2047,27 @@ const THUG_WANDER_RADIUS = 20;
 const THUG_DETECT_RADIUS = 13;   // この距離まで市民が近づくと襲いかかる
 const THUG_LEASH_RADIUS = 55;    // アジトからこれ以上は深追いしない
 
+// ---------- チンピラ・ヤンキーの街への一斉襲撃（毎日同時発生） ----------
+const TOWN_CENTER = { x: 0, z: 0 };  // 街の中心部
+const RAID_INTERVAL_DAYS = 1;        // このペースで襲撃が発生する（毎日発生するよう変更）
+const RAID_ENGAGE_RADIUS_MULT = 4;   // 襲撃中に市民を発見できる範囲の倍率（従来の1.6倍だと街の中心付近にいないと誰にも遭遇しないため拡大）
+const RAID_WANDER_SPREAD = 40;       // 襲撃中に街のどこまで広がって暴れ回るか（従来の18だと街のごく一部にしか到達しなかった）
+const RAID_TOWN_APPROACH_RADIUS = 45; // 街の中心からこの距離まで来るまでは、道中の市民に気を取られず中心を目指して直進する
+                                       // （索敵範囲を拡大した際、自分のアジト付近で偶然見つけた市民に構ってしまい、
+                                       //   街まで一向にたどり着けなくなる不具合があったため、到達判定を追加）
+
+function triggerTownRaid() {
+  const raiders = GAME.agents.filter(a => a.alive && !a.isInJail && (a.job === 'thug' || a.job === 'yankee'));
+  if (raiders.length === 0) return;
+  for (const a of raiders) {
+    a._raiding = true;
+    a._raidTimer = rand(150, 210);
+    a._punchTarget = null;
+    a.target = null;
+  }
+  addEvent('🚨 チンピラとヤンキーの群れが街の中心部へ一斉に襲撃を仕掛けてきた！', 'crime');
+}
+
 function createThug(i) {
   const fn = FIRST_NAMES[i % FIRST_NAMES.length];
   const ln = LAST_NAMES[i % LAST_NAMES.length];
@@ -1467,6 +2138,7 @@ function createThug(i) {
     inventory: { food: 0, wood: 0, goods: 0 }, partner: null, alive: true, votedFor: null,
     // チンピラ固有
     _hideout: { x: hx, z: hz }, _punchTarget: null, _punchCooldown: 0,
+    _raiding: false, _raidTimer: 0,
   };
 
   const bubbleRect = new BABYLON.GUI.Rectangle('bubble'+i);
@@ -1526,7 +2198,7 @@ function updateThug(agent, dt) {
         agent._punchCooldown = rand(1.3, 2.2);
         const dmg = rand(8, 16);
         t.health -= dmg;
-        if (!wasFleeing && t.job !== 'thug') {
+        if (!wasFleeing && !isHostileJob(t.job)) {
           showBubble(t, pick(THUG_VICTIM_LINES), '#661111', 2, 1);
           addEvent('🆘 ' + t.name + 'が「市民がならず者に襲われている！」と叫んだ！', 'crime');
         } else {
@@ -1538,7 +2210,7 @@ function updateThug(agent, dt) {
           killAgent(t, 'チンピラの暴行');
           agent._punchTarget = null;
           agent.state = 'idle';
-        } else if (t.state !== 'fleeing' && t.job !== 'thug') {
+        } else if (t.state !== 'fleeing' && !isHostileJob(t.job)) {
           t.state = 'fleeing';
           t.stateTimer = rand(4, 8);
           t.target = { x: t.mesh.position.x + rand(-30, 30), z: t.mesh.position.z + rand(-30, 30) };
@@ -1548,11 +2220,66 @@ function updateThug(agent, dt) {
     }
   }
 
+  // 襲撃中（毎日街の中心部へ押し寄せる）：中心部にたどり着くまでは寄り道せず直進し、
+  // 街の中心付近に到達してから初めて周囲の市民を無差別に襲う
+  if (agent._raiding) {
+    agent._raidTimer -= dt;
+    const distToTown = dist2D(pos, TOWN_CENTER);
+    const nearTown = distToTown < RAID_TOWN_APPROACH_RADIUS;
+    if (nearTown) {
+      // 操作中の住人がいれば最優先で狙う（プレイヤーが街のどこにいても襲撃を体感できるようにする）
+      const pa = GAME.possessedAgent;
+      if (pa && pa.alive && !pa.isInJail && !isHostileJob(pa.job) && dist2D(pos, pa.mesh.position) < THUG_DETECT_RADIUS * RAID_ENGAGE_RADIUS_MULT * 1.5) {
+        agent._punchTarget = pa;
+        agent.state = 'moving';
+        return;
+      }
+      let nearest = null, nearestD = THUG_DETECT_RADIUS * RAID_ENGAGE_RADIUS_MULT;
+      for (const o of GAME.agents) {
+        if (o === agent || !o.alive || isHostileJob(o.job) || o.isInJail) continue;
+        const d = dist2D(pos, o.mesh.position);
+        if (d < nearestD) { nearestD = d; nearest = o; }
+      }
+      if (nearest) {
+        agent._punchTarget = nearest;
+        agent.state = 'moving';
+        return;
+      }
+    }
+    if (agent._raidTimer <= 0) {
+      // 襲撃終了。アジトへ帰る
+      agent._raiding = false;
+      agent.target = null;
+      agent.stateTimer = 0;
+    } else {
+      if (!agent.target || agent.stateTimer <= 0) {
+        // 街に到達するまではまず中心部そのものを目指し、到達後は周辺を暴れ回る
+        agent.target = nearTown
+          ? { x: TOWN_CENTER.x + rand(-RAID_WANDER_SPREAD, RAID_WANDER_SPREAD), z: TOWN_CENTER.z + rand(-RAID_WANDER_SPREAD, RAID_WANDER_SPREAD) }
+          : { x: TOWN_CENTER.x, z: TOWN_CENTER.z };
+        agent.stateTimer = rand(4, 9);
+      }
+      agent.stateTimer -= dt;
+      const dxr = agent.target.x - pos.x, dzr = agent.target.z - pos.z;
+      const dr = Math.sqrt(dxr*dxr + dzr*dzr);
+      if (dr > 1) {
+        agent.state = 'moving';
+        const speed = agent.moveSpeed * 0.8 * dt;
+        pos.x += (dxr/dr) * speed;
+        pos.z += (dzr/dr) * speed;
+        agent.mesh.rotation.y = Math.atan2(dxr, dzr);
+      } else {
+        agent.state = 'idle';
+      }
+      return;
+    }
+  }
+
   // 近づいてきた市民を探す（アジトからあまり離れすぎない範囲で）
   if (dist2D(agent._hideout, pos) < THUG_LEASH_RADIUS) {
     let nearest = null, nearestD = THUG_DETECT_RADIUS;
     for (const o of GAME.agents) {
-      if (o === agent || !o.alive || o.job === 'thug' || o.isInJail) continue;
+      if (o === agent || !o.alive || isHostileJob(o.job) || o.isInJail) continue;
       const d = dist2D(pos, o.mesh.position);
       if (d < nearestD) { nearestD = d; nearest = o; }
     }
@@ -1582,6 +2309,256 @@ function updateThug(agent, dt) {
   }
 }
 
+// ---------- ヤンキー（チンピラよりさらに強力な不良。街の外れ、チンピラのアジトとは別の場所に生息する） ----------
+// 体力：住人の基本値100の2倍＝200／攻撃力：剣士の平均ダメージ(rand(18,34)、平均26)の3倍＝rand(54,102)
+const YANKEE_HIDEOUT = { x: -84, z: -84 }; // チンピラのアジト(84,84)とは対角の、町から大きく離れた場所
+const YANKEE_WANDER_RADIUS = 22;
+const YANKEE_DETECT_RADIUS = 15;   // チンピラより広い索敵範囲
+const YANKEE_LEASH_RADIUS = 55;
+const YANKEE_MAX_HEALTH = 200;     // 住人の基本体力(100)の2倍
+
+function createYankee(i) {
+  const fn = FIRST_NAMES[i % FIRST_NAMES.length];
+  const ln = LAST_NAMES[i % LAST_NAMES.length];
+  const name = fn + '・' + ln;
+  const jdef = JOBS.yankee;
+
+  const hx = YANKEE_HIDEOUT.x + rand(-12, 12);
+  const hz = YANKEE_HIDEOUT.z + rand(-12, 12);
+
+  const bodyMat = new BABYLON.StandardMaterial('yaMat'+i, GAME.scene);
+  bodyMat.diffuseColor = new BABYLON.Color3(...jdef.color);
+  bodyMat.specularColor = new BABYLON.Color3(0.15,0.1,0.05);
+
+  // 体格はチンピラよりひとまわり大きくして、強敵であることを見た目でも表現する
+  const Y_LEG_H = 0.9, Y_TORSO_H = 0.95;
+  const legs = BABYLON.MeshBuilder.CreateCylinder('yankeeLegs'+i,{diameterTop:0.02,diameterBottom:0.02,height:Y_LEG_H},GAME.scene);
+  legs.position.set(hx, Y_LEG_H/2, hz);
+  legs.material = bodyMat;
+  GAME.shadowGen.addShadowCaster(legs);
+
+  const yLegDiamTop = 0.29, yLegDiamBottom = 0.39, yLegGap = 0.19;
+  const leftLeg = BABYLON.MeshBuilder.CreateCylinder('yankeeLegL'+i,{diameterTop:yLegDiamTop,diameterBottom:yLegDiamBottom,height:Y_LEG_H},GAME.scene);
+  leftLeg.parent = legs;
+  leftLeg.position.set(-yLegGap, 0, 0);
+  leftLeg.material = bodyMat;
+  GAME.shadowGen.addShadowCaster(leftLeg);
+
+  const rightLeg = BABYLON.MeshBuilder.CreateCylinder('yankeeLegR'+i,{diameterTop:yLegDiamTop,diameterBottom:yLegDiamBottom,height:Y_LEG_H},GAME.scene);
+  rightLeg.parent = legs;
+  rightLeg.position.set(yLegGap, 0, 0);
+  rightLeg.material = bodyMat;
+  GAME.shadowGen.addShadowCaster(rightLeg);
+
+  const torso = BABYLON.MeshBuilder.CreateCylinder('yankeeTorso'+i,{diameterTop:0.72,diameterBottom:0.68,height:Y_TORSO_H},GAME.scene);
+  torso.parent = legs;
+  torso.position.y = Y_LEG_H;
+  torso.material = bodyMat;
+  GAME.shadowGen.addShadowCaster(torso);
+
+  const headMat = new BABYLON.StandardMaterial('yhMat'+i, GAME.scene);
+  headMat.diffuseColor = new BABYLON.Color3(0.85,0.7,0.55);
+  const head = BABYLON.MeshBuilder.CreateSphere('yankeeHead'+i,{diameter:0.65},GAME.scene);
+  head.parent = torso;
+  head.position.y = 0.65;
+  head.material = headMat;
+
+  const handMat = new BABYLON.StandardMaterial('yhandMat'+i, GAME.scene);
+  handMat.diffuseColor = new BABYLON.Color3(0.85,0.7,0.55);
+  const leftHand = BABYLON.MeshBuilder.CreateSphere('yankeeHandL'+i, {diameter:0.32}, GAME.scene);
+  leftHand.parent = torso;
+  leftHand.position.set(-0.56, -0.05, 0.12);
+  leftHand.material = handMat;
+  const rightHand = BABYLON.MeshBuilder.CreateSphere('yankeeHandR'+i, {diameter:0.32}, GAME.scene);
+  rightHand.parent = torso;
+  rightHand.position.set(0.56, -0.05, 0.12);
+  rightHand.material = handMat;
+
+  const agent = {
+    id: i, name: name, age: randInt(18, 30), gender: i % 2 === 0 ? 'M' : 'F', job: 'yankee',
+    color: jdef.color, mesh: legs, torsoMesh: torso, headMesh: head, leftHand: leftHand, rightHand: rightHand,
+    animScale: 1, animPhase: rand(0, Math.PI*2),
+    hunger: 40, energy: 70, social: 40, health: YANKEE_MAX_HEALTH, maxHealth: YANKEE_MAX_HEALTH, money: rand(10, 30),
+    aggression: rand(0.85, 1), honesty: rand(0, 0.15), sociability: rand(0, 0.25),
+    ambition: rand(0, 0.4), intelligence: rand(0.2, 0.7),
+    state: 'idle', stateTimer: 0, target: null, targetBuilding: null, moveSpeed: rand(3.8, 5.3),
+    relationships: new Map(), diary: [], memory: [],
+    home: null, isInJail: false, jailTimer: 0, arrestedBy: null,
+    crimeCooldown: 0, isCriminal: false, criminalRecord: 0,
+    inventory: { food: 0, wood: 0, goods: 0 }, partner: null, alive: true, votedFor: null,
+    // ヤンキー固有
+    _hideout: { x: hx, z: hz }, _punchTarget: null, _punchCooldown: 0,
+    _raiding: false, _raidTimer: 0,
+  };
+
+  const bubbleRect = new BABYLON.GUI.Rectangle('ybubble'+i);
+  bubbleRect.width = '120px'; bubbleRect.height = '34px'; bubbleRect.cornerRadius = 8;
+  bubbleRect.color = 'rgba(255,255,255,0.4)'; bubbleRect.thickness = 1;
+  bubbleRect.background = '#552a11'; bubbleRect.isVisible = false; bubbleRect.linkOffsetY = -60;
+  GAME.guiTexture.addControl(bubbleRect);
+  bubbleRect.linkWithMesh(head);
+  const bubbleText = new BABYLON.GUI.TextBlock('ybubbleText'+i);
+  bubbleText.text = ''; bubbleText.color = '#fff'; bubbleText.fontSize = 12; bubbleText.textWrapping = true;
+  bubbleRect.addControl(bubbleText);
+  agent.bubble = { rect: bubbleRect, text: bubbleText };
+  agent.bubbleTimer = 0;
+  agent._quarrelTarget = null; agent._fightTarget = null; agent.instigator = false;
+  agent.bumpCooldown = 0; agent.trampleCooldown = 0;
+
+  legs.metadata = { agent: agent };
+  leftLeg.metadata = { agent: agent };
+  rightLeg.metadata = { agent: agent };
+  torso.metadata = { agent: agent };
+  head.metadata = { agent: agent };
+  leftHand.metadata = { agent: agent };
+  rightHand.metadata = { agent: agent };
+  GAME.agents.push(agent);
+  return agent;
+}
+
+// ヤンキーの行動：たまり場周辺を徘徊し、市民が近づくと襲いかかって殴る（チンピラより体力・攻撃力ともに高い強敵）
+function updateYankee(agent, dt) {
+  if (!agent.alive) return;
+  if (agent.bubbleTimer > 0) {
+    agent.bubbleTimer -= dt;
+    if (agent.bubbleTimer <= 0 && agent.bubble) agent.bubble.rect.isVisible = false;
+  }
+  if (agent._punchCooldown > 0) agent._punchCooldown -= dt;
+
+  const pos = agent.mesh.position;
+
+  // 襲撃中のターゲットを追跡・攻撃
+  if (agent._punchTarget) {
+    const t = agent._punchTarget;
+    if (!t.alive || t.isInJail || dist2D(pos, t.mesh.position) > YANKEE_DETECT_RADIUS * 2) {
+      agent._punchTarget = null;
+      agent.state = 'idle';
+    } else {
+      const dx = t.mesh.position.x - pos.x, dz = t.mesh.position.z - pos.z;
+      const d = Math.sqrt(dx*dx + dz*dz);
+      if (d > 1.6) {
+        agent.state = 'moving';
+        const speed = agent.moveSpeed * 1.15 * dt;
+        pos.x += (dx/d) * speed;
+        pos.z += (dz/d) * speed;
+        agent.mesh.rotation.y = Math.atan2(dx, dz);
+      } else if (agent._punchCooldown <= 0) {
+        const wasFleeing = t.state === 'fleeing';
+        agent.state = 'attacking';
+        agent._punchCooldown = rand(1.3, 2.2);
+        const dmg = rand(54, 102); // 剣士の平均ダメージ(約26)の3倍
+        t.health -= dmg;
+        if (!wasFleeing && !isHostileJob(t.job)) {
+          showBubble(t, pick(THUG_VICTIM_LINES), '#661111', 2, 1);
+          addEvent('🆘 ' + t.name + 'が「ヤンキーに襲われている！」と叫んだ！', 'crime');
+        } else {
+          showBubble(t, pick(PAIN_LINES), '#661111', 2, 1);
+        }
+        showBubble(agent, pick(THUG_LINES), '#552a11', 1.5, 0.8);
+        addEvent('👊 ヤンキー ' + agent.name + ' が ' + t.name + ' を殴りつけた！', 'crime');
+        if (t.health <= 0) {
+          killAgent(t, 'ヤンキーの暴行');
+          agent._punchTarget = null;
+          agent.state = 'idle';
+        } else if (t.state !== 'fleeing' && !isHostileJob(t.job)) {
+          t.state = 'fleeing';
+          t.stateTimer = rand(4, 8);
+          t.target = { x: t.mesh.position.x + rand(-30, 30), z: t.mesh.position.z + rand(-30, 30) };
+        }
+      }
+      return;
+    }
+  }
+
+  // 襲撃中（毎日街の中心部へ押し寄せる）：中心部にたどり着くまでは寄り道せず直進し、
+  // 街の中心付近に到達してから初めて周囲の市民を無差別に襲う
+  if (agent._raiding) {
+    agent._raidTimer -= dt;
+    const distToTown = dist2D(pos, TOWN_CENTER);
+    const nearTown = distToTown < RAID_TOWN_APPROACH_RADIUS;
+    if (nearTown) {
+      // 操作中の住人がいれば最優先で狙う（プレイヤーが街のどこにいても襲撃を体感できるようにする）
+      const pa = GAME.possessedAgent;
+      if (pa && pa.alive && !pa.isInJail && !isHostileJob(pa.job) && dist2D(pos, pa.mesh.position) < YANKEE_DETECT_RADIUS * RAID_ENGAGE_RADIUS_MULT * 1.5) {
+        agent._punchTarget = pa;
+        agent.state = 'moving';
+        return;
+      }
+      let nearest = null, nearestD = YANKEE_DETECT_RADIUS * RAID_ENGAGE_RADIUS_MULT;
+      for (const o of GAME.agents) {
+        if (o === agent || !o.alive || isHostileJob(o.job) || o.isInJail) continue;
+        const d = dist2D(pos, o.mesh.position);
+        if (d < nearestD) { nearestD = d; nearest = o; }
+      }
+      if (nearest) {
+        agent._punchTarget = nearest;
+        agent.state = 'moving';
+        return;
+      }
+    }
+    if (agent._raidTimer <= 0) {
+      // 襲撃終了。たまり場へ帰る
+      agent._raiding = false;
+      agent.target = null;
+      agent.stateTimer = 0;
+    } else {
+      if (!agent.target || agent.stateTimer <= 0) {
+        // 街に到達するまではまず中心部そのものを目指し、到達後は周辺を暴れ回る
+        agent.target = nearTown
+          ? { x: TOWN_CENTER.x + rand(-RAID_WANDER_SPREAD, RAID_WANDER_SPREAD), z: TOWN_CENTER.z + rand(-RAID_WANDER_SPREAD, RAID_WANDER_SPREAD) }
+          : { x: TOWN_CENTER.x, z: TOWN_CENTER.z };
+        agent.stateTimer = rand(4, 9);
+      }
+      agent.stateTimer -= dt;
+      const dxr = agent.target.x - pos.x, dzr = agent.target.z - pos.z;
+      const dr = Math.sqrt(dxr*dxr + dzr*dzr);
+      if (dr > 1) {
+        agent.state = 'moving';
+        const speed = agent.moveSpeed * 0.8 * dt;
+        pos.x += (dxr/dr) * speed;
+        pos.z += (dzr/dr) * speed;
+        agent.mesh.rotation.y = Math.atan2(dxr, dzr);
+      } else {
+        agent.state = 'idle';
+      }
+      return;
+    }
+  }
+
+  // 近づいてきた市民を探す（たまり場からあまり離れすぎない範囲で）
+  if (dist2D(agent._hideout, pos) < YANKEE_LEASH_RADIUS) {
+    let nearest = null, nearestD = YANKEE_DETECT_RADIUS;
+    for (const o of GAME.agents) {
+      if (o === agent || !o.alive || isHostileJob(o.job) || o.isInJail) continue;
+      const d = dist2D(pos, o.mesh.position);
+      if (d < nearestD) { nearestD = d; nearest = o; }
+    }
+    if (nearest) {
+      agent._punchTarget = nearest;
+      agent.state = 'moving';
+      return;
+    }
+  }
+
+  // 徘徊（たまり場周辺をぶらつく）
+  if (!agent.target || agent.stateTimer <= 0) {
+    agent.target = { x: agent._hideout.x + rand(-YANKEE_WANDER_RADIUS, YANKEE_WANDER_RADIUS), z: agent._hideout.z + rand(-YANKEE_WANDER_RADIUS, YANKEE_WANDER_RADIUS) };
+    agent.stateTimer = rand(4, 9);
+  }
+  agent.stateTimer -= dt;
+  const dx2 = agent.target.x - pos.x, dz2 = agent.target.z - pos.z;
+  const d2 = Math.sqrt(dx2*dx2 + dz2*dz2);
+  if (d2 > 1) {
+    agent.state = 'moving';
+    const speed = agent.moveSpeed * 0.55 * dt;
+    pos.x += (dx2/d2) * speed;
+    pos.z += (dz2/d2) * speed;
+    agent.mesh.rotation.y = Math.atan2(dx2, dz2);
+  } else {
+    agent.state = 'idle';
+  }
+}
+
 function showBubble(agent, msg, color, duration, intensity) {
   if (!agent || !agent.bubble) return;
   agent.bubble.text.text = msg;
@@ -1589,10 +2566,37 @@ function showBubble(agent, msg, color, duration, intensity) {
   agent.bubble.rect.isVisible = true;
   agent.bubbleTimer = duration || 3;
   speakLine(msg, agent, intensity || 0);
+
+  // 自分（乗り移り中の住民）が喋った場合：一人称視点では自分の頭が見えず
+  // 3D吹き出しが役に立たないため、画面中央下のHUD吹き出しにも表示する
+  if (agent === GAME.possessedAgent) {
+    showPlayerSpeechBubble(msg, color, duration || 3);
+  }
+}
+
+// 画面中央下に表示する、自分自身の発言用の吹き出し（一人称視点用）
+function showPlayerSpeechBubble(msg, color, duration) {
+  const el = document.getElementById('player-speech-bubble');
+  if (!el) return;
+  el.textContent = msg;
+  el.style.setProperty('--bubble-bg', color || 'rgba(20,20,40,0.92)');
+  el.classList.add('show');
+  GAME.playerBubbleTimer = duration || 3;
+}
+
+function hidePlayerSpeechBubble() {
+  const el = document.getElementById('player-speech-bubble');
+  if (el) el.classList.remove('show');
+  GAME.playerBubbleTimer = 0;
 }
 
 // ---------- 人工音声（TTS） ----------
-const TTS_MAX_CONCURRENT = 10; // 同時に喋らせる最大人数（overlapし過ぎ防止）
+// ブラウザのspeechSynthesisは同時再生ができず、speak()を呼ぶたびに内部キューへ順番に積まれていく。
+// 従来は「同時に読み上げ中の人数」だけで制限していたため、話者が多い場面ではキューがどんどん溜まり、
+// 実際に声が出る頃には画面上の出来事から数秒〜十数秒遅れてしまっていた。
+// ここでは「次の発言が実際に再生され始めるまでの推定待ち時間」を計算し、それが一定を超えたら
+// 音声はスキップして吹き出し表示のみにすることで、声が常に「今」に近いタイミングで鳴るようにする。
+const TTS_MAX_BACKLOG_MS = 900; // これ以上遅れて再生される見込みの発言は読み上げをスキップする
 const TTS_HEAR_RADIUS = 26;    // この距離より近い発言だけ声が聞こえる（遠くは吹き出しのみ）
 
 function initTTS() {
@@ -1611,7 +2615,6 @@ function initTTS() {
 
 function speakLine(msg, agent, intensity) {
   if (!GAME.ttsEnabled || !('speechSynthesis' in window) || !msg) return;
-  if (GAME.ttsSpeaking >= TTS_MAX_CONCURRENT) return; // 混雑時は読み上げをスキップ（吹き出し表示のみ）
 
   // プレイヤー（カメラ）から遠い発言は声を出さず、吹き出し表示だけにする
   if (agent && agent.mesh && GAME.camera) {
@@ -1630,19 +2633,32 @@ function speakLine(msg, agent, intensity) {
   utter.rate = 1.0 + (seed - 0.5) * 0.2; // 0.9〜1.1
   utter.volume = 0.6;
 
-  // 待ち行列が多いほど早口・やや小声にして、音声が重なって聞こえるバブル感を出す
-  // （ブラウザの音声合成は1チャンネルしか無く完全な同時再生はできないため、
-  //   キューの遅延を減らして賑わい感を近似する）
-  const queueFactor = Math.min(GAME.ttsSpeaking / TTS_MAX_CONCURRENT, 1);
-  utter.rate = Math.min(2.5, utter.rate + queueFactor * 0.8);
-  utter.volume = Math.max(0.3, utter.volume - queueFactor * 0.25);
-
   // 怒り度が高いほど早口・大声・声が上ずる（＝口調が荒くなる）
   if (level > 0) {
     utter.rate += level * 0.35;
     utter.pitch += level * 0.3;
     utter.volume = Math.min(1, utter.volume + level * 0.4);
   }
+
+  // 現在キューに溜まっている発言がすべて再生され終わるまでの推定時間（＝この発言が実際に鳴り始めるまでの遅延）を計算する
+  const now = performance.now();
+  if (GAME.ttsBusyUntil < now) GAME.ttsBusyUntil = now; // キューが空いていればリセット
+  const backlogMs = GAME.ttsBusyUntil - now;
+
+  if (backlogMs > TTS_MAX_BACKLOG_MS) {
+    // これ以上キューに積むと再生時にはもう手遅れ（現実の出来事とズレて聞こえる）なので、
+    // 音声はスキップして吹き出し表示だけに留める
+    return;
+  }
+
+  // 待ちが増えるほど早口・やや小声にして、詰まったキューを早く解消しつつ賑わい感を出す
+  const queueFactor = clamp(backlogMs / TTS_MAX_BACKLOG_MS, 0, 1);
+  utter.rate = Math.min(2.5, utter.rate + queueFactor * 0.8);
+  utter.volume = Math.max(0.3, utter.volume - queueFactor * 0.25);
+
+  // 日本語の読み上げ速度からこの発言のおおよその再生時間を見積もり、キューの推定終了時刻を進めておく
+  const estMs = Math.max(500, (msg.length / utter.rate) * 165) + 150;
+  GAME.ttsBusyUntil += estMs;
 
   GAME.ttsSpeaking++;
   const done = () => { GAME.ttsSpeaking = Math.max(0, GAME.ttsSpeaking - 1); };
@@ -1655,7 +2671,16 @@ function speakLine(msg, agent, intensity) {
 // ---------- エージェントAI ----------
 function updateAgent(agent, dt) {
   if (!agent.alive) return;
+
+  // ラグドール中に横から別のイベント（口論・喧嘩・職質等）でstateが直接書き換えられることがある。
+  // その場合でもstandUpFromRagdollを経由せず胴体が物理演算で切り離されたまま置き去りにならないよう、
+  // 「ragdollのはずなのにstateがragdollでない」状態を検知したら強制的に胴体を戻す。
+  if (agent._ragdollActive && agent.state !== 'ragdoll') {
+    reattachRagdollBody(agent);
+  }
+
   if (agent.job === 'thug') { updateThug(agent, dt); return; }
+  if (agent.job === 'yankee') { updateYankee(agent, dt); return; }
 
   // 吹き出しの表示時間
   if (agent.bubbleTimer > 0) {
@@ -1695,17 +2720,46 @@ function updateAgent(agent, dt) {
     }
 
     // 他の住人に仕掛けられた反応的なイベントは、botと同じ関数でそのまま処理する
-    const reactiveStates = ['arguing','fighting','questioning','fleeing'];
+    // （ラグドール・負傷中は一人称視点だと自分の体が見えないため、この間だけ体を表示して三人称視点にする）
+    const thirdPersonStates = ['ragdoll', 'injured'];
+    const wasThirdPerson = !!agent._thirdPersonActive;
+    if (thirdPersonStates.includes(agent.state) && !wasThirdPerson) setAgentMeshVisible(agent, true);
+    agent._thirdPersonActive = thirdPersonStates.includes(agent.state);
+
+    const reactiveStates = ['arguing','fighting','questioning','fleeing','ragdoll','injured'];
     if (reactiveStates.includes(agent.state)) {
       switch (agent.state) {
         case 'arguing': doArgue(agent, dt); break;
         case 'fighting': doFight(agent, dt); break;
         case 'questioning': doQuestion(agent, dt); break;
         case 'fleeing': doFlee(agent, dt); break;
+        case 'ragdoll': doRagdoll(agent, dt); break;
+        case 'injured': doInjured(agent, dt); break;
+      }
+      if (thirdPersonStates.includes(agent.state)) {
+        updatePossessedRagdollCamera(agent);
+      } else {
+        // ちょうど起き上がった：体を再び隠し、一人称視点に戻す
+        if (wasThirdPerson) setAgentMeshVisible(agent, false);
+        syncPossessCameraToAgent(agent);
+        agent._thirdPersonActive = false;
       }
       if (agent.stateTimer > 0) agent.stateTimer -= dt;
+      return;
+    }
+
+    // パルクール挑戦中：タイミングバーの進行・ジャンプ移動はdoPlayerParkourが専任で行う
+    if (agent.state === 'parkourPlayer') {
+      doPlayerParkour(agent, dt);
       syncPossessCameraToAgent(agent);
       return;
+    }
+
+    // 直前まで三人称だった場合の後始末（病院への搬送完了など、他のエージェントの処理で
+    // stateが直接idle等に書き換えられ、このフレームでは上のreactiveStates分岐を通らなかったケース）
+    if (wasThirdPerson) {
+      setAgentMeshVisible(agent, false);
+      syncPossessCameraToAgent(agent);
     }
 
     // 自由に動ける状態。歩いている間は他の住人と同じ「moving」扱いにして、
@@ -1728,13 +2782,13 @@ function updateAgent(agent, dt) {
 
   if (agent.crimeCooldown > 0) agent.crimeCooldown -= dt;
 
-  // 剣士：チンピラが近づいたら今の行動を中断し、木刀を構えて斬りかかる
+  // 剣士：チンピラ・ヤンキーが近づいたら今の行動を中断し、木刀を構えて斬りかかる
   if (agent.job === 'swordsman' && !['dueling','arguing','fighting','questioning'].includes(agent.state)) {
     const nearbyThug = findThugNear(agent, 22);
     if (nearbyThug) {
       agent._duelTarget = nearbyThug;
       agent.state = 'dueling';
-      addEvent('⚔️ 剣士 ' + agent.name + ' が チンピラ ' + nearbyThug.name + ' に木刀を構えて斬りかかった！', 'crime');
+      addEvent('⚔️ 剣士 ' + agent.name + ' が ' + JOBS[nearbyThug.job].name + ' ' + nearbyThug.name + ' に木刀を構えて斬りかかった！', 'crime');
       return;
     }
   }
@@ -1780,7 +2834,7 @@ function updateAgent(agent, dt) {
   }
 
   // 深刻な怪我：喧嘩・逮捕・逃走・拘束など動けない状況でない限り、今の行動を中断して緊急で病院へ向かう
-  const restrainedForHeal = ['fighting','arguing','questioning','fleeing','dueling','shooting','arresting','sleeping','goingToSleep'];
+  const restrainedForHeal = ['fighting','arguing','questioning','fleeing','dueling','shooting','arresting','sleeping','goingToSleep','ragdoll'];
   if (agent.health < 25 && agent._intent !== 'heal' && agent.state !== 'healing' && !restrainedForHeal.includes(agent.state) && !agent.isInJail) {
     const hospital = GAME.buildings.find(b => b.type === 'hospital' && b.health > 0);
     if (hospital) {
@@ -1792,8 +2846,18 @@ function updateAgent(agent, dt) {
     }
   }
 
+  // 極度の空腹：忙しい仕事や巡回などに気を取られて餓死することがないよう、
+  // ほとんどの行動を中断してでも食料の確保を優先させる
+  const busyWithFood = ['eating','dining','trading'].includes(agent.state) || ['buyFood','dineOut'].includes(agent._intent);
+  if (agent.hunger >= 85 && !busyWithFood && !restrainedForHeal.includes(agent.state) && !agent.isInJail) {
+    if (seekFood(agent)) return;
+  }
+
   // 水田の踏み荒らしチェック
   checkPaddyTrample(agent, dt);
+
+  // 歩行中はたまにつまずいて転ぶことがある
+  if (WALKING_HAND_STATES.includes(agent.state) && maybeTripWhileWalking(agent, dt)) return;
 
   // 状態マシン
   switch(agent.state) {
@@ -1818,6 +2882,9 @@ function updateAgent(agent, dt) {
     case 'building':
       doBuild(agent, dt);
       break;
+    case 'rebuilding':
+      doRebuild(agent, dt);
+      break;
     case 'stealing':
       doSteal(agent, dt);
       break;
@@ -1830,11 +2897,17 @@ function updateAgent(agent, dt) {
     case 'carryingCorpse':
       doCarryCorpse(agent, dt);
       break;
+    case 'carryingCropBox':
+      doCarryCropBox(agent, dt);
+      break;
     case 'arresting':
       doArrest(agent, dt);
       break;
     case 'shooting':
       doShoot(agent, dt);
+      break;
+    case 'ragdoll':
+      doRagdoll(agent, dt);
       break;
     case 'dueling':
       doDuel(agent, dt);
@@ -1869,6 +2942,21 @@ function updateAgent(agent, dt) {
     case 'studying':
       doSchool(agent, dt);
       break;
+    case 'playingPark':
+      doPlayPark(agent, dt);
+      break;
+    case 'parkour':
+      doParkour(agent, dt);
+      break;
+    case 'parkourPlayer':
+      doPlayerParkour(agent, dt);
+      break;
+    case 'injured':
+      doInjured(agent, dt);
+      break;
+    case 'carryingInjured':
+      doCarryInjured(agent, dt);
+      break;
     case 'usingPC':
       doUsePC(agent, dt);
       break;
@@ -1880,7 +2968,7 @@ function updateAgent(agent, dt) {
   // ベッドに横になった姿勢（回転）のまま起き上がらずに歩き出すバグになる。
   if (agent.stateTimer > 0) {
     agent.stateTimer -= dt;
-    if (agent.stateTimer <= 0 && ['working','eating','socializing','trading','healing','dining','studying','usingPC'].includes(agent.state)) {
+    if (agent.stateTimer <= 0 && ['working','eating','socializing','trading','healing','dining','studying','usingPC','playingPark'].includes(agent.state)) {
       agent.state = 'idle';
     }
   }
@@ -1910,6 +2998,7 @@ function randAvoidingPaddy(min, max, margin) {
 
 function checkPaddyTrample(agent, dt) {
   if (agent.job === 'farmer') return; // 農家自身は対象外
+  if (agent._ragdollActive) return; // 既にラグドール中は多重発動させない
   if (agent.trampleCooldown > 0) { agent.trampleCooldown -= dt; return; }
   if (agent.state === 'fighting' || agent.state === 'arguing') return;
 
@@ -1919,39 +3008,104 @@ function checkPaddyTrample(agent, dt) {
     pos.z > b.paddyBounds.minZ && pos.z < b.paddyBounds.maxZ);
   if (!farm) return;
 
-  // 近くで働いている農家が踏み荒らしを発見する
+  agent.trampleCooldown = 30;
+
+  // 近くで働いている農家がいれば駆けつけて突き飛ばす。いなくても、ぬかるんだ水田に足を取られて自分で転ぶ
   const farmer = GAME.agents.find(a => a.job === 'farmer' && a.alive && !a.isInJail &&
     a.state !== 'fighting' && a.state !== 'arguing' &&
     dist2D({x:a.mesh.position.x,z:a.mesh.position.z},{x:farm.x,z:farm.z}) < 40);
-  if (!farmer) return;
+  if (farmer) {
+    triggerPaddyFight(farmer, agent);
+  } else {
+    triggerPaddySlip(agent);
+  }
+}
 
-  agent.trampleCooldown = 30;
-  triggerPaddyFight(farmer, agent);
+// 農家が近くにいない場合、ぬかるんだ水田に自力で足を取られて転んでしまう
+// （突き飛ばされる相手がいないだけで、水田に入った代償は同じように受ける）
+function triggerPaddySlip(agent) {
+  addEvent('🌾 ' + agent.name + ' が水田に足を踏み入れ、ぬかるみに足を取られて転んだ', 'social');
+  agent.isCriminal = true;
+  agent.criminalRecord++;
+  agent.crimeCooldown = rand(30, 60);
+  agent.honesty = Math.max(0, agent.honesty - 0.02);
+  agent.diary.push({day:GAME.day, text:'つい水田に足を踏み入れてしまい、ぬかるみに足を取られて派手に転んでしまった。'});
+
+  if (isRagdollEligible(agent)) {
+    knockdownAgent(agent, null, 18); // 相手がいないので銃撃よりは弱い勢いで前のめりに転ぶ
+  } else {
+    showBubble(agent, pick(PAIN_LINES), '#661111', 2, 1);
+    agent.state = 'fleeing';
+    agent.stateTimer = rand(5, 8);
+    agent.target = { x: rand(-80,80), z: rand(-80,80) };
+  }
+  GAME.totalCrimes++;
 }
 
 function triggerPaddyFight(farmer, trampler) {
-  addEvent('🌾 ' + farmer.name + ' が水田を踏み荒らした ' + trampler.name + ' を見つけ、掴みかかった！', 'crime');
+  addEvent('🌾 ' + farmer.name + ' が水田を踏み荒らした ' + trampler.name + ' を見つけ、突き飛ばした！', 'crime');
 
-  // 農家が踏み荒らした相手のもとへ駆けつける
+  // 農家が踏み荒らした相手のもとへ駆けつけて、その場で追い出すように押し飛ばす
   farmer.mesh.position.x = trampler.mesh.position.x + rand(-1, 1);
   farmer.mesh.position.z = trampler.mesh.position.z + rand(-1, 1);
+  farmer.mesh.rotation.y = Math.atan2(
+    trampler.mesh.position.x - farmer.mesh.position.x,
+    trampler.mesh.position.z - farmer.mesh.position.z
+  );
 
   for (const p of [farmer, trampler]) {
-    const opp = p === farmer ? trampler : farmer;
-    p.state = 'fighting';
-    p._fightTarget = opp;
-    p.stateTimer = rand(5, 9);
     p.isCriminal = true;
     p.criminalRecord++;
     p.crimeCooldown = rand(30, 60);
     p.honesty = Math.max(0, p.honesty - 0.03);
   }
   trampler.instigator = true;
-  trampler.diary.push({day:GAME.day, text:'つい水田に足を踏み入れてしまい、農家に掴みかかられた。'});
-  farmer.diary.push({day:GAME.day, text: trampler.name + 'が大事な田んぼを踏み荒らしていたので、頭に血が上って掴みかかってしまった。'});
+  trampler.diary.push({day:GAME.day, text:'つい水田に足を踏み入れてしまい、農家に突き飛ばされた。'});
+  farmer.diary.push({day:GAME.day, text: trampler.name + 'が大事な田んぼを踏み荒らしていたので、頭に血が上って突き飛ばしてしまった。'});
   showBubble(farmer, '田んぼに入るんじゃねえ！！', '#661111', 2, 1);
-  showBubble(trampler, pick(FIGHT_LINES), '#661111', 2, 1);
+
+  // プレイヤーの「押す」操作と同じ仕組み：殴り合いにはせず、ダメージなしで突き飛ばす（ラグドール対象外の職業は痛がって逃げるだけ）
+  if (isRagdollEligible(trampler)) {
+    knockdownAgent(trampler, farmer);
+  } else {
+    showBubble(trampler, pick(PAIN_LINES), '#661111', 2, 1);
+    trampler.state = 'fleeing';
+    trampler.stateTimer = rand(5, 8);
+    trampler.target = { x: rand(-80,80), z: rand(-80,80) };
+  }
+  farmer.state = 'idle';
+  farmer.stateTimer = rand(2, 3);
   GAME.totalCrimes++;
+}
+
+// 空腹への対応行動を選び、開始できればtrueを返す（在庫の食料を食べる／レストランで外食／市場で購入）
+function seekFood(agent) {
+  if (agent.inventory.food > 0) {
+    agent.state = 'eating';
+    agent.stateTimer = rand(3,6);
+    agent.inventory.food--;
+    agent.hunger -= 30;
+    return true;
+  }
+  // レストランで外食（空腹と体力を同時に回復。財布に余裕がある時や体調が悪い時に優先）
+  const restaurant = GAME.buildings.find(b => b.type === 'restaurant' && b.health > 0);
+  if (restaurant && agent.money >= 15 && (agent.health < 85 || Math.random() < 0.35)) {
+    agent.target = { x: restaurant.x + rand(-4,4), z: restaurant.z + rand(-4,4) };
+    agent.targetBuilding = restaurant;
+    agent.state = 'moving';
+    agent._intent = 'dineOut';
+    return true;
+  }
+  // 市場へ行って買う
+  const market = GAME.buildings.find(b => b.type === 'market' && b.health > 0);
+  if (market && agent.money >= GAME.marketPrices.food) {
+    agent.target = { x: market.x + rand(-5,5), z: market.z + rand(-5,5) };
+    agent.targetBuilding = market;
+    agent.state = 'moving';
+    agent._intent = 'buyFood';
+    return true;
+  }
+  return false;
 }
 
 function decideAction(agent) {
@@ -1959,33 +3113,7 @@ function decideAction(agent) {
 
   // 空腹
   if (agent.hunger >= 60) {
-    // 家に食料があれば食べる、なければ市場へ
-    if (agent.inventory.food > 0) {
-      agent.state = 'eating';
-      agent.stateTimer = rand(3,6);
-      agent.inventory.food--;
-      agent.hunger -= 30;
-      return;
-    }
-    // レストランで外食（空腹と体力を同時に回復。財布に余裕がある時や体調が悪い時に優先）
-    const restaurant = GAME.buildings.find(b => b.type === 'restaurant' && b.health > 0);
-    if (restaurant && agent.money >= 15 && (agent.health < 85 || Math.random() < 0.35)) {
-      agent.target = { x: restaurant.x + rand(-4,4), z: restaurant.z + rand(-4,4) };
-      agent.targetBuilding = restaurant;
-      agent.state = 'moving';
-      agent._intent = 'dineOut';
-      return;
-    }
-
-    // 市場へ行って買う
-    const market = GAME.buildings.find(b => b.type === 'market' && b.health > 0);
-    if (market && agent.money >= GAME.marketPrices.food) {
-      agent.target = { x: market.x + rand(-5,5), z: market.z + rand(-5,5) };
-      agent.targetBuilding = market;
-      agent.state = 'moving';
-      agent._intent = 'buyFood';
-      return;
-    }
+    if (seekFood(agent)) return;
   }
 
   // 体力低下
@@ -2015,6 +3143,43 @@ function decideAction(agent) {
     }
   }
 
+  // 近くに倒れて動けない人（パルクールの落下などでケガをした人）がいれば、様子を見て病院まで運ぶ
+  if (agent.age > 10) {
+    const injured = findUnclaimedInjuredNear(agent, 30);
+    if (injured) {
+      startCarryingInjured(agent, injured);
+      return;
+    }
+  }
+
+  // 子供は公園の遊具（滑り台・ブランコ・砂場）を最優先で選ぶ（学校や仕事より優先）
+  if (agent.age <= 10 && Math.random() < 0.85) {
+    const park = GAME.buildings.find(b => b.type === 'park' && b.health > 0 && b.playSpots && b.playSpots.length);
+    if (park) {
+      const spot = pick(park.playSpots);
+      agent.target = { x: spot.x, z: spot.z };
+      agent.targetBuilding = park;
+      agent._playSpot = spot;
+      agent.state = 'moving';
+      agent._intent = 'playPark';
+      return;
+    }
+  }
+
+  // 公園のパルクール施設に挑戦する（大人のBot限定。プレイヤーは操作上この台には登れない）
+  // 警官・剣士は職務中なので挑戦しない。失敗すると落下してラグドールになり「痛い！」と叫ぶ。
+  if (agent.age > 10 && isRagdollEligible(agent) && agent.energy > 30 && GAME.possessedAgent !== agent && Math.random() < 0.05) {
+    const parkourSite = GAME.buildings.find(b => b.type === 'park' && b.health > 0 && b.parkourSpots && b.parkourSpots.length);
+    if (parkourSite) {
+      agent.target = { x: parkourSite.parkourStart.x, z: parkourSite.parkourStart.z };
+      agent.targetBuilding = parkourSite;
+      agent._parkourCourse = parkourSite;
+      agent.state = 'moving';
+      agent._intent = 'parkour';
+      return;
+    }
+  }
+
   // 社交欲求
   if (agent.social >= 70 && agent.sociability > 0.4 && Math.random() < 0.4) {
     // 近くのエージェントを探す
@@ -2029,14 +3194,23 @@ function decideAction(agent) {
     }
   }
 
+  // 武道家（剣士）も、近くに未搬送の死体があれば病院へ搬送を手伝う
+  if (agent.job === 'swordsman') {
+    const swCorpse = findUnclaimedCorpseNear(agent, 40);
+    if (swCorpse) {
+      startCarryingCorpse(agent, swCorpse);
+      return;
+    }
+  }
+
   // 警察官の巡回
   if (agent.job === 'police') {
-    // チンピラを発見したら発砲して制圧を試みる
+    // チンピラ・ヤンキーを発見したら発砲して制圧を試みる
     const thug = findThugNear(agent, 30);
     if (thug) {
       agent._shootTarget = thug;
       agent.state = 'shooting';
-      addEvent('🚔 警察官 ' + agent.name + ' が チンピラ ' + thug.name + ' を発見！銃を構えた', 'crime');
+      addEvent('🚔 警察官 ' + agent.name + ' が ' + JOBS[thug.job].name + ' ' + thug.name + ' を発見！銃を構えた', 'crime');
       return;
     }
     // 未搬送の死体があれば病院への搬送を優先する
@@ -2071,6 +3245,50 @@ function decideAction(agent) {
 
   // 仕事に行く（昼間のみ。生徒は学校に行く）
   const isDay = GAME.time >= 7 && GAME.time <= 18;
+
+  // 水田の脇に積まれた収穫物の段ボールがあれば、誰かが市場へ運ぶ（通常の仕事より優先）
+  if (['farmer','merchant','unemployed'].includes(agent.job)) {
+    const cropBox = findUnclaimedCropBoxNear(agent, 45);
+    if (cropBox) {
+      startCarryingCropBox(agent, cropBox);
+      return;
+    }
+  }
+
+  // 建設員：焼け落ちた建物（瓦礫）があれば、撤去して同じ場所に建て直す（通常の仕事より優先。時間帯を問わない）
+  if (agent.job === 'builder') {
+    const ruin = GAME.buildings.find(b => b.health <= 0 && !b.onFire && !b.beingRebuilt);
+    if (ruin) {
+      ruin.beingRebuilt = true;
+      ruin.rebuilder = agent;
+      agent.target = { x: ruin.x, z: ruin.z };
+      agent.targetBuilding = ruin;
+      agent.state = 'moving';
+      agent._intent = 'rebuild';
+      agent.diary.push({day:GAME.day, text:'焼け落ちた' + (ruin.name||'建物') + 'の瓦礫を片付けて、建て直しに向かおう。'});
+      return;
+    }
+  }
+
+  // 建設員が家を建てる（通常の仕事より優先）
+  if (agent.job === 'builder' && isDay && agent.ambition > 0.4 && Math.random() < 0.2) {
+    const homelessAgents = GAME.agents.filter(a => a.alive && !a.home && a.id !== agent.id);
+    if (homelessAgents.length > 0 || GAME.buildings.filter(b=>b.type==='house').length < 15) {
+      // 建設場所を探す（水田は避ける）
+      let bx, bz, tries = 0;
+      do {
+        bx = rand(-70,70); bz = rand(-70,70);
+        tries++;
+      } while ((isNearBuilding(bx,bz,12) || isInPaddy(bx,bz,5)) && tries < 10);
+      if (tries < 10) {
+        agent.target = { x: bx, z: bz };
+        agent.state = 'moving';
+        agent._intent = 'build';
+        return;
+      }
+    }
+  }
+
   if (isDay && JOBS[agent.job].workplace) {
     const wp = GAME.buildings.find(b => b.type === JOBS[agent.job].workplace && b.health > 0);
     if (wp) {
@@ -2096,8 +3314,9 @@ function decideAction(agent) {
         return;
       }
     }
-    // 放火：攻撃性が高く、誰かに恨みがある
-    if (agent.aggression > 0.6 && Math.random() < 0.08) {
+    // 放火：攻撃性が高く、誰かに恨みがある（無職は将来への不満から放火に走りやすい）
+    const arsonChance = agent.job === 'unemployed' ? 0.08 * 3 : 0.08;
+    if (agent.aggression > 0.6 && Math.random() < arsonChance) {
       // 恨みのある相手の家を探す
       let targetHouse = null;
       for (const [oid, rel] of agent.relationships) {
@@ -2120,25 +3339,6 @@ function decideAction(agent) {
         agent.state = 'moving';
         agent._intent = 'arson';
         agent.diary.push({day:GAME.day, text:'全てが気に入らない。あの家を燃やしてやりたい。'});
-        return;
-      }
-    }
-  }
-
-  // 建設員が家を建てる
-  if (agent.job === 'builder' && isDay && agent.ambition > 0.4 && Math.random() < 0.2) {
-    const homelessAgents = GAME.agents.filter(a => a.alive && !a.home && a.id !== agent.id);
-    if (homelessAgents.length > 0 || GAME.buildings.filter(b=>b.type==='house').length < 15) {
-      // 建設場所を探す（水田は避ける）
-      let bx, bz, tries = 0;
-      do {
-        bx = rand(-70,70); bz = rand(-70,70);
-        tries++;
-      } while ((isNearBuilding(bx,bz,12) || isInPaddy(bx,bz,5)) && tries < 10);
-      if (tries < 10) {
-        agent.target = { x: bx, z: bz };
-        agent.state = 'moving';
-        agent._intent = 'build';
         return;
       }
     }
@@ -2229,9 +3429,25 @@ function moveTowardsTarget(agent, dt) {
       case 'steal': agent.state = 'stealing'; agent.stateTimer = 3; break;
       case 'arson': agent.state = 'arson'; agent.stateTimer = 3; break;
       case 'build': agent.state = 'building'; agent.stateTimer = rand(10,20); break;
+      case 'rebuild': agent.state = 'rebuilding'; agent.stateTimer = rand(10,20); break;
       case 'heal': agent.state = 'healing'; agent.stateTimer = rand(5,10); break;
       case 'dineOut': agent.state = 'dining'; agent.stateTimer = rand(4,8); break;
       case 'attendSchool': agent.state = 'studying'; agent.stateTimer = rand(15,30); break;
+      case 'playPark': agent.state = 'playingPark'; agent.stateTimer = rand(15,30); break;
+      case 'parkour': {
+        const course = agent._parkourCourse;
+        if (course && course.parkourSpots && course.parkourSpots.length) {
+          agent.state = 'parkour';
+          agent._parkourSpots = course.parkourSpots;
+          agent._parkourIndex = 0;
+          agent._jumpT = 0;
+          showBubble(agent, pick(PARKOUR_START_LINES), '#2a6a5a', 2, 0);
+          addEvent('🤸 ' + agent.name + ' が公園のパルクール施設に挑戦を始めた', 'social');
+        } else {
+          agent.state = 'idle';
+        }
+        break;
+      }
       case 'study': agent.state = 'working'; agent.stateTimer = rand(10,20); agent._intent='study'; break;
       case 'usePC':
         agent.state = 'usingPC';
@@ -2316,8 +3532,15 @@ function doWork(agent, dt) {
     // 道場での素振り稽古：腕前（攻撃力に関わる能力）が少しずつ上がる
     agent.aggression = Math.min(1, agent.aggression + dt * 0.005);
     if (Math.random() < dt * 0.08) {
-      addEvent('⚔️ ' + agent.name + ' が道場で木刀の素振りをしている', 'economy');
-      agent.diary.push({day:GAME.day, text:'道場で稽古に励んだ。だいぶ様になってきた気がする。'});
+      if (agent.age < 18) {
+        // 剣道を修行中の子供は、時々こんな決意を口にする
+        addEvent('⚔️ ' + agent.name + '（' + agent.age + '歳）が道場で木刀の素振りをしている', 'economy');
+        showBubble(agent, '僕はいい大人になるよ！', '#223355', 2.5, 0);
+        agent.diary.push({day:GAME.day, text:'道場で稽古に励んだ。「僕はいい大人になるよ」— そう心に誓った。'});
+      } else {
+        addEvent('⚔️ ' + agent.name + ' が道場で木刀の素振りをしている', 'economy');
+        agent.diary.push({day:GAME.day, text:'道場で稽古に励んだ。だいぶ様になってきた気がする。'});
+      }
     }
   }
   // 給料（日給相当が少しずつ）
@@ -2352,6 +3575,363 @@ function doSchool(agent, dt) {
   if (Math.random() < dt * 0.04) {
     agent.diary.push({day:GAME.day, text:'学校でお友達と勉強した。'});
   }
+}
+
+// ---------- 公園の遊具で実際に遊ぶ ----------
+function doPlayPark(agent, dt) {
+  agent.social = clamp(agent.social - dt * 12, 0, 100);
+  agent.energy = clamp(agent.energy - dt * 1.5, 0, 100);
+
+  // 喧嘩中は遊具では遊ばず、向かい合って押し合う
+  if (agent._kidQuarrelTarget) {
+    const other = agent._kidQuarrelTarget;
+    agent._kidQuarrelTimer -= dt;
+
+    // けんかが白熱してくると、興奮しすぎてたまに目を回して座り込んでしまうことがある
+    // （ケガではなく、ちょっとしたのぼせ・立ちくらみのような演出。すぐ回復する）
+    const quarrelElapsed = (agent._kidQuarrelDuration || 5) - agent._kidQuarrelTimer;
+    if (quarrelElapsed > 1.5 && Math.random() < dt * KID_FAINT_CHANCE_PER_SEC) {
+      faintKid(agent, other);
+      return;
+    }
+
+    if (other && other.alive && agent.mesh && !agent.mesh.isDisposed() && agent._quarrelBasePos && agent._quarrelDir) {
+      const scale = agent.animScale || 1;
+      // 前後に踏み込んで相手を押すような動き（ケガをしない、子供らしい小突き合い）
+      agent._kidQuarrelPushPhase = (agent._kidQuarrelPushPhase || 0) + dt * 2.6;
+      const lunge = Math.max(0, Math.sin(agent._kidQuarrelPushPhase)) * 0.4;
+      agent.mesh.position.x = agent._quarrelBasePos.x + agent._quarrelDir.x * lunge;
+      agent.mesh.position.z = agent._quarrelBasePos.z + agent._quarrelDir.z * lunge;
+      agent.mesh.position.y = 0.4 * scale;
+
+      // 押し込んだ瞬間にセリフを出す（1回の踏み込みにつき1回だけ）
+      if (lunge > 0.32 && !agent._pushedThisCycle) {
+        agent._pushedThisCycle = true;
+        showBubble(agent, pick(KID_PUSH_LINES), '#664422', 1.2, 0.3);
+      } else if (lunge < 0.1) {
+        agent._pushedThisCycle = false;
+      }
+    }
+
+    if (Math.random() < dt * 0.3) {
+      showBubble(agent, pick(KID_ARGUE_LINES), '#664422', 1.5, 0.1);
+    }
+
+    if (agent._kidQuarrelTimer <= 0) {
+      showBubble(agent, pick(KID_MAKEUP_LINES), '#2a4a2a', 2, 0);
+      const curRel = agent.relationships.get(other.id) || 0;
+      agent.relationships.set(other.id, clamp(curRel + 0.15, -1, 1));
+      if (other._kidQuarrelTarget === agent) other._kidQuarrelTarget = null;
+      agent._kidQuarrelTarget = null;
+      agent._quarrelBasePos = null;
+      agent._quarrelDir = null;
+      agent.kidQuarrelCooldown = rand(25, 45);
+      // 仲直りした場所がもともと公園の遊び場所の近くであれば、そこへ戻る
+      // （街なかでたまたまぶつかった場合は、古い遊び場所へワープしないようにする）
+      if (agent._playSpot && agent.mesh && !agent.mesh.isDisposed() &&
+          dist2D({x:agent.mesh.position.x,z:agent.mesh.position.z}, agent._playSpot) < 15) {
+        agent.mesh.position.x = agent._playSpot.x;
+        agent.mesh.position.z = agent._playSpot.z;
+      }
+    }
+    return;
+  }
+
+  // 遊具の種類ごとに実際の動きをつける（喧嘩していない時のみ）
+  const spot = agent._playSpot;
+  if (spot && agent.mesh && !agent.mesh.isDisposed()) {
+    const scale = agent.animScale || 1;
+    if (spot.type === 'swing' && spot.seat) {
+      // ブランコを漕いで実際に前後に揺れる
+      agent._swingPhase = (agent._swingPhase || 0) + dt * 2.4;
+      const swingAngle = Math.sin(agent._swingPhase) * 0.5;
+      spot.seat.rotation.x = swingAngle;
+      agent.mesh.position.x = spot.x;
+      agent.mesh.position.z = spot.z + Math.sin(swingAngle) * 0.8;
+      agent.mesh.position.y = 0.4 * scale;
+    } else if (spot.type === 'slide') {
+      // 滑り台をのぼって滑るのを繰り返す
+      agent._slidePhase = ((agent._slidePhase || 0) + dt * 0.35) % 1;
+      const p = agent._slidePhase;
+      if (p < 0.6) {
+        const climb = p / 0.6;
+        agent.mesh.position.set(spot.x, 0.4 * scale + climb * 1.3, spot.z + 1.0 - climb * 1.0);
+      } else {
+        const slideP = (p - 0.6) / 0.4;
+        agent.mesh.position.set(spot.x, 0.4 * scale + (1 - slideP) * 1.3, spot.z - slideP * 1.8);
+      }
+    } else if (spot.type === 'sandbox') {
+      // 砂場でしゃがんで遊ぶ
+      agent.mesh.position.set(spot.x + rand(-0.3, 0.3) * dt, 0.4 * scale, spot.z + rand(-0.3, 0.3) * dt);
+    }
+  }
+
+  if (Math.random() < dt * 0.05) {
+    agent.diary.push({day:GAME.day, text:'公園の遊具でいっぱい遊んだ。楽しかった。'});
+  }
+
+  // 近くの子供とちょっとした口げんかになることがある（すぐ仲直りする、子供らしい軽いけんか）
+  if (agent.kidQuarrelCooldown > 0) {
+    agent.kidQuarrelCooldown -= dt;
+  } else if (Math.random() < dt * 0.12) {
+    const nearbyKids = GAME.agents.filter(a => a.id !== agent.id && a.alive && a.age <= 10 &&
+      a.state === 'playingPark' && !a._kidQuarrelTarget &&
+      dist2D({x:agent.mesh.position.x,z:agent.mesh.position.z},{x:a.mesh.position.x,z:a.mesh.position.z}) < 7);
+    if (nearbyKids.length > 0) startKidQuarrel(agent, pick(nearbyKids));
+  }
+}
+
+// ---------- 公園のパルクール施設に挑戦する（Bot限定）----------
+// 台から台へ跳び移りながら進み、着地のたびに一定確率で失敗する。
+// 失敗すると足を滑らせて落下し、ラグドール状態になって「痛い！」と叫ぶ。
+const PARKOUR_FAIL_CHANCE = 0.16; // 1回の着地ごとの失敗確率
+const PARKOUR_JUMP_DURATION = 0.85; // 1回の跳躍にかかる時間（秒）
+
+function doParkour(agent, dt) {
+  if (!agent.mesh || agent.mesh.isDisposed() || !agent._parkourSpots || !agent._parkourSpots.length) {
+    agent.state = 'idle';
+    return;
+  }
+  const scale = agent.animScale || 1;
+  const spots = agent._parkourSpots;
+  const idx = agent._parkourIndex || 0;
+
+  // 施設を最後まで踏破した
+  if (idx >= spots.length) {
+    agent.state = 'idle';
+    agent.stateTimer = 0;
+    agent._parkourSpots = null;
+    agent.social = clamp(agent.social - 20, 0, 100);
+    showBubble(agent, pick(PARKOUR_CLEAR_LINES), '#2a6a5a', 2.5, 0);
+    addEvent('🤸 ' + agent.name + ' が公園のパルクール施設を見事に踏破した！', 'social');
+    agent.diary.push({day:GAME.day, text:'公園のパルクール施設に挑戦して、見事にクリアした！気分がいい。'});
+    return;
+  }
+
+  const prev = idx === 0
+    ? { x: agent.mesh.position.x, z: agent.mesh.position.z, y: 0 }
+    : spots[idx - 1];
+  const next = spots[idx];
+
+  agent._jumpT = (agent._jumpT || 0) + dt;
+  const t = clamp(agent._jumpT / PARKOUR_JUMP_DURATION, 0, 1);
+
+  // 台から台へ放物線を描いて跳ぶ
+  const px = prev.x + (next.x - prev.x) * t;
+  const pz = prev.z + (next.z - prev.z) * t;
+  const baseY = prev.y + (next.y - prev.y) * t;
+  const arc = Math.sin(t * Math.PI) * 0.5;
+  agent.mesh.position.set(px, 0.4 * scale + baseY + arc, pz);
+
+  // 跳ぶ向きへ体を向ける
+  const ddx = next.x - prev.x, ddz = next.z - prev.z;
+  if (Math.abs(ddx) + Math.abs(ddz) > 0.01) {
+    agent.mesh.rotation.y = Math.atan2(ddx, ddz);
+  }
+
+  if (t >= 1) {
+    agent._jumpT = 0;
+    // 着地判定：一定確率で足を滑らせて失敗する（高い台ほど怖いが、判定自体は毎回共通）
+    if (Math.random() < PARKOUR_FAIL_CHANCE) {
+      parkourFail(agent);
+      return;
+    }
+    agent._parkourIndex = idx + 1;
+  }
+}
+
+// 着地に失敗し、台から落下してラグドールになる
+function parkourFail(agent) {
+  agent._parkourSpots = null;
+  if (!agent.mesh || agent.mesh.isDisposed()) { agent.state = 'idle'; return; }
+  const legs = agent.mesh;
+
+  showBubble(agent, pick(PAIN_LINES), '#661111', 2.5, 1);
+  addEvent('🤸 ' + agent.name + ' がパルクールの着地に失敗し、台から落下した！', 'crime');
+
+  try {
+    // 現在の（宙に浮いた）位置から物理演算に切り替えるだけで、あとは重力が自然に落としてくれる
+    legs.physicsImpostor = new BABYLON.PhysicsImpostor(
+      legs, BABYLON.PhysicsImpostor.CylinderImpostor,
+      { mass: 5, friction: 0.5, restitution: 0.15 }, GAME.scene
+    );
+    legs.physicsImpostor.applyImpulse(new BABYLON.Vector3(rand(-1.2, 1.2), 0.3, rand(-1.2, 1.2)), legs.getAbsolutePosition());
+    legs.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(rand(-4, 4), rand(-2, 2), rand(-4, 4)));
+  } catch (e) {
+    reattachRagdollBody(agent);
+    agent.state = 'idle';
+    agent.health = clamp(agent.health - rand(4, 10), 0, 100);
+    return;
+  }
+
+  agent._ragdollActive = true;
+  agent._ragdollReturnState = 'parkourFail';
+  agent.state = 'ragdoll';
+  agent.stateTimer = rand(2.5, 3.5);
+  agent.health = clamp(agent.health - rand(4, 10), 0, 100); // 落下でケガをする
+}
+
+// ---------- プレイヤー用パルクール（タイミングよくEキー/タップでジャンプする挑戦）----------
+// 台に近づくタイミングでEキーを押すと成功、良いタイミングを逃すと足を滑らせて落下する。
+const PARKOUR_GOOD_MIN = 0.55; // ジャンプ時間に対する「良いタイミング」区間の開始（割合）
+const PARKOUR_GOOD_MAX = 0.85; // 「良いタイミング」区間の終了（割合）
+
+function startPlayerParkour(agent, park) {
+  const scale = agent.animScale || 1;
+  agent._parkourSpots = park.parkourSpots;
+  agent._parkourIndex = 1; // spots[0]はスタート地点そのものなので、実質1つ目の台からが最初のジャンプ
+  agent._parkourJumpT = 0;
+  agent._parkourJumpGood = false;
+  agent.target = null;
+  agent.targetBuilding = park;
+  if (agent.mesh) agent.mesh.position.set(park.parkourStart.x, 0.4 * scale, park.parkourStart.z);
+  agent.state = 'parkourPlayer';
+  showParkourUI(true);
+  showPlayerMsg('🤸 パルクール挑戦開始！良いタイミングでEキー（タップ）を押してジャンプ！');
+  addEvent('🤸 ' + agent.name + '（あなた）が公園のパルクール施設に挑戦を始めた', 'social');
+}
+
+function doPlayerParkour(agent, dt) {
+  if (!agent.mesh || agent.mesh.isDisposed() || !agent._parkourSpots || !agent._parkourSpots.length) {
+    agent.state = 'idle';
+    showParkourUI(false);
+    return;
+  }
+  const scale = agent.animScale || 1;
+  const spots = agent._parkourSpots;
+  const idx = agent._parkourIndex || 1;
+
+  // 施設を最後まで踏破した
+  if (idx >= spots.length) {
+    agent.state = 'idle';
+    agent._parkourSpots = null;
+    showParkourUI(false);
+    showPlayerMsg('🤸 パルクール施設を見事に踏破した！');
+    addEvent('🤸 ' + agent.name + '（あなた）が公園のパルクール施設を見事に踏破した！', 'social');
+    agent.diary.push({ day: GAME.day, text: '公園のパルクール施設に挑戦して、見事にクリアした！気分がいい。' });
+    return;
+  }
+
+  const prev = spots[idx - 1];
+  const next = spots[idx];
+
+  agent._parkourJumpT = (agent._parkourJumpT || 0) + dt;
+  const t = clamp(agent._parkourJumpT / PARKOUR_JUMP_DURATION, 0, 1);
+  updateParkourUI(t, idx, spots.length - 1);
+
+  // 台から台へ放物線を描いて跳ぶ
+  const px = prev.x + (next.x - prev.x) * t;
+  const pz = prev.z + (next.z - prev.z) * t;
+  const baseY = prev.y + (next.y - prev.y) * t;
+  const arc = Math.sin(t * Math.PI) * 0.5;
+  agent.mesh.position.set(px, 0.4 * scale + baseY + arc, pz);
+
+  const ddx = next.x - prev.x, ddz = next.z - prev.z;
+  if (Math.abs(ddx) + Math.abs(ddz) > 0.01) {
+    agent.mesh.rotation.y = Math.atan2(ddx, ddz);
+  }
+
+  if (t >= 1) {
+    agent._parkourJumpT = 0;
+    if (!agent._parkourJumpGood) {
+      // 良いタイミングでタップできなかった場合は着地に失敗し、落下する
+      parkourFail(agent);
+      showParkourUI(false);
+      return;
+    }
+    agent._parkourJumpGood = false;
+    agent._parkourIndex = idx + 1;
+  }
+}
+
+// Eキー（またはタップ）が押された時、現在のジャンプのタイミングを判定する
+function parkourTryTap(agent) {
+  if (agent._parkourJumpGood) return; // このジャンプはすでに成功が確定している
+  const t = clamp((agent._parkourJumpT || 0) / PARKOUR_JUMP_DURATION, 0, 1);
+  if (t >= PARKOUR_GOOD_MIN && t <= PARKOUR_GOOD_MAX) {
+    agent._parkourJumpGood = true;
+    showPlayerMsg('👍 ナイスタイミング！');
+    flashParkourMarker(true);
+  } else if (t < PARKOUR_GOOD_MIN) {
+    showPlayerMsg('⏱ まだ早い…もう少し待ってから！');
+  } else {
+    showPlayerMsg('⏱ ちょっと遅かった…');
+  }
+}
+
+// タイミングバーのUI表示切り替え
+function showParkourUI(visible) {
+  const el = document.getElementById('parkourUI');
+  if (!el) return;
+  if (visible) {
+    el.style.display = 'block';
+    const zone = document.getElementById('parkourGoodZone');
+    if (zone) {
+      zone.style.left = (PARKOUR_GOOD_MIN * 100) + '%';
+      zone.style.width = ((PARKOUR_GOOD_MAX - PARKOUR_GOOD_MIN) * 100) + '%';
+    }
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+// タイミングバーのマーカー位置と進捗表示を更新
+function updateParkourUI(t, stepIdx, total) {
+  const marker = document.getElementById('parkourMarker');
+  if (marker) marker.style.left = clamp(t * 100, 0, 100) + '%';
+  const prog = document.getElementById('parkourProgress');
+  if (prog) prog.textContent = stepIdx + ' / ' + total;
+}
+
+// タイミング成功時にマーカーを一瞬光らせる演出
+function flashParkourMarker(success) {
+  const marker = document.getElementById('parkourMarker');
+  if (!marker) return;
+  marker.style.background = success ? '#8f8' : '#f88';
+  marker.style.boxShadow = success ? '0 0 10px #8f8' : '0 0 10px #f88';
+  setTimeout(() => {
+    if (marker) { marker.style.background = '#fff'; marker.style.boxShadow = '0 0 6px #fff'; }
+  }, 300);
+}
+
+// 子供同士のちょっとした口げんか・押し合い（大人の喧嘩と違い、犯罪記録や逮捕・ケガにはならず、すぐ仲直りする）
+function startKidQuarrel(agent, other) {
+  const duration = rand(4, 7);
+  agent._kidQuarrelTarget = other;
+  other._kidQuarrelTarget = agent;
+  agent._kidQuarrelTimer = duration;
+  other._kidQuarrelTimer = duration;
+  agent._kidQuarrelDuration = duration;
+  other._kidQuarrelDuration = duration;
+
+  // ぶつかった／出会った場所がどこであっても、その場で喧嘩状態に入る
+  // （公園で遊んでいる途中でも、街なかで移動中にぶつかった場合でも同じ扱い）
+  agent.state = 'playingPark';
+  other.state = 'playingPark';
+  agent.stateTimer = duration;
+  other.stateTimer = duration;
+  agent.target = null;
+  other.target = null;
+
+  // 向かい合った位置を基準に固定し、そこから前後に踏み込んで押し合う演技に使う
+  agent._quarrelBasePos = { x: agent.mesh.position.x, z: agent.mesh.position.z };
+  other._quarrelBasePos = { x: other.mesh.position.x, z: other.mesh.position.z };
+  const dx = other.mesh.position.x - agent.mesh.position.x;
+  const dz = other.mesh.position.z - agent.mesh.position.z;
+  const d = Math.sqrt(dx*dx + dz*dz) || 1;
+  agent._quarrelDir = { x: dx / d, z: dz / d };
+  other._quarrelDir = { x: -dx / d, z: -dz / d };
+  agent._kidQuarrelPushPhase = 0;
+  other._kidQuarrelPushPhase = Math.PI; // 互い違いのタイミングで押し合うようにずらす
+  agent.mesh.rotation.y = Math.atan2(dx, dz);
+  other.mesh.rotation.y = Math.atan2(-dx, -dz);
+
+  showBubble(agent, pick(KID_ARGUE_LINES), '#664422', 2, 0.1);
+  showBubble(other, pick(KID_ARGUE_LINES), '#664422', 2, 0.1);
+  addEvent('🧒 ' + agent.name + ' と ' + other.name + ' がぶつかって喧嘩になり、押し合いになった', 'social');
+  const curRel = agent.relationships.get(other.id) || 0;
+  agent.relationships.set(other.id, clamp(curRel - 0.1, -1, 1));
+  other.relationships.set(agent.id, clamp((other.relationships.get(agent.id) || 0) - 0.1, -1, 1));
 }
 
 // 自宅のPC（机の上）を使う：モードに応じて在宅ワークで稼ぐか、ゲームで気晴らしする
@@ -2634,6 +4214,103 @@ function doBuild(agent, dt) {
   }
 }
 
+// 焼け落ちた建物（瓦礫）を撤去し、同じ場所に建て直す
+function doRebuild(agent, dt) {
+  const ruin = agent.targetBuilding;
+  if (!ruin || ruin.health > 0) {
+    // 対象がすでに無い、あるいは既に再建済みなら中断する
+    if (ruin) { ruin.beingRebuilt = false; ruin.rebuilder = null; }
+    agent.targetBuilding = null;
+    agent.state = 'idle';
+    agent.stateTimer = 0;
+    return;
+  }
+  if (agent.stateTimer > 0) {
+    // 瓦礫の撤去・再建作業中の演出
+    if (Math.random() < dt * 0.2) {
+      addEvent('🔨 ' + agent.name + ' が焼け落ちた' + (ruin.name||'建物') + 'の瓦礫を撤去している', 'build');
+    }
+    agent.money += dt * 0.5;
+    return;
+  }
+  // 完了：瓦礫を片付け、同じ場所に建物を建て直す
+  ruin.health = 100;
+  ruin.onFire = false;
+  ruin.fireTimer = 0;
+  ruin.beingRebuilt = false;
+  ruin.rebuilder = null;
+  clearBuildingDebris(ruin);
+  if (ruin.mesh) ruin.mesh.setEnabled(true);
+  if (ruin.roofMesh && ruin.roofMesh !== ruin.mesh) ruin.roofMesh.setEnabled(true);
+  if (ruin.mesh && ruin.mesh.material) {
+    ruin.mesh.scaling.y = 1;
+    ruin.mesh.material.diffuseColor = new BABYLON.Color3(...BUILDING_TYPES[ruin.type].color);
+    if (ruin.type === 'hospital') ruin.mesh.material.emissiveColor = new BABYLON.Color3(0.05,0.05,0.08);
+  }
+  addEvent('🏗️ ' + agent.name + ' が焼け落ちた' + (ruin.name||'建物') + 'の瓦礫を撤去し、同じ場所に建て直した！', 'build');
+  agent.diary.push({day:GAME.day, text:'焼け落ちた' + (ruin.name||'建物') + 'の跡地に、新しく建物を建て直した。'});
+  agent.money += 20;
+  agent.targetBuilding = null;
+  agent.state = 'idle';
+  agent.stateTimer = 0;
+}
+
+// 建て直し中の建設員が死亡・負傷などで作業を離れてしまった場合、瓦礫の再建予約を解除し、
+// 他の建設員が改めて建て直しに取り掛かれるようにする
+function releaseStaleRebuildClaims() {
+  for (const b of GAME.buildings) {
+    if (!b.beingRebuilt) continue;
+    const r = b.rebuilder;
+    const stillWorking = r && r.alive && (r.state === 'rebuilding' || (r.state === 'moving' && r._intent === 'rebuild' && r.targetBuilding === b));
+    if (!stillWorking) {
+      b.beingRebuilt = false;
+      b.rebuilder = null;
+    }
+  }
+}
+
+// 手が空いている（＝仕事や睡眠・食事・治療など拘束状態でない）建設員のうち、
+// 瓦礫にいちばん近い1人を選び、強制的に再建作業へ向かわせる。
+// 空腹・重傷・拘束など、優先すべき状況にある建設員は対象から除外する。
+function tryAssignBuilderToRuin(ruin) {
+  if (!ruin || ruin.health > 0 || ruin.beingRebuilt) return false;
+  const unavailableStates = ['fighting','arguing','questioning','fleeing','dueling','arresting',
+    'sleeping','goingToSleep','healing','eating','trading','dining','carryingCorpse','carryingCropBox'];
+  const candidates = GAME.agents.filter(a =>
+    a.alive && a.job === 'builder' && !a.isInJail &&
+    !unavailableStates.includes(a.state) &&
+    a.hunger < 85 && a.health >= 25
+  );
+  if (candidates.length === 0) return false;
+
+  let best = null, bestDist = Infinity;
+  for (const c of candidates) {
+    const d = dist2D({x:c.mesh.position.x, z:c.mesh.position.z}, {x:ruin.x, z:ruin.z});
+    if (d < bestDist) { bestDist = d; best = c; }
+  }
+  if (!best) return false;
+
+  ruin.beingRebuilt = true;
+  ruin.rebuilder = best;
+  best.target = { x: ruin.x, z: ruin.z };
+  best.targetBuilding = ruin;
+  best.state = 'moving';
+  best._intent = 'rebuild';
+  best.diary.push({day:GAME.day, text:'焼け落ちた' + (ruin.name||'建物') + 'の瓦礫を片付けて、建て直しに向かおう。'});
+  addEvent('🔨 建設員 ' + best.name + ' が焼け落ちた' + (ruin.name||'建物') + 'の再建に向かった', 'build');
+  return true;
+}
+
+// 放置されている瓦礫がないか毎フレーム巡回し、破壊された瞬間には手が空いていなかった建設員が
+// 後から手が空いた時に、待たせすぎず再建に取り掛からせる（decideAction側の巡回頼みの保険）
+function sweepUnclaimedRuins() {
+  for (const b of GAME.buildings) {
+    if (b.health <= 0 && !b.onFire && !b.beingRebuilt) {
+      tryAssignBuilderToRuin(b);
+    }
+  }
+}
+
 function doSteal(agent, dt) {
   if (agent.stateTimer <= 0) {
     // 盗み実行
@@ -2706,14 +4383,14 @@ function doPatrol(agent, dt) {
     agent.target = { x: rand(-60,60), z: rand(-60,60) };
   }
   checkBump(agent, dt);
-  // 遺体発見（救助搬送・チンピラより優先度は下だが犯罪者追跡よりは優先）
+  // 遺体発見（救助搬送・敵対NPCより優先度は下だが犯罪者追跡よりは優先）
   const corpse = findUnclaimedCorpseNear(agent, 35);
-  // チンピラ発見（最優先）
+  // チンピラ・ヤンキー発見（最優先）
   const thug = findThugNear(agent, 30);
   if (thug) {
     agent._shootTarget = thug;
     agent.state = 'shooting';
-    addEvent('🚔 警察官 ' + agent.name + ' が チンピラ ' + thug.name + ' を発見！銃を構えた', 'crime');
+    addEvent('🚔 警察官 ' + agent.name + ' が ' + JOBS[thug.job].name + ' ' + thug.name + ' を発見！銃を構えた', 'crime');
     return;
   }
   if (corpse) {
@@ -2776,6 +4453,329 @@ function doArrest(agent, dt) {
   }
 }
 
+// ---------- 銃で撃たれた一般市民（警察官・剣士以外）がラグドールになる ----------
+function isRagdollEligible(agent) {
+  return agent.job !== 'police' && agent.job !== 'swordsman';
+}
+
+// 撃たれた相手をラグドール化し、弾の飛んできた方向に対して横向きに転がす
+// force省略時は銃撃相当の威力(43)。瓦礫の直撃など、より強い吹き飛びが欲しい場合は明示的に渡す。
+function knockdownAgent(target, shooter, force) {
+  if (!target.mesh || target.mesh.isDisposed()) return;
+
+  // 既にラグドール中の相手には物理演算をやり直さない：
+  // 毎回impostorを作り直すと古いimpostorが破棄されずに残り、二重に絡んで足と胴体がバラバラに吹き飛んでしまう。
+  if (target._ragdollActive) {
+    showBubble(target, pick(GUNSHOT_RAGDOLL_LINES), '#661111', 2.5, 1);
+    target.stateTimer = Math.max(target.stateTimer, rand(2, 3));
+    return;
+  }
+
+  const legs = target.mesh;
+  const torso = target.torsoMesh;
+  const head = target.headMesh;
+  const scale = target.animScale || 1;
+
+  showBubble(target, pick(GUNSHOT_RAGDOLL_LINES), '#661111', 2.5, 1);
+
+  // 弾が飛んできた方向（撃った人 → 撃たれた人）へ強く吹き飛ばす
+  let sideDir = new BABYLON.Vector3(1, 0, 0);   // 回転軸用（弾道に垂直）
+  let knockDir = new BABYLON.Vector3(0, 0, 1);  // 実際に吹き飛ぶ方向（弾道方向）
+  if (shooter && shooter.mesh) {
+    const dx = legs.position.x - shooter.mesh.position.x;
+    const dz = legs.position.z - shooter.mesh.position.z;
+    const len = Math.sqrt(dx*dx + dz*dz) || 1;
+    knockDir = new BABYLON.Vector3(dx/len, 0, dz/len);
+    sideDir = new BABYLON.Vector3(-dz/len, 0, dx/len);
+  }
+  if (Math.random() < 0.5) sideDir.scaleInPlace(-1);
+
+  // 吹き飛ぶ力：弾道方向に強く、上方向にも少し浮かせて「吹っ飛んだ」感を出す
+  const KNOCKBACK_FORCE = force || 43;
+  const knockImpulse = knockDir.scale(KNOCKBACK_FORCE).add(new BABYLON.Vector3(0, 2.2, 0));
+
+  try {
+    // 足・胴体・頭をそれぞれ個別の物理演算にし、股関節・首関節（BallAndSocketJoint）で
+    // つなぐことで、バラバラに吹き飛ばずに関節でしなる自然なラグドールにする
+    if (head && !head.isDisposed()) head.setParent(null);
+    if (torso && !torso.isDisposed()) torso.setParent(null);
+
+    legs.physicsImpostor = new BABYLON.PhysicsImpostor(
+      legs, BABYLON.PhysicsImpostor.CylinderImpostor,
+      { mass: 5, friction: 0.5, restitution: 0.1 }, GAME.scene
+    );
+    legs.physicsImpostor.applyImpulse(knockImpulse, legs.getAbsolutePosition());
+    legs.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(sideDir.z * 4, rand(-1,1), -sideDir.x * 4));
+
+    if (torso && !torso.isDisposed()) {
+      torso.physicsImpostor = new BABYLON.PhysicsImpostor(
+        torso, BABYLON.PhysicsImpostor.CylinderImpostor,
+        { mass: 4, friction: 0.5, restitution: 0.1 }, GAME.scene
+      );
+      torso.physicsImpostor.applyImpulse(knockImpulse.scale(1.1), torso.getAbsolutePosition());
+      torso.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(sideDir.z * 4.5, rand(-1.5,1.5), -sideDir.x * 4.5));
+
+      // 股関節：足の上端と胴体の下端をつなぎ、バラバラに離れないようにする
+      const hipJoint = new BABYLON.PhysicsJoint(BABYLON.PhysicsJoint.BallAndSocketJoint, {
+        mainPivot: new BABYLON.Vector3(0, 0.4 * scale, 0),
+        connectedPivot: new BABYLON.Vector3(0, -0.4 * scale, 0)
+      });
+      legs.physicsImpostor.addJoint(torso.physicsImpostor, hipJoint);
+
+      if (head && !head.isDisposed()) {
+        head.physicsImpostor = new BABYLON.PhysicsImpostor(
+          head, BABYLON.PhysicsImpostor.SphereImpostor,
+          { mass: 1.2, friction: 0.4, restitution: 0.1 }, GAME.scene
+        );
+        head.physicsImpostor.applyImpulse(knockImpulse.scale(1.2), head.getAbsolutePosition());
+        head.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(rand(-3,3), rand(-2,2), rand(-3,3)));
+
+        // 首関節：胴体の上端と頭の下端をつなぐ
+        const neckJoint = new BABYLON.PhysicsJoint(BABYLON.PhysicsJoint.BallAndSocketJoint, {
+          mainPivot: new BABYLON.Vector3(0, 0.4 * scale, 0),
+          connectedPivot: new BABYLON.Vector3(0, -0.3 * scale, 0)
+        });
+        torso.physicsImpostor.addJoint(head.physicsImpostor, neckJoint);
+      }
+    }
+  } catch (e) {
+    // 物理エンジンが使えない場合はラグドールをスキップし、通常の逃走にとどめる
+    reattachRagdollBody(target);
+    target.state = 'fleeing';
+    target.stateTimer = rand(6, 10);
+    target.target = { x: rand(-80,80), z: rand(-80,80) };
+    return;
+  }
+
+  target._ragdollActive = true;
+  target._ragdollReturnState = 'fleeing';
+  target.state = 'ragdoll';
+  target.stateTimer = rand(3.5, 5);
+}
+
+// 転がっている間は物理エンジンに任せ、タイマーが切れたら起き上がらせる
+// （パルクールでの落下ケガの場合は自力で起き上がらず、誰かに運ばれるまで倒れたままになる）
+function doRagdoll(agent, dt) {
+  if (agent.stateTimer > 0) return;
+  if (agent._ragdollReturnState === 'parkourFail') {
+    collapseInjured(agent);
+    return;
+  }
+  standUpFromRagdoll(agent);
+}
+
+// パルクールでの落下ケガ：物理演算を止めてその場に横たわらせ、誰かに運ばれるまで待つ
+function collapseInjured(agent) {
+  reattachRagdollBody(agent);
+  agent._ragdollActive = false;
+  agent._ragdollReturnState = null;
+  if (agent.mesh && !agent.mesh.isDisposed()) {
+    const scale = agent.animScale || 1;
+    // 前のめりに倒れて横たわった姿勢にする
+    agent.mesh.rotation.x = Math.PI / 2;
+    agent.mesh.position.y = 0.18 * scale;
+  }
+  agent.state = 'injured';
+  agent.stateTimer = 0;
+  agent._carrier = null;
+  agent._groanCooldown = rand(3, 6);
+  showBubble(agent, pick(PAIN_LINES), '#661111', 2, 0.4);
+}
+
+// 物理演算を止め、胴体を足に再アタッチしてまっすぐ立たせる（state・行動の変更は行わない）
+function reattachRagdollBody(agent) {
+  const legs = agent.mesh;
+  const torso = agent.torsoMesh;
+  const head = agent.headMesh;
+  agent._ragdollActive = false;
+  if (!legs || legs.isDisposed()) return;
+  const scale = agent.animScale || 1;
+  const landX = legs.position.x, landZ = legs.position.z;
+
+  if (legs.physicsImpostor) { legs.physicsImpostor.dispose(); legs.physicsImpostor = null; }
+  if (torso && !torso.isDisposed()) {
+    if (torso.physicsImpostor) { torso.physicsImpostor.dispose(); torso.physicsImpostor = null; }
+    torso.setParent(legs);
+    torso.rotationQuaternion = null; // 物理演算がquaternionで回転を書き換えたままなのでクリアする
+    torso.position.set(0, 0.8 * scale, 0);
+    torso.rotation.set(0, 0, 0);
+  }
+  if (head && !head.isDisposed()) {
+    if (head.physicsImpostor) { head.physicsImpostor.dispose(); head.physicsImpostor = null; }
+    head.setParent(torso);
+    head.rotationQuaternion = null; // 同上
+    head.position.set(0, 0.6 * scale, 0);
+    head.rotation.set(0, 0, 0);
+  }
+  legs.rotationQuaternion = null; // 同上：残っているとrotation.yの更新が反映されず、傾いたまま固定される
+  legs.rotation.set(0, 0, 0);
+  legs.position.set(landX, 0.4 * scale, landZ);
+}
+
+// ラグドールから起き上がらせる。銃撃時は逃走、つまずき時はその場で通常の行動に戻る
+function standUpFromRagdoll(agent) {
+  reattachRagdollBody(agent);
+  const returnState = agent._ragdollReturnState;
+  agent._ragdollReturnState = null;
+  if (returnState === 'trip') {
+    agent.state = 'idle';
+    agent.stateTimer = 0;
+  } else if (returnState === 'kidFaint') {
+    // 少し休んだので目を覚まし、そのまま仲直りする流れにする
+    agent.state = 'idle';
+    agent.stateTimer = 0;
+    showBubble(agent, pick(KID_MAKEUP_LINES), '#2a4a2a', 2.5, 0);
+    addEvent('😊 ' + agent.name + ' は少し休んで元気を取り戻した', 'social');
+  } else {
+    agent.state = 'fleeing';
+    agent.stateTimer = rand(6, 10);
+    agent.target = { x: rand(-80,80), z: rand(-80,80) };
+  }
+}
+
+// ---------- 歩行中にたまにつまずいて転ぶ ----------
+const TRIP_CHANCE_PER_SEC = 0.006; // 歩行中、毎秒これくらいの確率でつまずく
+const KID_FAINT_CHANCE_PER_SEC = 0.05; // 子供同士のけんかが白熱している間、毎秒これくらいの確率で目を回して座り込む
+
+// 歩行中の一般市民（警官・剣士以外）をたまにつまずかせる。つまずいた場合はtrueを返す
+function maybeTripWhileWalking(agent, dt) {
+  if (agent._ragdollActive) return false;
+  if (!isRagdollEligible(agent)) return false; // 警官・剣士は職務中につまずかせない
+  if (Math.random() >= TRIP_CHANCE_PER_SEC * dt) return false;
+  tripAgent(agent);
+  return true;
+}
+
+// その場でつんのめって転ばせる（銃で撃たれた時のラグドールと同じ仕組みを、前方向への軽い転倒として使う）
+function tripAgent(agent) {
+  if (!agent.mesh || agent.mesh.isDisposed()) return;
+  const legs = agent.mesh;
+
+  showBubble(agent, pick(TRIP_LINES), '#661111', 2, 1);
+
+  // 今向いている方向へつんのめるように、前方向へ転ぶ
+  const dir = new BABYLON.Vector3(Math.sin(legs.rotation.y), 0, Math.cos(legs.rotation.y));
+
+  try {
+    // 胴体は足から切り離さず、親子関係を保ったまま足の物理演算に追従させる
+    legs.physicsImpostor = new BABYLON.PhysicsImpostor(
+      legs, BABYLON.PhysicsImpostor.CylinderImpostor,
+      { mass: 5, friction: 0.5, restitution: 0.1 }, GAME.scene
+    );
+    legs.physicsImpostor.applyImpulse(dir.scale(1.4), legs.getAbsolutePosition());
+    legs.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(dir.z * 3, rand(-1,1), -dir.x * 3));
+  } catch (e) {
+    reattachRagdollBody(agent);
+    return;
+  }
+
+  agent._ragdollActive = true;
+  agent._ragdollReturnState = 'trip';
+  agent.state = 'ragdoll';
+  agent.stateTimer = rand(1.6, 2.4);
+}
+
+// ---------- 子供同士のけんかが白熱しすぎて、興奮のあまり目を回して座り込む ----------
+// ケガや暴力の結果ではなく、はしゃぎすぎ・興奮しすぎによる一時的な立ちくらみという扱い。
+// 相手の子はびっくりして心配し、それがきっかけでそのまま仲直りする。
+function faintKid(agent, opponent) {
+  if (!agent.mesh || agent.mesh.isDisposed() || agent._ragdollActive) return;
+  const legs = agent.mesh;
+
+  showBubble(agent, pick(KID_FAINT_LINES), '#4a3a6a', 2.5, 0.2);
+  addEvent('😵 ' + agent.name + ' がけんかの興奮のあまり目を回し、その場に倒れ込んでしまった' +
+    (opponent ? '。' + opponent.name + 'が驚いて心配している' : ''), 'social');
+
+  // 相手の子はけんかをやめて心配し、少し仲が良くなる（意地悪ではなく素直な子供らしい反応）
+  if (opponent && opponent.alive) {
+    if (opponent._kidQuarrelTarget === agent) opponent._kidQuarrelTarget = null;
+    opponent._quarrelBasePos = null;
+    opponent._quarrelDir = null;
+    opponent.state = 'idle';
+    opponent.stateTimer = 0;
+    opponent.kidQuarrelCooldown = rand(25, 45);
+    showBubble(opponent, '大丈夫！？ごめんね！', '#2a4a2a', 2.5, 0);
+    const oRel = opponent.relationships.get(agent.id) || 0;
+    opponent.relationships.set(agent.id, clamp(oRel + 0.1, -1, 1));
+  }
+  agent._kidQuarrelTarget = null;
+  agent._quarrelBasePos = null;
+  agent._quarrelDir = null;
+  agent.kidQuarrelCooldown = rand(25, 45);
+  const aRel = agent.relationships.get(opponent ? opponent.id : -1) || 0;
+  if (opponent) agent.relationships.set(opponent.id, clamp(aRel + 0.1, -1, 1));
+
+  // 押された時と同じ吹き飛び方（力・関節分離）で、相手と反対方向へ飛ぶ
+  const torso = agent.torsoMesh;
+  const head = agent.headMesh;
+  const scale = agent.animScale || 1;
+
+  let knockDir = new BABYLON.Vector3(0, 0, 1);
+  let sideDir = new BABYLON.Vector3(1, 0, 0);
+  if (opponent && opponent.mesh) {
+    const dx = legs.position.x - opponent.mesh.position.x;
+    const dz = legs.position.z - opponent.mesh.position.z;
+    const len = Math.sqrt(dx * dx + dz * dz) || 1;
+    knockDir = new BABYLON.Vector3(dx / len, 0, dz / len);
+    sideDir = new BABYLON.Vector3(-dz / len, 0, dx / len);
+  }
+  if (Math.random() < 0.5) sideDir.scaleInPlace(-1);
+
+  const KNOCKBACK_FORCE = 43; // pushAgent/knockdownAgentと同じ吹き飛びの力
+  const knockImpulse = knockDir.scale(KNOCKBACK_FORCE).add(new BABYLON.Vector3(0, 2.2, 0));
+
+  try {
+    if (head && !head.isDisposed()) head.setParent(null);
+    if (torso && !torso.isDisposed()) torso.setParent(null);
+
+    legs.physicsImpostor = new BABYLON.PhysicsImpostor(
+      legs, BABYLON.PhysicsImpostor.CylinderImpostor,
+      { mass: 5, friction: 0.5, restitution: 0.1 }, GAME.scene
+    );
+    legs.physicsImpostor.applyImpulse(knockImpulse, legs.getAbsolutePosition());
+    legs.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(sideDir.z * 4, rand(-1, 1), -sideDir.x * 4));
+
+    if (torso && !torso.isDisposed()) {
+      torso.physicsImpostor = new BABYLON.PhysicsImpostor(
+        torso, BABYLON.PhysicsImpostor.CylinderImpostor,
+        { mass: 4, friction: 0.5, restitution: 0.1 }, GAME.scene
+      );
+      torso.physicsImpostor.applyImpulse(knockImpulse.scale(1.1), torso.getAbsolutePosition());
+      torso.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(sideDir.z * 4.5, rand(-1.5, 1.5), -sideDir.x * 4.5));
+
+      const hipJoint = new BABYLON.PhysicsJoint(BABYLON.PhysicsJoint.BallAndSocketJoint, {
+        mainPivot: new BABYLON.Vector3(0, 0.4 * scale, 0),
+        connectedPivot: new BABYLON.Vector3(0, -0.4 * scale, 0)
+      });
+      legs.physicsImpostor.addJoint(torso.physicsImpostor, hipJoint);
+
+      if (head && !head.isDisposed()) {
+        head.physicsImpostor = new BABYLON.PhysicsImpostor(
+          head, BABYLON.PhysicsImpostor.SphereImpostor,
+          { mass: 1.2, friction: 0.4, restitution: 0.1 }, GAME.scene
+        );
+        head.physicsImpostor.applyImpulse(knockImpulse.scale(1.2), head.getAbsolutePosition());
+        head.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(rand(-3, 3), rand(-2, 2), rand(-3, 3)));
+
+        const neckJoint = new BABYLON.PhysicsJoint(BABYLON.PhysicsJoint.BallAndSocketJoint, {
+          mainPivot: new BABYLON.Vector3(0, 0.4 * scale, 0),
+          connectedPivot: new BABYLON.Vector3(0, -0.3 * scale, 0)
+        });
+        torso.physicsImpostor.addJoint(head.physicsImpostor, neckJoint);
+      }
+    }
+  } catch (e) {
+    // 物理エンジンが使えない環境では、吹き飛びを省略してそのまま少し休ませる
+    agent.state = 'idle';
+    return;
+  }
+
+  agent._ragdollActive = true;
+  agent._ragdollReturnState = 'kidFaint';
+  agent.state = 'ragdoll';
+  agent.stateTimer = rand(4, 6.5); // 少し休めばすぐ元気になる
+}
+
 // ---------- 警察官がチンピラに発砲する ----------
 const POLICE_GUN_RANGE = 16;   // この距離まで近づいたら発砲する
 const POLICE_SHOOT_MOVE_SPEED_MULT = 1.15;
@@ -2809,18 +4809,21 @@ function doShoot(agent, dt) {
     agent._shootCooldown = rand(0.9, 1.5);
     const dmg = rand(22, 40);
     target.health -= dmg;
-    showBubble(target, pick(PAIN_LINES), '#661111', 2, 1);
-    addEvent('🔫 警察官 ' + agent.name + ' が チンピラ ' + target.name + ' に発砲した！', 'crime');
+    addEvent('🔫 警察官 ' + agent.name + ' が ' + JOBS[target.job].name + ' ' + target.name + ' に発砲した！', 'crime');
     target.diary.push({day:GAME.day, text: agent.name + '（警官）に撃たれた。'});
 
     if (target.health <= 0) {
+      const defeatedJob = target.job;
       killAgent(target, '警察官の銃撃');
-      addEvent('🚔 警察官 ' + agent.name + ' が チンピラ ' + target.name + ' を制圧した', 'arrest');
+      addEvent('🚔 警察官 ' + agent.name + ' が ' + JOBS[defeatedJob].name + ' ' + target.name + ' を制圧した', 'arrest');
       agent._shootTarget = null;
-      agent.money += 15; // 賞金
+      agent.money += defeatedJob === 'yankee' ? 30 : 15; // 賞金（ヤンキーはより強敵なので賞金も高い）
       agent.state = 'patrolling';
       agent.stateTimer = 10;
+    } else if (isRagdollEligible(target)) {
+      knockdownAgent(target, agent);
     } else {
+      showBubble(target, pick(PAIN_LINES), '#661111', 2, 1);
       target.state = 'fleeing';
     }
   }
@@ -2859,12 +4862,13 @@ function doDuel(agent, dt) {
     target.health -= dmg;
     showBubble(target, pick(PAIN_LINES), '#661111', 2, 1);
     showBubble(agent, pick(SWORD_LINES), '#223355', 1.5, 0.6);
-    addEvent('⚔️ 剣士 ' + agent.name + ' が木刀で チンピラ ' + target.name + ' に斬りかかった！', 'crime');
+    addEvent('⚔️ 剣士 ' + agent.name + ' が木刀で ' + JOBS[target.job].name + ' ' + target.name + ' に斬りかかった！', 'crime');
     target.diary.push({day:GAME.day, text: agent.name + 'に木刀で打たれた。'});
 
     if (target.health <= 0) {
+      const defeatedJob = target.job;
       killAgent(target, '剣士の木刀');
-      addEvent('⚔️ 剣士 ' + agent.name + ' が チンピラ ' + target.name + ' を討ち取った', 'arrest');
+      addEvent('⚔️ 剣士 ' + agent.name + ' が ' + JOBS[defeatedJob].name + ' ' + target.name + ' を討ち取った', 'arrest');
       agent._duelTarget = null;
       agent.state = 'idle';
     } else {
@@ -2972,9 +4976,13 @@ function handleBump(agent, other) {
   agent.bumpCooldown = rand(4, 8);
   other.bumpCooldown = rand(4, 8);
 
-  // 子供（学校に通う10歳まで）は当たってしまっても素直に謝るだけで、喧嘩にも逮捕にもならない
+  // 子供が当たった場合：相手も子供ならちょっとした喧嘩（押し合い）になる。相手が大人なら素直に謝るだけで、逮捕にもならない
   if (agent.age <= 10 || other.age <= 10) {
     const kids = [agent, other].filter(a => a.age <= 10);
+    if (kids.length === 2 && !agent._kidQuarrelTarget && !other._kidQuarrelTarget) {
+      startKidQuarrel(agent, other);
+      return;
+    }
     const others = [agent, other].filter(a => a.age > 10);
     for (const k of kids) showBubble(k, pick(APOLOGIZE_LINES), '#2a4a2a', 2, 0);
     for (const o of others) showBubble(o, '気をつけてね', '#2a2a55', 1.5, 0);
@@ -3041,11 +5049,11 @@ function findCriminalNear(agent, radius) {
   return null;
 }
 
-// 近くのチンピラを探す（警察官が発砲対象を見つけるために使う）
+// 近くの敵対NPC（チンピラ・ヤンキー）を探す（警察官・剣士が対象を見つけるために使う）
 function findThugNear(agent, radius) {
   let nearest = null, nearestD = radius;
   for (const a of GAME.agents) {
-    if (!a.alive || a.job !== 'thug' || a.isInJail) continue;
+    if (!a.alive || !isHostileJob(a.job) || a.isInJail) continue;
     const d = dist2D({x:agent.mesh.position.x,z:agent.mesh.position.z},{x:a.mesh.position.x,z:a.mesh.position.z});
     if (d < nearestD) { nearestD = d; nearest = a; }
   }
@@ -3060,12 +5068,21 @@ function isNearBuilding(x, z, minDist) {
 }
 
 // 状態に応じて丸い手を動かし、働いている・歩いている様子を表現する
-const WORKING_HAND_STATES = ['working','building','healing','trading','stealing','arson','dining','studying','attacking','shooting','dueling'];
+const WORKING_HAND_STATES = ['working','building','rebuilding','healing','trading','stealing','arson','dining','studying','attacking','shooting','dueling'];
 const WALKING_HAND_STATES = ['moving','fleeing','patrolling'];
 function updateAgentHands(agent, dt) {
   if (!agent.alive || !agent.leftHand || agent.leftHand.isDisposed()) return;
   const scale = agent.animScale || 1;
   const defHandX = 0.48 * scale;
+
+  if (agent.state === 'injured') {
+    // ケガをして倒れている間、両手をお腹の前に寄せて押さえるポーズにする（かすかに震える）
+    agent.animPhase += dt * 3;
+    const tremble = Math.sin(agent.animPhase) * 0.02 * scale;
+    agent.leftHand.position.set(-0.14*scale + tremble, -0.02*scale, 0.30*scale);
+    agent.rightHand.position.set(0.14*scale - tremble, -0.02*scale, 0.30*scale);
+    return;
+  }
 
   if (agent.job === 'swordsman' && agent.state === 'working') {
     // 道場での稽古：木刀を両手で構え、振りかぶって振り下ろす「素振り」を繰り返す
@@ -3188,7 +5205,7 @@ function spawnCorpse(agent) {
     let idx = GAME.corpses.findIndex(c => !c.carrier);
     if (idx === -1) idx = 0;
     const old = GAME.corpses.splice(idx, 1)[0];
-    if (old.carrier) { old.carrier._corpseTarget = null; old.carrier.state = 'patrolling'; old.carrier.stateTimer = 5; }
+    if (old.carrier) { old.carrier._corpseTarget = null; old.carrier.state = corpseCarrierFallbackState(old.carrier); old.carrier.stateTimer = 5; }
     for (const m of old.meshes) { if (m && !m.isDisposed()) m.dispose(); }
   }
 }
@@ -3227,7 +5244,13 @@ function startCarryingCorpse(agent, corpse) {
   agent.state = 'carryingCorpse';
   agent.target = { x: corpse.x, z: corpse.z };
   agent.stateTimer = 0;
-  addEvent('🚑 警察官 ' + agent.name + ' が ' + (corpse.name || '遺体') + ' の遺体に気づき、搬送のため向かった', 'death');
+  addEvent('🚑 ' + JOBS[agent.job].name + ' ' + agent.name + ' が ' + (corpse.name || '遺体') + ' の遺体に気づき、搬送のため向かった', 'death');
+}
+
+// 死体を担架で運ぶ搬送を終えた（または中断した）際、職業に応じて元の行動へ戻す
+// （警察官は巡回に戻るが、剣士など他の職業は通常の行動選択（idle）に戻す）
+function corpseCarrierFallbackState(agent) {
+  return agent.job === 'police' ? 'patrolling' : 'idle';
 }
 
 // 死体を担架で運び、病院まで搬送する状態の処理
@@ -3236,7 +5259,7 @@ function doCarryCorpse(agent, dt) {
   if (!corpse || corpse.meshes.length === 0 || !GAME.corpses.includes(corpse)) {
     if (corpse) { corpse.claimed = false; corpse.carrier = null; }
     agent._corpseTarget = null;
-    agent.state = 'patrolling';
+    agent.state = corpseCarrierFallbackState(agent);
     agent.stateTimer = 5;
     return;
   }
@@ -3247,24 +5270,24 @@ function doCarryCorpse(agent, dt) {
     const dx = corpse.x - pos.x, dz = corpse.z - pos.z;
     const d = Math.sqrt(dx*dx + dz*dz);
     if (d < 1.8) {
-      // 死体を担架に乗せる：物理演算を止めて警察官に追従させる
+      // 死体を担架に乗せる：物理演算を止めて搬送者に追従させる
       for (const m of corpse.meshes) {
         if (m.physicsImpostor) { m.physicsImpostor.dispose(); m.physicsImpostor = null; }
       }
       const hospital = GAME.buildings.find(b => b.type === 'hospital' && b.health > 0);
       if (!hospital) {
-        // 病院が存在しない場合はその場で確保を解除し、後で別の警察官が再挑戦できるようにする
+        // 病院が存在しない場合はその場で確保を解除し、後で別の搬送者が再挑戦できるようにする
         corpse.claimed = false;
         corpse.carrier = null;
         agent._corpseTarget = null;
-        agent.state = 'patrolling';
+        agent.state = corpseCarrierFallbackState(agent);
         agent.stateTimer = 8;
         return;
       }
       agent._corpseHospital = hospital;
       agent._corpsePhase = 'toHospital';
       agent.target = { x: hospital.x, z: hospital.z };
-      addEvent('🚑 警察官 ' + agent.name + ' が遺体を担架に乗せ、病院へ搬送を始めた', 'death');
+      addEvent('🚑 ' + JOBS[agent.job].name + ' ' + agent.name + ' が遺体を担架に乗せ、病院へ搬送を始めた', 'death');
     } else {
       const speed = agent.moveSpeed * dt;
       const res = stepAvoidingBuildings(agent.mesh, corpse.x, corpse.z, speed, AGENT_COLLIDE_RADIUS, null);
@@ -3287,10 +5310,10 @@ function doCarryCorpse(agent, dt) {
       for (const m of corpse.meshes) { if (!m.isDisposed()) m.dispose(); }
       const idx = GAME.corpses.indexOf(corpse);
       if (idx >= 0) GAME.corpses.splice(idx, 1);
-      addEvent('🏥 警察官 ' + agent.name + ' が ' + (corpse.name || '遺体') + ' の遺体を病院に搬送した', 'death');
+      addEvent('🏥 ' + JOBS[agent.job].name + ' ' + agent.name + ' が ' + (corpse.name || '遺体') + ' の遺体を病院に搬送した', 'death');
       agent._corpseTarget = null;
       agent._corpsePhase = null;
-      agent.state = 'patrolling';
+      agent.state = corpseCarrierFallbackState(agent);
       agent.stateTimer = 5;
       return;
     }
@@ -3313,15 +5336,446 @@ function doCarryCorpse(agent, dt) {
   }
 }
 
+// ---------- 住民として乗っ取り中でも死体を運べるようにする（プレイヤー操作） ----------
+// AIの搬送(doCarryCorpse)は自動で経路探索するが、プレイヤーはEキーで担ぎ、
+// WASDで自由に歩いて運び、病院の近くで再度Eキーを押すと搬送を完了する。
+const PLAYER_CORPSE_PICKUP_RANGE = 3.5;
+
+function pickUpPlayerCorpse(agent, corpse) {
+  corpse.claimed = true;
+  corpse.carrier = agent;
+  agent._playerCorpse = corpse;
+  // 死体の物理演算を止め、プレイヤーに追従させる
+  for (const m of corpse.meshes) {
+    if (m.physicsImpostor) { m.physicsImpostor.dispose(); m.physicsImpostor = null; }
+  }
+  agent.state = 'carryingCorpse';
+  showPlayerMsg('🚑 ' + (corpse.name || '遺体') + 'の遺体を担いだ。病院まで運んでEキーで降ろそう');
+  addEvent('🚑 ' + agent.name + '（あなた）が' + (corpse.name || '遺体') + 'の遺体を担ぎ、搬送を始めた', 'death');
+  updatePlayerHud();
+}
+
+// 死体を担いでいる間、プレイヤーの少し前についてくるように毎フレーム追従させる
+function updatePlayerCarriedCorpse(dt) {
+  const agent = GAME.possessedAgent;
+  if (!agent || !agent._playerCorpse) return;
+  const corpse = agent._playerCorpse;
+  if (!agent.alive || corpse.meshes.length === 0 || !GAME.corpses.includes(corpse)) {
+    agent._playerCorpse = null;
+    return;
+  }
+  const pos = agent.mesh.position;
+  const ang = agent.mesh.rotation.y;
+  for (const m of corpse.meshes) {
+    if (m.isDisposed()) continue;
+    m.position.x = pos.x + Math.sin(ang) * 0.9;
+    m.position.z = pos.z + Math.cos(ang) * 0.9;
+    m.position.y = 0.15;
+  }
+}
+
+// Eキーで死体を降ろす／病院の近くなら搬送を完了する
+function handlePlayerCorpseInteract(agent) {
+  const corpse = agent._playerCorpse;
+  const hospital = GAME.buildings.find(b => b.type === 'hospital' && b.health > 0);
+  const nearHospital = hospital && dist2D({x:agent.mesh.position.x, z:agent.mesh.position.z}, hospital) < 6;
+
+  if (nearHospital) {
+    for (const m of corpse.meshes) { if (!m.isDisposed()) m.dispose(); }
+    const idx = GAME.corpses.indexOf(corpse);
+    if (idx >= 0) GAME.corpses.splice(idx, 1);
+    agent._playerCorpse = null;
+    agent.state = 'idle';
+    showPlayerMsg('🏥 ' + (corpse.name || '遺体') + 'の遺体を病院に搬送した');
+    addEvent('🏥 ' + agent.name + '（あなた）が' + (corpse.name || '遺体') + 'の遺体を病院に搬送した', 'death');
+  } else {
+    // 病院の近くでなければ、その場に降ろすだけ（再度Eキーで拾い直せる）
+    corpse.claimed = false;
+    corpse.carrier = null;
+    corpse.x = agent.mesh.position.x;
+    corpse.z = agent.mesh.position.z;
+    for (const m of corpse.meshes) {
+      if (m.isDisposed()) continue;
+      m.physicsImpostor = new BABYLON.PhysicsImpostor(
+        m, BABYLON.PhysicsImpostor.CylinderImpostor,
+        { mass: 4, friction: 0.5, restitution: 0.1 }, GAME.scene
+      );
+    }
+    agent._playerCorpse = null;
+    agent.state = 'idle';
+    showPlayerMsg('遺体をその場に降ろした');
+    addEvent('🚑 ' + agent.name + '（あなた）が' + (corpse.name || '遺体') + 'の遺体をその場に降ろした', 'death');
+  }
+  updatePlayerHud();
+}
+
+// ---------- ケガをして倒れている人（パルクールの落下など）を、近くの人が病院まで運ぶ ----------
+// 死体の搬送とほぼ同じ仕組みだが、こちらは相手が生きているエージェントそのものなので
+// メッシュを別リストで管理せず、agentオブジェクトに直接 _carrier を持たせて「確保済み」を表す。
+function findUnclaimedInjuredNear(agent, range) {
+  if (!agent.mesh) return null;
+  const pos = agent.mesh.position;
+  let best = null, bestD = range;
+  for (const a of GAME.agents) {
+    if (a.id === agent.id || !a.alive || a.state !== 'injured' || a._carrier) continue;
+    if (!a.mesh || a.mesh.isDisposed()) continue;
+    const d = dist2D({x:pos.x, z:pos.z}, {x:a.mesh.position.x, z:a.mesh.position.z});
+    if (d < bestD) { bestD = d; best = a; }
+  }
+  return best;
+}
+
+// 倒れている人を背負って病院へ運ぶ搬送を開始する
+function startCarryingInjured(agent, victim) {
+  victim._carrier = agent;
+  agent._injuredTarget = victim;
+  agent._injuredPhase = 'toVictim';
+  agent._injuredHospital = null;
+  agent.state = 'carryingInjured';
+  agent.target = { x: victim.mesh.position.x, z: victim.mesh.position.z };
+  agent.stateTimer = 0;
+  addEvent('🚑 ' + agent.name + ' が倒れている ' + victim.name + ' に気づき、助けに向かった', 'social');
+}
+
+// 倒れて動けない間、たまに痛がる（運ばれている最中は運び手が位置を制御するので何もしない）
+function doInjured(agent, dt) {
+  if (agent._carrier) return;
+  agent._groanCooldown = (agent._groanCooldown || 0) - dt;
+  if (agent._groanCooldown <= 0) {
+    showBubble(agent, pick(PAIN_LINES), '#661111', 2, 0.3);
+    agent._groanCooldown = rand(4, 8);
+  }
+}
+
+// 倒れている人を背負って病院まで搬送する状態の処理
+function doCarryInjured(agent, dt) {
+  const victim = agent._injuredTarget;
+  if (!victim || !victim.alive || victim.state === 'idle' || !victim.mesh || victim.mesh.isDisposed() || victim._carrier !== agent) {
+    if (victim && victim._carrier === agent) victim._carrier = null;
+    agent._injuredTarget = null;
+    agent._injuredPhase = null;
+    agent.state = 'idle';
+    agent.stateTimer = 3;
+    return;
+  }
+
+  const pos = agent.mesh.position;
+
+  if (agent._injuredPhase === 'toVictim') {
+    const dx = victim.mesh.position.x - pos.x, dz = victim.mesh.position.z - pos.z;
+    const d = Math.sqrt(dx*dx + dz*dz);
+    if (d < 1.8) {
+      const hospital = GAME.buildings.find(b => b.type === 'hospital' && b.health > 0);
+      if (!hospital) {
+        // 病院が存在しない場合はその場で確保を解除し、後で別の人が助けに来られるようにする
+        victim._carrier = null;
+        agent._injuredTarget = null;
+        agent.state = 'idle';
+        agent.stateTimer = 8;
+        return;
+      }
+      agent._injuredHospital = hospital;
+      agent._injuredPhase = 'toHospital';
+      agent.target = { x: hospital.x, z: hospital.z };
+      showBubble(agent, '大丈夫か！？病院まで運ぶぞ！', '#2a4a6a', 2.5, 0);
+      addEvent('🚑 ' + agent.name + ' が ' + victim.name + ' を背負い、病院へ運び始めた', 'social');
+    } else {
+      const speed = agent.moveSpeed * dt;
+      const res = stepAvoidingBuildings(agent.mesh, victim.mesh.position.x, victim.mesh.position.z, speed, AGENT_COLLIDE_RADIUS, null);
+      if (!res.moved) {
+        agent._stuckTime = (agent._stuckTime || 0) + dt;
+        if (agent._stuckTime > 3) { pos.x += (dx/d)*speed; pos.z += (dz/d)*speed; agent._stuckTime = 0; }
+      } else {
+        agent._stuckTime = 0;
+      }
+    }
+    return;
+  }
+
+  if (agent._injuredPhase === 'toHospital') {
+    const hospital = agent._injuredHospital;
+    const dx = hospital.x - pos.x, dz = hospital.z - pos.z;
+    const d = Math.sqrt(dx*dx + dz*dz);
+
+    // 背負われている間、ケガ人の体は運び手の背中の位置に追従し続ける（ラグドール姿勢のまま）
+    if (victim.mesh && !victim.mesh.isDisposed()) {
+      const ang = agent.mesh.rotation.y;
+      const scale = victim.animScale || 1;
+      victim.mesh.position.x = pos.x - Math.sin(ang) * 0.6;
+      victim.mesh.position.z = pos.z - Math.cos(ang) * 0.6;
+      victim.mesh.position.y = 0.5 * scale;
+      victim.mesh.rotation.y = ang;
+    }
+
+    if (d < 3) {
+      // 病院に到着：手当てを受けて回復する
+      victim.health = clamp(victim.health + 45, 0, 100);
+      victim.state = 'idle';
+      victim.stateTimer = 0;
+      victim._carrier = null;
+      if (victim.mesh && !victim.mesh.isDisposed()) {
+        const scale = victim.animScale || 1;
+        victim.mesh.rotation.set(0, agent.mesh.rotation.y, 0);
+        victim.mesh.position.y = 0.4 * scale;
+      }
+      showBubble(victim, 'ありがとう…助かったよ', '#2a6a5a', 2.5, 0);
+      addEvent('🏥 ' + agent.name + ' が ' + victim.name + ' を病院に運び、手当てを受けさせた', 'social');
+      agent._injuredTarget = null;
+      agent._injuredPhase = null;
+      agent.state = 'idle';
+      agent.stateTimer = 5;
+      return;
+    }
+    const speed = agent.moveSpeed * dt;
+    const res = stepAvoidingBuildings(agent.mesh, hospital.x, hospital.z, speed, AGENT_COLLIDE_RADIUS, hospital);
+    if (!res.moved) {
+      agent._stuckTime = (agent._stuckTime || 0) + dt;
+      if (agent._stuckTime > 3) { pos.x += (dx/d)*speed; pos.z += (dz/d)*speed; agent._stuckTime = 0; }
+    } else {
+      agent._stuckTime = 0;
+    }
+  }
+}
+
+// ---------- 収穫物の段ボール（水田の脇に積み上がり、誰かが市場へ運ぶ） ----------
+const MAX_CROP_BOXES = 12; // 安全弁：溜まりすぎて負荷にならないための上限
+
+// 水田の脇に、収穫物の入った段ボールを1つ積む（既にある分の上に積み重なる）
+function spawnCropBox() {
+  const farm = GAME.buildings.find(b => b.type === 'farm' && b.health > 0);
+  if (!farm) return null;
+  if (GAME.cropBoxes.filter(b => b.farm === farm).length >= MAX_CROP_BOXES) return null;
+
+  const stackIndex = GAME.cropBoxes.filter(b => b.farm === farm).length;
+  const bx = farm.x + farm.w/2 + 2.2;
+  const bz = farm.z - farm.d/2 + 2.5;
+  const boxH = 0.55;
+
+  const mat = new BABYLON.StandardMaterial('cropBoxMat' + GAME.cropBoxes.length + '_' + GAME.day, GAME.scene);
+  mat.diffuseColor = new BABYLON.Color3(0.72, 0.56, 0.36);
+  mat.specularColor = new BABYLON.Color3(0, 0, 0);
+  const mesh = BABYLON.MeshBuilder.CreateBox('cropBox' + GAME.cropBoxes.length + '_' + GAME.day, { width: 0.9, height: boxH, depth: 0.9 }, GAME.scene);
+  mesh.position.set(bx, boxH/2 + stackIndex * boxH, bz);
+  mesh.material = mat;
+  GAME.shadowGen.addShadowCaster(mesh);
+
+  const box = { x: bx, z: bz, mesh: mesh, claimed: false, carrier: null, farm: farm };
+  GAME.cropBoxes.push(box);
+  return box;
+}
+
+function findUnclaimedCropBoxNear(agent, range) {
+  if (!GAME.cropBoxes || GAME.cropBoxes.length === 0) return null;
+  const pos = agent.mesh.position;
+  let best = null, bestD = range;
+  for (const b of GAME.cropBoxes) {
+    if (b.claimed) continue;
+    const d = dist2D({x:pos.x, z:pos.z}, {x:b.x, z:b.z});
+    if (d < bestD) { bestD = d; best = b; }
+  }
+  return best;
+}
+
+// 段ボールを市場へ運ぶ搬送を開始する
+function startCarryingCropBox(agent, box) {
+  box.claimed = true;
+  box.carrier = agent;
+  agent._cropBoxTarget = box;
+  agent._cropBoxPhase = 'toBox';
+  agent._cropBoxMarket = null;
+  agent.state = 'carryingCropBox';
+  agent.target = { x: box.x, z: box.z };
+  agent.stateTimer = 0;
+  addEvent('📦 ' + agent.name + ' が水田の脇に積まれた段ボールに気づき、市場へ運ぼうと向かった', 'economy');
+}
+
+// 段ボールの搬送を終えた（または中断した）際、通常の行動選択（idle）に戻す
+function cropBoxCarrierFallbackState(agent) {
+  return 'idle';
+}
+
+// 段ボールを担いで市場まで運ぶ状態の処理
+function doCarryCropBox(agent, dt) {
+  const box = agent._cropBoxTarget;
+  if (!box || !GAME.cropBoxes.includes(box)) {
+    if (box) { box.claimed = false; box.carrier = null; }
+    agent._cropBoxTarget = null;
+    agent.state = cropBoxCarrierFallbackState(agent);
+    agent.stateTimer = 5;
+    return;
+  }
+
+  const pos = agent.mesh.position;
+
+  if (agent._cropBoxPhase === 'toBox') {
+    const dx = box.x - pos.x, dz = box.z - pos.z;
+    const d = Math.sqrt(dx*dx + dz*dz);
+    if (d < 1.8) {
+      const market = GAME.buildings.find(b => b.type === 'market' && b.health > 0);
+      if (!market) {
+        // 市場が無い場合は確保を解除し、後で別の誰かが運べるようにする
+        box.claimed = false;
+        box.carrier = null;
+        agent._cropBoxTarget = null;
+        agent.state = cropBoxCarrierFallbackState(agent);
+        agent.stateTimer = 8;
+        return;
+      }
+      agent._cropBoxMarket = market;
+      agent._cropBoxPhase = 'toMarket';
+      agent.target = { x: market.x, z: market.z };
+      addEvent('📦 ' + agent.name + ' が段ボールを担ぎ、市場へ運び始めた', 'economy');
+    } else {
+      const speed = agent.moveSpeed * dt;
+      const res = stepAvoidingBuildings(agent.mesh, box.x, box.z, speed, AGENT_COLLIDE_RADIUS, null);
+      if (!res.moved) {
+        agent._stuckTime = (agent._stuckTime || 0) + dt;
+        if (agent._stuckTime > 3) { pos.x += (dx/d)*speed; pos.z += (dz/d)*speed; agent._stuckTime = 0; }
+      } else {
+        agent._stuckTime = 0;
+      }
+    }
+    return;
+  }
+
+  if (agent._cropBoxPhase === 'toMarket') {
+    const market = agent._cropBoxMarket;
+    const dx = market.x - pos.x, dz = market.z - pos.z;
+    const d = Math.sqrt(dx*dx + dz*dz);
+    if (d < 3) {
+      // 市場に到着：段ボールを納品する
+      GAME.marketStock.food = Math.min(200, GAME.marketStock.food + 8);
+      const pay = 10;
+      agent.money += pay;
+      GAME.townTreasury += pay;
+      addBuildingRevenue(market, pay);
+      addEvent('📦 ' + agent.name + ' が段ボールいっぱいの収穫物を市場に届けた', 'economy');
+      agent.diary.push({day:GAME.day, text:'水田の脇に積んであった段ボールを市場まで運んだ。ちょっとした稼ぎになった。'});
+
+      if (!box.mesh.isDisposed()) box.mesh.dispose();
+      const idx = GAME.cropBoxes.indexOf(box);
+      if (idx !== -1) GAME.cropBoxes.splice(idx, 1);
+
+      agent._cropBoxTarget = null;
+      agent._cropBoxPhase = null;
+      agent._cropBoxMarket = null;
+      agent.state = cropBoxCarrierFallbackState(agent);
+      agent.stateTimer = 5;
+      return;
+    }
+    const speed = agent.moveSpeed * dt;
+    const res = stepAvoidingBuildings(agent.mesh, market.x, market.z, speed, AGENT_COLLIDE_RADIUS, market);
+    if (!res.moved) {
+      agent._stuckTime = (agent._stuckTime || 0) + dt;
+      if (agent._stuckTime > 3) { pos.x += (dx/d)*speed; pos.z += (dz/d)*speed; agent._stuckTime = 0; }
+    } else {
+      agent._stuckTime = 0;
+    }
+    // 担いでいる段ボールを、運んでいる住人の少し前について運ばれているように追従させる
+    const ang = agent.mesh.rotation.y;
+    if (!box.mesh.isDisposed()) {
+      box.mesh.position.x = pos.x + Math.sin(ang) * 0.7;
+      box.mesh.position.z = pos.z + Math.cos(ang) * 0.7;
+      box.mesh.position.y = 1.0;
+    }
+  }
+}
+
+// ---------- 住民として乗っ取り中でも段ボールを運べるようにする（プレイヤー操作） ----------
+// AIの搬送(doCarryCropBox)は自動で経路探索するが、プレイヤーはEキーで担ぎ、
+// WASDで自由に歩いて運び、市場の近くで再度Eキーを押すと納品を完了する。
+const PLAYER_CROPBOX_PICKUP_RANGE = 3.0;
+
+function pickUpPlayerCropBox(agent, box) {
+  box.claimed = true;
+  box.carrier = agent;
+  agent._playerCropBox = box;
+  agent.state = 'carryingCropBox';
+  showPlayerMsg('📦 段ボールを担いだ。市場まで運んでEキーで届けよう');
+  addEvent('📦 ' + agent.name + '（あなた）が水田の脇の段ボールを担ぎ、市場へ運ぼうと向かった', 'economy');
+  updatePlayerHud();
+}
+
+// 段ボールを担いでいる間、プレイヤーの少し前についてくるように毎フレーム追従させる
+function updatePlayerCarriedCropBox(dt) {
+  const agent = GAME.possessedAgent;
+  if (!agent || !agent._playerCropBox) return;
+  const box = agent._playerCropBox;
+  if (!agent.alive || box.mesh.isDisposed() || !GAME.cropBoxes.includes(box)) {
+    agent._playerCropBox = null;
+    return;
+  }
+  const pos = agent.mesh.position;
+  const ang = agent.mesh.rotation.y;
+  box.mesh.position.x = pos.x + Math.sin(ang) * 0.7;
+  box.mesh.position.z = pos.z + Math.cos(ang) * 0.7;
+  box.mesh.position.y = 1.0;
+}
+
+// Eキーで段ボールを降ろす／市場の近くなら納品を完了する
+function handlePlayerCropBoxInteract(agent) {
+  const box = agent._playerCropBox;
+  const market = GAME.buildings.find(b => b.type === 'market' && b.health > 0);
+  const nearMarket = market && dist2D({x:agent.mesh.position.x, z:agent.mesh.position.z}, market) < 6;
+
+  if (nearMarket) {
+    GAME.marketStock.food = Math.min(200, GAME.marketStock.food + 8);
+    const pay = 10;
+    agent.money += pay;
+    GAME.townTreasury += pay;
+    addBuildingRevenue(market, pay);
+    if (!box.mesh.isDisposed()) box.mesh.dispose();
+    const idx = GAME.cropBoxes.indexOf(box);
+    if (idx !== -1) GAME.cropBoxes.splice(idx, 1);
+    agent._playerCropBox = null;
+    agent.state = 'idle';
+    showPlayerMsg('📦 段ボールいっぱいの収穫物を市場に届けた（+' + pay + 'G）');
+    addEvent('📦 ' + agent.name + '（あなた）が段ボールいっぱいの収穫物を市場に届けた', 'economy');
+    agent.diary.push({day:GAME.day, text:'水田の脇に積んであった段ボールを市場まで運んだ。ちょっとした稼ぎになった。'});
+  } else {
+    // 市場の近くでなければ、その場に降ろすだけ（再度Eキーで拾い直せる）
+    box.claimed = false;
+    box.carrier = null;
+    box.x = agent.mesh.position.x;
+    box.z = agent.mesh.position.z;
+    if (!box.mesh.isDisposed()) {
+      box.mesh.position.x = box.x;
+      box.mesh.position.z = box.z;
+      box.mesh.position.y = 0.275;
+    }
+    agent._playerCropBox = null;
+    agent.state = 'idle';
+    showPlayerMsg('段ボールをその場に降ろした');
+    addEvent('📦 ' + agent.name + '（あなた）が段ボールをその場に降ろした', 'economy');
+  }
+  updatePlayerHud();
+}
+
 function killAgent(agent, cause) {
   if (!agent.alive) return;
   agent.alive = false;
+  // カリングで非表示になっていた場合、死体演出のために必ず表示状態へ戻す
+  if (agent.mesh) agent.mesh.setEnabled(true);
+  if (agent.torsoMesh) agent.torsoMesh.setEnabled(true);
+  agent._culled = false;
   if (agent.bubble) { agent.bubble.rect.isVisible = false; agent.bubble.rect.dispose(); }
   // 死体を搬送中だった警察官が死亡した場合、確保状態を解除して他の警察官が拾えるようにする
   if (agent._corpseTarget) {
     agent._corpseTarget.claimed = false;
     agent._corpseTarget.carrier = null;
     agent._corpseTarget = null;
+  }
+  // 段ボールを運搬中だった住人が死亡した場合も、確保状態を解除して他の誰かが拾えるようにする
+  if (agent._cropBoxTarget) {
+    agent._cropBoxTarget.claimed = false;
+    agent._cropBoxTarget.carrier = null;
+    agent._cropBoxTarget = null;
+  }
+  // プレイヤーが段ボールを担いだまま死亡した場合も同様に解除する
+  if (agent._playerCropBox) {
+    agent._playerCropBox.claimed = false;
+    agent._playerCropBox.carrier = null;
+    agent._playerCropBox = null;
   }
   spawnCorpse(agent);
   addEvent('💀 ' + agent.name + ' が' + cause + 'で死亡した（' + agent.age + '歳）', 'death');
@@ -3335,11 +5789,21 @@ function killAgent(agent, cause) {
       addEvent('😢 ' + partner.name + ' は ' + agent.name + ' の死を悲しんでいる', 'death');
     }
   }
+  // 乗り移り中の住人が（原因を問わず）死亡した場合は、必ず一人称視点から離脱させる
+  // （体力低下以外の死因のためにここでも呼んでおく。exitPossession側は既に死亡していれば
+  //   何度呼ばれても安全＝GAME.possessedAgentがnullなら即returnする）
+  if (GAME.possessedAgent === agent) exitPossession();
 }
 
 // ---------- 火災システム ----------
 function createFireParticles(building) {
-  const ps = new BABYLON.ParticleSystem('fire'+building.id, 100, GAME.scene);
+  // 建物の色を変える（パーティクルを出さない低品質設定でも、燃えている見た目はここで表現する）
+  building.mesh.material.diffuseColor = new BABYLON.Color3(0.3,0.15,0.1);
+
+  if (!GAME.particlesEnabled) return; // 低品質設定では炎パーティクルそのものを生成しない
+
+  const capacity = Math.max(10, Math.round(100 * GAME.particleQualityMul));
+  const ps = new BABYLON.ParticleSystem('fire'+building.id, capacity, GAME.scene);
   ps.particleTexture = createFireTexture();
   ps.emitter = new BABYLON.Vector3(building.x, building.h/2, building.z);
   ps.minEmitBox = new BABYLON.Vector3(-2,0,-2);
@@ -3351,7 +5815,7 @@ function createFireParticles(building) {
   ps.maxSize = 2;
   ps.minLifeTime = 0.5;
   ps.maxLifeTime = 1.5;
-  ps.emitRate = 80;
+  ps.emitRate = Math.max(8, Math.round(80 * GAME.particleQualityMul));
   ps.blendMode = BABYLON.ParticleSystem.BLENDMODE_ADD;
   ps.gravity = new BABYLON.Vector3(0, 5, 0);
   ps.direction1 = new BABYLON.Vector3(-1,3,-1);
@@ -3360,9 +5824,6 @@ function createFireParticles(building) {
   ps.maxEmitPower = 3;
   ps.start();
   building.fireParticles = ps;
-
-  // 建物の色を変える
-  building.mesh.material.diffuseColor = new BABYLON.Color3(0.3,0.15,0.1);
 }
 
 function createFireTexture() {
@@ -3378,6 +5839,109 @@ function createFireTexture() {
   return dt;
 }
 
+// ---------- 建物崩落時の瓦礫（物理エンジンで崩れ落ちる） ----------
+const DEBRIS_HIT_DAMAGE = 50;      // 落下中の瓦礫が住人に直撃した時のダメージ
+const DEBRIS_KNOCKBACK_FORCE = 70; // 瓦礫直撃時のノックバック強度（銃撃の43よりさらに強い）
+const DEBRIS_ACTIVE_TIME = 3.2;    // 崩落直後、この秒数だけ「落下中の当たり判定」が有効
+
+// 全焼した建物の跡地に、物理エンジン(Cannon.js)で崩れ落ちる瓦礫の破片を生成する
+function spawnBuildingDebris(building) {
+  if (building.debrisMeshes && building.debrisMeshes.length) return; // 既に瓦礫が生成済み
+
+  const debrisMat = new BABYLON.StandardMaterial('debrisMat' + building.id + '_' + GAME.day, GAME.scene);
+  debrisMat.diffuseColor = new BABYLON.Color3(0.15, 0.1, 0.08);
+  debrisMat.specularColor = new BABYLON.Color3(0, 0, 0);
+
+  const w = building.w || 6, d = building.d || 6, h = building.h || 4;
+  // 建物が大きいほど瓦礫の破片も大きくなるようにスケーリングする
+  const sizeScale = clamp((w + d + h) / 24, 0.5, 2.6);
+  const count = randInt(7, 11);
+  const debris = [];
+  for (let i = 0; i < count; i++) {
+    const size = rand(0.5, 1.6) * sizeScale;
+    const chunk = BABYLON.MeshBuilder.CreateBox('debris' + building.id + '_' + i, {
+      width: size, height: size * rand(0.6, 1.1), depth: size * rand(0.6, 1.2)
+    }, GAME.scene);
+    chunk.position.set(
+      building.x + rand(-w / 2, w / 2),
+      h * rand(0.55, 1.1) + 1,
+      building.z + rand(-d / 2, d / 2)
+    );
+    chunk.rotation.set(rand(0, Math.PI * 2), rand(0, Math.PI * 2), rand(0, Math.PI * 2));
+    chunk.material = debrisMat;
+    GAME.shadowGen.addShadowCaster(chunk);
+    chunk.receiveShadows = true;
+
+    chunk.physicsImpostor = new BABYLON.PhysicsImpostor(
+      chunk, BABYLON.PhysicsImpostor.BoxImpostor,
+      { mass: rand(4, 12) * sizeScale, friction: 0.8, restitution: 0.15 }, GAME.scene
+    );
+    // 崩落の瞬間に外向きの弱い衝撃を加え、自然に散らばりながら地面に崩れ落ちるようにする
+    const outDir = new BABYLON.Vector3(rand(-1, 1), rand(0.2, 0.8), rand(-1, 1));
+    chunk.physicsImpostor.applyImpulse(outDir.scale(rand(1.5, 4)), chunk.getAbsolutePosition());
+    chunk.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(rand(-3, 3), rand(-3, 3), rand(-3, 3)));
+
+    // 落下中の当たり判定用トラッキング（破片のサイズに応じて判定半径も大きくする）
+    chunk._debrisHitAgents = new Set();
+    chunk._debrisRadius = size * 0.7 + 0.6;
+    chunk._debrisTimer = DEBRIS_ACTIVE_TIME;
+    GAME.activeDebris.push(chunk);
+
+    debris.push(chunk);
+  }
+  building.debrisMeshes = debris;
+
+  // 元の建物本体・屋根は瓦礫の下に隠す
+  if (building.mesh) building.mesh.setEnabled(false);
+  if (building.roofMesh && building.roofMesh !== building.mesh) building.roofMesh.setEnabled(false);
+}
+
+// 落下中の瓦礫が住人に直撃していないか毎フレーム確認する。当たれば大ダメージ＋強いノックバック＋ラグドール化させる
+function updateFallingDebris(dt) {
+  if (!GAME.activeDebris.length) return;
+  for (let i = GAME.activeDebris.length - 1; i >= 0; i--) {
+    const chunk = GAME.activeDebris[i];
+    if (!chunk || chunk.isDisposed()) { GAME.activeDebris.splice(i, 1); continue; }
+    chunk._debrisTimer -= dt;
+    if (chunk._debrisTimer <= 0) { GAME.activeDebris.splice(i, 1); continue; }
+
+    const cpos = chunk.getAbsolutePosition();
+    for (const target of GAME.agents) {
+      if (!target.alive || target.isInJail || chunk._debrisHitAgents.has(target.id)) continue;
+      if (dist2D(cpos, target.mesh.position) > chunk._debrisRadius) continue;
+      if (Math.abs(cpos.y - target.mesh.position.y) > 3.5) continue; // 高さが離れすぎていれば直撃していない
+
+      chunk._debrisHitAgents.add(target.id);
+      target.health -= DEBRIS_HIT_DAMAGE;
+      addEvent('🧱 ' + target.name + ' が崩れ落ちてきた瓦礫の直撃を受けた！', 'fire');
+      target.diary.push({day:GAME.day, text:'崩れ落ちてきた瓦礫の直撃を受けた。'});
+
+      if (target.health <= 0) {
+        killAgent(target, '瓦礫の直撃');
+      } else if (isRagdollEligible(target)) {
+        knockdownAgent(target, { mesh: { position: cpos } }, DEBRIS_KNOCKBACK_FORCE);
+      } else {
+        showBubble(target, pick(PAIN_LINES), '#661111', 2, 1);
+        target.state = 'fleeing';
+        target.stateTimer = rand(4, 8);
+        target.target = { x: target.mesh.position.x + rand(-30, 30), z: target.mesh.position.z + rand(-30, 30) };
+      }
+    }
+  }
+}
+
+// 再建時、物理演算で散らばった瓦礫を撤去する
+function clearBuildingDebris(building) {
+  if (!building.debrisMeshes || !building.debrisMeshes.length) return;
+  for (const m of building.debrisMeshes) {
+    const idx = GAME.activeDebris.indexOf(m);
+    if (idx !== -1) GAME.activeDebris.splice(idx, 1);
+    if (m.physicsImpostor) { m.physicsImpostor.dispose(); m.physicsImpostor = null; }
+    m.dispose();
+  }
+  building.debrisMeshes = [];
+}
+
 function updateFires(dt) {
   for (const b of GAME.buildings) {
     if (b.onFire) {
@@ -3388,9 +5952,8 @@ function updateFires(dt) {
         if (b.fireParticles) { b.fireParticles.stop(); b.fireParticles = null; }
         if (b.health <= 0) {
           addEvent('🏚️ ' + (b.name||'建物') + ' が全焼した', 'fire');
-          // 建物を破壊
-          b.mesh.material.diffuseColor = new BABYLON.Color3(0.15,0.1,0.08);
-          b.mesh.scaling.y = 0.3;
+          // 建物を破壊：物理エンジンで瓦礫が崩れ落ちる
+          spawnBuildingDebris(b);
           if (b.occupants && b.occupants.length) {
             for (const occ of b.occupants) {
               occ.home = null;
@@ -3402,6 +5965,9 @@ function updateFires(dt) {
           }
           if (b.furniture) { b.furniture.dispose(); b.furniture = null; }
           b.occupant = null;
+          // 燃え落ちた瞬間に、手が空いている建設員がいれば即座に再建へ向かわせる
+          // （建設員が仕事中の巡回タイミング頼みだと、いつまでも気づかず放置されてしまうため）
+          tryAssignBuilderToRuin(b);
         } else {
           addEvent('💧 ' + (b.name||'建物') + ' の火災が鎮火した', 'fire');
           b.mesh.material.diffuseColor = new BABYLON.Color3(...BUILDING_TYPES[b.type].color);
@@ -3437,10 +6003,12 @@ function updateWeather(dt) {
     if (GAME.weather === 'rain') addEvent('🌧️ 雨が降り始めた', 'economy');
     if (GAME.weather === 'storm') addEvent('⛈️ 嵐が来た！', 'economy');
 
-    // 雨パーティクル
+    // 雨パーティクル（低品質設定では生成自体をスキップし、天候の状態管理だけ行う）
     if (GAME.rainParticles) { GAME.rainParticles.stop(); GAME.rainParticles = null; }
-    if (GAME.weather === 'rain' || GAME.weather === 'storm') {
-      const ps = new BABYLON.ParticleSystem('rain', GAME.weather==='storm'?2000:800, GAME.scene);
+    if ((GAME.weather === 'rain' || GAME.weather === 'storm') && GAME.particlesEnabled) {
+      const baseCapacity = GAME.weather==='storm'?2000:800;
+      const capacity = Math.max(30, Math.round(baseCapacity * GAME.particleQualityMul));
+      const ps = new BABYLON.ParticleSystem('rain', capacity, GAME.scene);
       ps.particleTexture = createRainTexture();
       ps.emitter = new BABYLON.Vector3(0,80,0);
       ps.minEmitBox = new BABYLON.Vector3(-100,0,-100);
@@ -3451,7 +6019,7 @@ function updateWeather(dt) {
       ps.maxSize = 0.3;
       ps.minLifeTime = 1;
       ps.maxLifeTime = 2;
-      ps.emitRate = GAME.weather==='storm'?500:200;
+      ps.emitRate = Math.max(10, Math.round((GAME.weather==='storm'?500:200) * GAME.particleQualityMul));
       ps.blendMode = BABYLON.ParticleSystem.BLENDMODE_STANDARD;
       ps.gravity = new BABYLON.Vector3(0,-30,0);
       ps.direction1 = new BABYLON.Vector3(-1,-20,-1);
@@ -3616,20 +6184,20 @@ function updateUI() {
     const sel = GAME.selectedAgent === a.id ? 'selected' : '';
     const stateColors = {
       idle:'#555',moving:'#6cf',working:'#6f6',eating:'#f80',sleeping:'#66a',
-      socializing:'#fa6',building:'#6f6',stealing:'#f66',arson:'#f80',
+      socializing:'#fa6',building:'#6f6',rebuilding:'#6f6',stealing:'#f66',arson:'#f80',
       patrolling:'#6af',arresting:'#6af',fleeing:'#f44',trading:'#6fa',
       voting:'#a6f',healing:'#6f6',goingToSleep:'#66a',
       arguing:'#c66',fighting:'#f22',questioning:'#66c',
-      dining:'#f96',studying:'#9c6',attacking:'#f22',shooting:'#f22',dueling:'#f22'
+      dining:'#f96',studying:'#9c6',attacking:'#f22',shooting:'#f22',dueling:'#f22',carryingCorpse:'#c8c'
     };
     const sc = stateColors[a.state] || '#555';
     const stateNames = {
       idle:'待機',moving:'移動',working:'労働',eating:'食事',sleeping:'睡眠',
-      socializing:'会話',building:'建設',stealing:'窃盗',arson:'放火',
+      socializing:'会話',building:'建設',rebuilding:'再建',stealing:'窃盗',arson:'放火',
       patrolling:'巡回',arresting:'逮捕中',fleeing:'逃走',trading:'取引',
       voting:'投票',healing:'治療',goingToSleep:'帰宅',
       arguing:'口論中',fighting:'乱闘中',questioning:'取調中',
-      dining:'外食中',studying:'勉強中',attacking:'襲撃中',shooting:'発砲中',dueling:'交戦中'
+      dining:'外食中',studying:'勉強中',attacking:'襲撃中',shooting:'発砲中',dueling:'交戦中',carryingCorpse:'遺体搬送中',ragdoll:'転倒中'
     };
     return `<div class="agent-row ${sel}" onclick="selectAgent(${a.id})">
       <div class="agent-dot" style="background:rgb(${a.color.map(c=>Math.floor(c*255)).join(',')})"></div>
@@ -3656,11 +6224,11 @@ function selectAgent(id) {
   document.getElementById('detailHealth').textContent = Math.floor(a.health);
   const stateNames = {
     idle:'待機中',moving:'移動中',working:'労働中',eating:'食事中',sleeping:'睡眠中',
-    socializing:'会話中',building:'建設中',stealing:'窃盗',arson:'放火',
+    socializing:'会話中',building:'建設中',rebuilding:'再建中',stealing:'窃盗',arson:'放火',
     patrolling:'巡回中',arresting:'逮捕中',fleeing:'逃走中',trading:'取引中',
     voting:'投票中',healing:'治療中',goingToSleep:'帰宅中',
     arguing:'口論中',fighting:'乱闘中',questioning:'取調中',
-    dining:'外食中',studying:'勉強中',attacking:'襲撃中',shooting:'発砲中',dueling:'交戦中'
+    dining:'外食中',studying:'勉強中',attacking:'襲撃中',shooting:'発砲中',dueling:'交戦中',carryingCorpse:'遺体搬送中',ragdoll:'転倒中'
   };
   document.getElementById('detailState').textContent = stateNames[a.state] || a.state;
   document.getElementById('detailHome').textContent = a.home ? 'あり' : 'なし';
@@ -3695,11 +6263,12 @@ function findPossessionTarget() {
   // 選択中の住人がいればそれを、いなければカメラに一番近い生存者を対象にする
   if (GAME.selectedAgent !== null) {
     const a = GAME.agents[GAME.selectedAgent];
-    if (a && a.alive && !a.isInJail && a.job !== 'thug') return a;
+    if (a && a.alive && a.mesh && !a.mesh.isDisposed() && !a.isInJail && !isHostileJob(a.job)) return a;
   }
   let best = null, bestDist = Infinity;
   for (const a of GAME.agents) {
-    if (!a.alive || a.isInJail || a.job === 'thug') continue;
+    if (!a.alive || a.isInJail || isHostileJob(a.job)) continue;
+    if (!a.mesh || a.mesh.isDisposed()) continue; // メッシュが破棄済みだと距離計算で例外になり、ボタン処理全体が止まってしまうため除外
     const d = dist2D({x:GAME.camera.position.x, z:GAME.camera.position.z}, a.mesh.position);
     if (d < bestDist) { bestDist = d; best = a; }
   }
@@ -3711,13 +6280,118 @@ function syncPossessCameraToAgent(agent) {
   if (!GAME.camera || !agent || !agent.mesh) return;
   GAME.camera.position.x = agent.mesh.position.x;
   GAME.camera.position.z = agent.mesh.position.z;
-  GAME.camera.position.y = GAME.eyeHeight;
+  // 通常の直立時の足元の高さより上にいる場合（パルクールのジャンプ中など）は、
+  // その分だけ目線の高さも一緒に持ち上げる
+  const scale = agent.animScale || 1;
+  const standY = 0.4 * scale;
+  const lift = Math.max(0, agent.mesh.position.y - standY);
+  GAME.camera.position.y = GAME.eyeHeight + lift;
+}
+
+// 憑依中の住民がラグドール状態の間、少し後ろ上空から自分の体（手足含む）が見えるようにカメラを追従させる
+function updatePossessedRagdollCamera(agent) {
+  if (!GAME.camera || !agent || !agent.mesh) return;
+  const anchor = (agent.torsoMesh && !agent.torsoMesh.isDisposed())
+    ? agent.torsoMesh.getAbsolutePosition()
+    : agent.mesh.position;
+
+  // カメラが現在向いている方向の逆（後方）へ少し下がり、見下ろすアングルにする
+  let back = GAME.camera.getDirection(BABYLON.Axis.Z);
+  back = new BABYLON.Vector3(-back.x, 0, -back.z);
+  if (back.lengthSquared() > 0.0001) back.normalize(); else back.set(0, 0, 1);
+
+  GAME.camera.position.x = anchor.x + back.x * 3.4;
+  GAME.camera.position.z = anchor.z + back.z * 3.4;
+  GAME.camera.position.y = anchor.y + 2.6;
 }
 
 function setAgentMeshVisible(agent, visible) {
   if (!agent || !agent.mesh) return;
-  agent.mesh.isVisible = visible;
-  for (const m of agent.mesh.getChildMeshes()) m.isVisible = visible;
+  // 通常時は torso・head は legs の子孫だが、ラグドール中は物理演算のために
+  // torso・head が legs から切り離されて独立したルートになる（doRagdoll関連処理を参照）。
+  // legs の子孫だけを辿ると、その間は胴体・頭・手（torsoの子）が可視化から漏れてしまうため、
+  // 3つのルート（legs・torso・head）それぞれから個別に子孫を辿って確実に反映する。
+  const roots = [agent.mesh, agent.torsoMesh, agent.headMesh].filter(m => m && !m.isDisposed());
+  for (const root of roots) {
+    root.isVisible = visible;
+    root.isPickable = visible; // isVisibleだけだと非表示の体がクロスヘアの当たり判定に残ってしまうため
+    for (const m of root.getChildMeshes()) {
+      m.isVisible = visible;
+      m.isPickable = visible;
+    }
+  }
+}
+
+// ---------- プレイヤーが「新しい住民」として、家も職もない状態からゼロで人生を始める ----------
+// isChild=false: 大人（無職・住所不定）として開始／isChild=true: 子供として開始（公園の遊具でも遊べる）
+function startNewLifeCore(isChild) {
+  // Fix①: 既に住民として生きていたらブロック（プレイヤーHUDが非表示の場合でも見えるようイベントログにも表示）
+  if (GAME.hardcoreLife && GAME.possessedAgent && GAME.possessedAgent.alive) {
+    document.getElementById('settings-panel').classList.remove('show');
+    addEvent('🔒 現在 ' + GAME.possessedAgent.name + ' として生きています。死ぬまでこの人生を続けてください', 'social');
+    showPlayerMsg('🔒 現在 ' + GAME.possessedAgent.name + ' として生きています。死ぬまでこの人生を続けてください');
+    return;
+  }
+  // Fix③: 人口上限エラーを画面中央にも表示（イベントログ＋プレイヤーHUD双方に出す）
+  if (getPopulation() >= GAME.maxPopulation) {
+    document.getElementById('settings-panel').classList.remove('show');
+    addEvent('⚠️ 街の人口が上限のため、新しい住民として生まれることができません', 'social');
+    showPlayerMsg('⚠️ 街の人口が上限のため、新しい住民として生まれることができません');
+    return;
+  }
+
+  try {
+    const id = GAME.agents.length; // 配列インデックスと一致させる
+    const createOpts = isChild
+      ? { forceChild: true, noHome: true, ageOverride: randInt(6, 10) }
+      : { forceAdult: true, jobOverride: 'unemployed', noHome: true, ageOverride: randInt(18, 30) };
+    const agent = createAgent(id, createOpts);
+
+    if (isChild) {
+      agent.diary.push({ day: GAME.day, text: 'この街で、家族のいない新しい子供としての人生を始めた。公園で遊んだり、学校に通ったりしよう。' });
+      addEvent('🧒 新しい子供の住人「' + agent.name + '」がこの街にやってきた（街の人口: ' + getPopulation() + '人）', 'birth');
+    } else {
+      agent.diary.push({ day: GAME.day, text: 'この街で、家も仕事もない新しい人生を始めた。まずは仕事と住む場所を見つけよう。' });
+      addEvent('🌱 新しい住人「' + agent.name + '」がこの街にやってきた（無職・住所不定、街の人口: ' + getPopulation() + '人）', 'birth');
+    }
+
+    // Fix②: 古いプレイヤー記録を削除してゴースト蓄積を防ぐ
+    GAME.birthRecords = GAME.birthRecords.filter(r => !r.isPlayer);
+
+    // 移住記録を保存し、次回訪問時にもこの住人が復元されるようにする
+    GAME.birthRecords.push({
+      id: agent.id, name: agent.name, gender: agent.gender,
+      motherId: null, fatherId: null, day: GAME.day,
+      immigrant: true, isChild: isChild, job: agent.job, age: agent.age,
+      isPlayer: true,
+    });
+    saveBirthRecords();
+
+    document.getElementById('settings-panel').classList.remove('show');
+    GAME.hardcoreLife = true;
+    enterPossession(agent);
+    savePlayerLifeState(agent);
+    const btn = document.getElementById('btnPossess');
+    if (btn) { btn.textContent = '🔒 死ぬまでこの人生を生きる'; btn.classList.add('active', 'locked'); }
+    if (isChild) {
+      showPlayerMsg('🧒 家族のいない新しい子供の人生がスタートした！公園の遊具に近づいてEキーで遊べるよ');
+    } else {
+      showPlayerMsg('🌱 家も仕事もない新しい人生がスタートした！Jキーで職に就き、Eキーで空き家に住もう');
+    }
+  } catch (e) {
+    // 生成中に何らかのエラーが起きても「ボタンを押しても無反応」にならないよう、必ず画面に理由を出す
+    console.error('startNewLifeCore failed:', e);
+    document.getElementById('settings-panel').classList.remove('show');
+    addEvent('⚠️ 新しい住民の生成中にエラーが発生しました: ' + (e && e.message ? e.message : e), 'social');
+  }
+}
+
+function startNewLifeAsResident() {
+  startNewLifeCore(false);
+}
+
+function startNewLifeAsChildResident() {
+  startNewLifeCore(true);
 }
 
 function enterPossession(agent) {
@@ -3739,6 +6413,7 @@ function enterPossession(agent) {
   document.getElementById('crosshair').classList.remove('armed');
   const touchGunBtn0 = document.getElementById('btnTouchGun');
   if (touchGunBtn0) touchGunBtn0.classList.remove('armed');
+  hidePlayerSpeechBubble();
 
   setAgentMeshVisible(agent, false);
 
@@ -3749,6 +6424,10 @@ function enterPossession(agent) {
   GAME.camera.position.z = agent.mesh.position.z;
   GAME.camera.position.y = GAME.eyeHeight;
 
+  // 一人称視点：自分の手を表示し、就いている職業の服の色に合わせる
+  updatePlayerHandsAppearance(agent);
+  setPlayerHandsVisible(true);
+
   const btn = document.getElementById('btnPossess');
   if (btn) { btn.textContent = '🌌 スペクターに戻る'; btn.classList.add('active'); }
   document.getElementById('player-hud').classList.add('show');
@@ -3757,16 +6436,16 @@ function enterPossession(agent) {
   const hint = document.getElementById('controls-hint');
   if (hint) {
     hint.textContent = agent.job === 'police'
-      ? '⌨️ W A S D : 移動 / E : 建物とやり取り / 1 : 拳銃を構える・しまう / クリック : マウスロック・（抜銃中は発砲） / マウス移動 : 視点回転 / ↑↓ : ズーム / ESC : ロック解除'
-      : '⌨️ W A S D : 移動 / E : 建物とやり取り / クリック : マウスロック / マウス移動 : 視点回転 / ↑↓ : ズーム / ESC : ロック解除';
+      ? '⌨️ W A S D : 移動 / E : 建物とやり取り・引っ越し / J : 就職 / 1 : 拳銃を構える・しまう / クリック : マウスロック・（抜銃中は発砲） / マウス移動 : 視点回転 / ↑↓ : ズーム / ESC : ロック解除'
+      : '⌨️ W A S D : 移動 / E : 建物とやり取り・引っ越し / J : 就職 / F : 人を押す / R : 放火 / クリック : マウスロック / マウス移動 : 視点回転 / ↑↓ : ズーム / ESC : ロック解除';
   }
   document.body.classList.add('possessing');
   document.body.classList.toggle('is-police', agent.job === 'police');
   const touchHint = document.getElementById('touch-hint');
   if (touchHint) {
     touchHint.textContent = agent.job === 'police'
-      ? '🕹️ 左ドラッグ：移動 ／ 右ドラッグ：視点 ／ タップ：選択・発砲 ／ ✋：やり取り ／ 🔫：抜銃'
-      : '🕹️ 左ドラッグ：移動 ／ 右ドラッグ：視点 ／ タップ：選択 ／ ✋：近くの建物とやり取り';
+      ? '🕹️ 左ドラッグ：移動 ／ 右ドラッグ：視点 ／ タップ：選択・発砲 ／ ✋：やり取り・引っ越し ／ 💼：就職 ／ 🔫：抜銃'
+      : '🕹️ 左ドラッグ：移動 ／ 右ドラッグ：視点 ／ タップ：選択 ／ ✋：やり取り・引っ越し ／ 💼：就職 ／ 👐：押す ／ 🔥：放火';
   }
 
   addEvent('🧑 あなたは ' + agent.name + ' として生活を始めた', 'social');
@@ -3776,6 +6455,53 @@ function enterPossession(agent) {
 function exitPossession() {
   const agent = GAME.possessedAgent;
   if (!agent) return;
+  showParkourUI(false);
+
+  // 「新しい人生」モード中は、本人が生きている限りスペクターに戻れない（死ぬまで続く）
+  if (GAME.hardcoreLife && agent.alive) {
+    showPlayerMsg('🔒 この人生から離れることはできません。死ぬまでこの住民として生き続けます');
+    return;
+  }
+  const wasHardcore = GAME.hardcoreLife;
+  if (wasHardcore) {
+    GAME.hardcoreLife = false;
+    clearPlayerLifeState();
+  }
+
+  // 死体を担いだまま乗っ取りを解除する場合、確保状態を解除してその場に降ろす
+  if (agent._playerCorpse) {
+    const corpse = agent._playerCorpse;
+    corpse.claimed = false;
+    corpse.carrier = null;
+    if (agent.mesh) {
+      corpse.x = agent.mesh.position.x;
+      corpse.z = agent.mesh.position.z;
+    }
+    for (const m of corpse.meshes) {
+      if (m.isDisposed()) continue;
+      m.physicsImpostor = new BABYLON.PhysicsImpostor(
+        m, BABYLON.PhysicsImpostor.CylinderImpostor,
+        { mass: 4, friction: 0.5, restitution: 0.1 }, GAME.scene
+      );
+    }
+    agent._playerCorpse = null;
+  }
+  // 段ボールを担いだまま乗っ取りを解除する場合も、確保状態を解除してその場に降ろす
+  if (agent._playerCropBox) {
+    const box = agent._playerCropBox;
+    box.claimed = false;
+    box.carrier = null;
+    if (agent.mesh) {
+      box.x = agent.mesh.position.x;
+      box.z = agent.mesh.position.z;
+      if (!box.mesh.isDisposed()) {
+        box.mesh.position.x = box.x;
+        box.mesh.position.z = box.z;
+        box.mesh.position.y = 0.275;
+      }
+    }
+    agent._playerCropBox = null;
+  }
   if (agent.alive) {
     setAgentMeshVisible(agent, true);
     agent.state = 'idle';
@@ -3783,6 +6509,8 @@ function exitPossession() {
   GAME.possessedAgent = null;
   GAME.cameraMode = 'bird';
   GAME.gunDrawn = false;
+  setPlayerHandsVisible(false);
+  hidePlayerSpeechBubble();
   document.getElementById('crosshair').classList.remove('armed');
   const touchGunBtn1 = document.getElementById('btnTouchGun');
   if (touchGunBtn1) touchGunBtn1.classList.remove('armed');
@@ -3790,7 +6518,7 @@ function exitPossession() {
   if (gunRow) gunRow.style.display = 'none';
 
   const btn = document.getElementById('btnPossess');
-  if (btn) { btn.textContent = '🧑 スペクターから住民になる'; btn.classList.remove('active'); }
+  if (btn) { btn.textContent = '🧑 スペクターから住民になる'; btn.classList.remove('active', 'locked'); }
   document.getElementById('player-hud').classList.remove('show');
 
   const hint = document.getElementById('controls-hint');
@@ -3800,6 +6528,9 @@ function exitPossession() {
   if (touchHint) touchHint.textContent = '🕹️ 左側ドラッグ：移動 ／ 右側ドラッグ：視点回転 ／ タップ：選択・発砲';
 
   if (agent.alive) addEvent('🌌 あなたは ' + agent.name + ' から離れ、スペクターに戻った', 'social');
+  if (wasHardcore && !agent.alive) {
+    showPlayerMsg('💀 この人生は終わった…設定からまた新しい人生を始められます');
+  }
 }
 
 function showPlayerMsg(text) {
@@ -3808,21 +6539,98 @@ function showPlayerMsg(text) {
   GAME.possessMsgTimer = 3;
 }
 
+// player-hudが非表示の時（憑依していない時など）でも必ず見える通知トースト。
+// 他のパネルの開閉状態に一切影響されないよう、bodyに直接追加しfixed+高z-indexで表示する。
+function showToast(text) {
+  let el = document.getElementById('globalToast');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'globalToast';
+    el.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);' +
+      'background:rgba(15,15,30,0.95);border:1px solid rgba(255,180,80,0.6);color:#fff;' +
+      'padding:8px 16px;border-radius:8px;font-size:13px;z-index:100;pointer-events:none;' +
+      'transition:opacity 0.25s;white-space:nowrap;max-width:90vw;text-overflow:ellipsis;overflow:hidden;';
+    document.body.appendChild(el);
+  }
+  el.textContent = text;
+  el.style.opacity = '1';
+  clearTimeout(el._hideTimer);
+  el._hideTimer = setTimeout(() => { el.style.opacity = '0'; }, 2200);
+}
+
 // 近くの建物とやり取りする（Eキー）
 function tryInteract() {
   const agent = GAME.possessedAgent;
   if (!agent || !agent.alive) return;
+
+  // パルクール挑戦中はタイミングタップ専用処理（通常のクールダウンより優先し、毎回すぐ反応させる）
+  if (agent.state === 'parkourPlayer') {
+    parkourTryTap(agent);
+    return;
+  }
+
   if (agent.isInJail || ['arguing','fighting','questioning','fleeing'].includes(agent.state)) {
     showPlayerMsg('今は身動きが取れない…');
     return;
   }
   if (GAME.interactCooldown > 0) return;
 
+  // 公園の遊具で遊んでいる最中にもう一度Eキーを押すと遊びをやめる
+  if (agent.state === 'playingPark') {
+    GAME.interactCooldown = 1.2;
+    agent.state = 'idle';
+    agent._playSpot = null;
+    showPlayerMsg('🛝 遊ぶのをやめた');
+    return;
+  }
+
+  // 死体を担いでいる場合：Eキーで降ろす（病院近くなら搬送完了）
+  if (agent._playerCorpse) {
+    GAME.interactCooldown = 1.2;
+    handlePlayerCorpseInteract(agent);
+    return;
+  }
+
+  // 段ボールを担いでいる場合：Eキーで降ろす（市場近くなら納品完了）
+  if (agent._playerCropBox) {
+    GAME.interactCooldown = 1.2;
+    handlePlayerCropBoxInteract(agent);
+    return;
+  }
+
+  // 近くに未搬送の死体があれば、建物より優先して担ぎ上げる
+  const nearCorpse = findUnclaimedCorpseNear(agent, PLAYER_CORPSE_PICKUP_RANGE);
+  if (nearCorpse) {
+    GAME.interactCooldown = 1.2;
+    pickUpPlayerCorpse(agent, nearCorpse);
+    return;
+  }
+
+  // 近くに未搬送の段ボールがあれば、建物より優先して担ぎ上げる
+  const nearCropBox = findUnclaimedCropBoxNear(agent, PLAYER_CROPBOX_PICKUP_RANGE);
+  if (nearCropBox) {
+    GAME.interactCooldown = 1.2;
+    pickUpPlayerCropBox(agent, nearCropBox);
+    return;
+  }
+
   let nearest = null, nearestDist = 6;
   for (const b of GAME.buildings) {
     if (b.health <= 0) continue;
     const d = dist2D({x:agent.mesh.position.x, z:agent.mesh.position.z}, b);
     if (d < nearestDist) { nearestDist = d; nearest = b; }
+  }
+  // 公園のパルクール入口・遊具（滑り台やブランコ）は建物の中心から離れた場所にあるため、
+  // 中心距離だけでは判定範囲に入らないことがある。専用に個別の座標へも近接判定を行う。
+  for (const b of GAME.buildings) {
+    if (b.health <= 0 || b.type !== 'park') continue;
+    const spotsToCheck = [];
+    if (b.parkourStart) spotsToCheck.push(b.parkourStart);
+    if (b.playSpots) spotsToCheck.push(...b.playSpots);
+    for (const s of spotsToCheck) {
+      const d = dist2D({x:agent.mesh.position.x, z:agent.mesh.position.z}, s);
+      if (d < nearestDist) { nearestDist = d; nearest = b; }
+    }
   }
   if (!nearest) { showPlayerMsg('近くに建物がありません'); return; }
 
@@ -3842,6 +6650,17 @@ function tryInteract() {
       addEvent('🍚 ' + agent.name + '（あなた）が自宅で食事をとった', 'social');
     } else {
       showPlayerMsg('今は特にすることがない');
+    }
+  } else if (nearest.type === 'house' || nearest.type === 'hotel') {
+    // 自分の家ではない家/ホテル：空きがあれば入居して新しい我が家にできる
+    if (hasVacancy(nearest)) {
+      const prevHome = agent.home;
+      if (prevHome) vacateHome(agent);
+      assignHome(agent, nearest);
+      showPlayerMsg('🏠 ' + nearest.name + 'に引っ越した！ここが新しい我が家だ');
+      addEvent('🏠 ' + agent.name + '（あなた）が' + nearest.name + 'に引っ越した', 'social');
+    } else {
+      showPlayerMsg('🏠 ' + nearest.name + 'には空きがない…');
     }
   } else if (nearest.type === 'restaurant' || nearest.type === 'market') {
     const cost = nearest.type === 'restaurant' ? 10 : 6;
@@ -3868,9 +6687,77 @@ function tryInteract() {
     }
   } else if (nearest.type === 'townHall') {
     showPlayerMsg('🏛️ 町役場（' + (GAME.mayor ? GAME.mayor.name + 'が市長' : '市長不在') + '）');
+  } else if (nearest.type === 'park') {
+    const px0 = agent.mesh.position.x, pz0 = agent.mesh.position.z;
+    const parkourD = nearest.parkourStart ? dist2D({ x: px0, z: pz0 }, nearest.parkourStart) : Infinity;
+    let nearestPlayD = Infinity;
+    if (nearest.playSpots) {
+      for (const s of nearest.playSpots) {
+        const d = dist2D({ x: px0, z: pz0 }, s);
+        if (d < nearestPlayD) nearestPlayD = d;
+      }
+    }
+    if (nearest.parkourSpots && nearest.parkourSpots.length && parkourD <= nearestPlayD) {
+      startPlayerParkour(agent, nearest);
+    } else if (nearest.playSpots && nearest.playSpots.length) {
+      const spot = pick(nearest.playSpots);
+      const scale = agent.animScale || 1;
+      agent._playSpot = spot;
+      agent.targetBuilding = nearest;
+      agent.target = null;
+      if (agent.mesh) agent.mesh.position.set(spot.x, 0.4 * scale, spot.z);
+      agent.state = 'playingPark';
+      agent.stateTimer = rand(15, 30);
+      const spotName = spot.type === 'swing' ? 'ブランコ' : spot.type === 'slide' ? '滑り台' : '砂場';
+      showPlayerMsg('🛝 ' + spotName + 'で遊び始めた！（もう一度Eキーでやめる）');
+      addEvent('🛝 ' + agent.name + '（あなた）が公園の' + spotName + 'で遊び始めた', 'social');
+    } else {
+      showPlayerMsg('遊べる遊具が見当たらない');
+    }
   } else {
     showPlayerMsg(nearest.name + 'では特にすることがない');
   }
+  updatePlayerHud();
+}
+
+// 近くの職場でJキーを押すと、その仕事に就職する（無職から就職／転職どちらも可）
+function tryGetJob() {
+  const agent = GAME.possessedAgent;
+  if (!agent || !agent.alive) return;
+  if (agent.isInJail || ['arguing','fighting','questioning','fleeing'].includes(agent.state)) {
+    showPlayerMsg('今は身動きが取れない…');
+    return;
+  }
+  if (agent._playerCorpse || agent._playerCropBox) {
+    showPlayerMsg('今は手がふさがっている…');
+    return;
+  }
+  if (GAME.interactCooldown > 0) return;
+
+  let nearest = null, nearestDist = 6;
+  for (const b of GAME.buildings) {
+    if (b.health <= 0) continue;
+    const d = dist2D({x:agent.mesh.position.x, z:agent.mesh.position.z}, b);
+    if (d < nearestDist) { nearestDist = d; nearest = b; }
+  }
+  if (!nearest) { showPlayerMsg('近くに職場がありません'); return; }
+
+  const job = HIRE_JOB_BY_BUILDING[nearest.type];
+  GAME.interactCooldown = 1.2;
+  if (!job) {
+    showPlayerMsg(nearest.name + 'では就職できない');
+    return;
+  }
+  if (agent.job === job) {
+    showPlayerMsg('もう' + nearest.name + 'で' + JOBS[job].name + 'として働いている');
+    return;
+  }
+  const prevJobName = JOBS[agent.job].name;
+  agent.job = job;
+  updatePlayerHandsAppearance(agent);
+  showPlayerMsg('💼 ' + nearest.name + 'で' + JOBS[job].name + 'として採用された！（前職：' + prevJobName + '）');
+  addEvent('💼 ' + agent.name + '（あなた）が' + nearest.name + 'で' + JOBS[job].name + 'として働き始めた', 'economy');
+  agent.diary.push({day:GAME.day, text:nearest.name + 'で' + JOBS[job].name + 'として働き始めた。'});
   updatePlayerHud();
 }
 
@@ -3902,6 +6789,7 @@ function fireGun() {
   if (agent.isInJail || ['arguing','fighting','questioning','fleeing'].includes(agent.state)) return;
   if (GAME.shootCooldown > 0) return;
   GAME.shootCooldown = 0.55;
+  GAME.handRecoilT = 0.15;
 
   const target = GAME.hoveredAgent;
   if (!target || !target.alive || target === agent) {
@@ -3912,14 +6800,17 @@ function fireGun() {
 
   const dmg = rand(25, 45);
   target.health -= dmg;
-  showBubble(target, pick(PAIN_LINES), '#661111', 2.2, 1);
   addEvent('🔫 警察官 ' + agent.name + '（あなた）が ' + target.name + ' を撃った！', 'crime');
   target.diary.push({day:GAME.day, text: agent.name + 'に撃たれた。とんでもなく痛い。'});
 
   if (target.health <= 0) {
     killAgent(target, '銃撃');
     showPlayerMsg('🔫 命中… ' + target.name + 'が倒れた');
+  } else if (isRagdollEligible(target)) {
+    knockdownAgent(target, agent);
+    showPlayerMsg('🔫 命中！「痛い、痛いよぉ…」');
   } else {
+    showBubble(target, pick(PAIN_LINES), '#661111', 2.2, 1);
     if (target.state !== 'fleeing') {
       target.state = 'fleeing';
       target.stateTimer = rand(6, 10);
@@ -3929,12 +6820,98 @@ function fireGun() {
   }
 }
 
+// 人を手で押す（市民として使える。Fキー／タッチの押すボタン）
+// 銃撃と同じくラグドール化させるが、ダメージやケガの記録は一切残さない
+const PUSH_RANGE = 2.6;
+function pushAgent() {
+  const agent = GAME.possessedAgent;
+  if (!agent || !agent.alive) return;
+  if (agent.job === 'police') {
+    showPlayerMsg('🚫 警察官は手で押す代わりに拳銃を使おう');
+    return;
+  }
+  if (agent.isInJail || ['arguing','fighting','questioning','fleeing'].includes(agent.state)) {
+    showPlayerMsg('今は身動きが取れない…');
+    return;
+  }
+  if (GAME.pushCooldown > 0) return;
+  GAME.pushCooldown = 0.8;
+
+  const target = GAME.hoveredAgent;
+  if (!target || !target.alive || target === agent) {
+    showPlayerMsg('✋ 押したが誰もいなかった');
+    return;
+  }
+  const d = dist2D({x:agent.mesh.position.x, z:agent.mesh.position.z}, {x:target.mesh.position.x, z:target.mesh.position.z});
+  if (d > PUSH_RANGE) {
+    showPlayerMsg('もっと近づかないと押せない');
+    return;
+  }
+
+  addEvent('✋ ' + agent.name + '（あなた）が ' + target.name + ' を押した', 'social');
+  if (isRagdollEligible(target)) {
+    knockdownAgent(target, agent);
+    showPlayerMsg('✋ 「うわっ！」と勢いよく押し飛ばした（ダメージなし）');
+  } else {
+    showBubble(target, pick(PAIN_LINES), '#661111', 1.6, 0.8);
+    showPlayerMsg('✋ 押したが、あまり効いていない様子');
+  }
+  updatePlayerHud();
+}
+
+// 建物に放火する（市民として使える。Rキー／タッチの放火ボタン）
+const ARSON_RANGE = 6;
+function arsonBuilding() {
+  const agent = GAME.possessedAgent;
+  if (!agent || !agent.alive) return;
+  if (agent.job === 'police') {
+    showPlayerMsg('🚫 警察官が放火するわけにはいかない');
+    return;
+  }
+  if (agent.isInJail || ['arguing','fighting','questioning','fleeing'].includes(agent.state)) {
+    showPlayerMsg('今は身動きが取れない…');
+    return;
+  }
+  if (GAME.arsonCooldown > 0) return;
+
+  const target = GAME.hoveredBuilding;
+  if (!target || target.health <= 0) {
+    showPlayerMsg('🔥 火をつけられる建物が見当たらない');
+    return;
+  }
+  const d = dist2D({x:agent.mesh.position.x, z:agent.mesh.position.z}, target);
+  if (d > ARSON_RANGE) {
+    showPlayerMsg('もっと建物に近づかないと火をつけられない');
+    return;
+  }
+  if (target.onFire) {
+    showPlayerMsg('🔥 その建物はもう燃えている');
+    return;
+  }
+
+  GAME.arsonCooldown = 1.5;
+  target.onFire = true;
+  target.fireTimer = 20;
+  GAME.totalFires++;
+  GAME.totalCrimes++;
+  agent.criminalRecord++;
+  agent.isCriminal = true;
+  agent.crimeCooldown = rand(60, 120);
+  agent.honesty = Math.max(0, agent.honesty - 0.05);
+  agent.aggression = Math.min(1, agent.aggression + 0.03);
+  createFireParticles(target);
+  addEvent('🔥 ' + agent.name + '（あなた）が' + (target.name||'建物') + 'に放火した！', 'fire');
+  agent.diary.push({day:GAME.day, text:'火をつけてしまった。とんでもないことをした…'});
+  showPlayerMsg('🔥 ' + (target.name||'建物') + 'に火をつけた！');
+  updatePlayerHud();
+}
+
 function updatePlayerHud() {
   const agent = GAME.possessedAgent;
   if (!agent) return;
   const stateNames = {
     idle:'', moving:'', arguing:'💢 口論中…（Eキー不可）', fighting:'👊 乱闘中！',
-    questioning:'🚔 取調中…', fleeing:'💨 逃走中…',
+    questioning:'🚔 取調中…', fleeing:'💨 逃走中…', carryingCorpse:'🚑 遺体搬送中', ragdoll:'😵 転んでいる…',
   };
   const statusText = agent.isInJail ? '🔒 収監中' : (stateNames[agent.state] || '');
   document.getElementById('phName').textContent = agent.name + (statusText ? '（' + statusText + '）' : '');
@@ -3974,8 +6951,23 @@ function onWASDKeyDown(e) {
     e.preventDefault();
     return;
   }
+  if ((e.code === 'KeyJ' || e.key.toLowerCase() === 'j') && GAME.possessedAgent) {
+    tryGetJob();
+    e.preventDefault();
+    return;
+  }
   if ((e.code === 'Digit1' || e.key === '1') && GAME.possessedAgent) {
     toggleGun();
+    e.preventDefault();
+    return;
+  }
+  if ((e.code === 'KeyF' || e.key.toLowerCase() === 'f') && GAME.possessedAgent) {
+    pushAgent();
+    e.preventDefault();
+    return;
+  }
+  if ((e.code === 'KeyR' || e.key.toLowerCase() === 'r') && GAME.possessedAgent) {
+    arsonBuilding();
     e.preventDefault();
   }
 }
@@ -4064,7 +7056,7 @@ function updateCameraWASD(dt) {
 
   const pa = GAME.possessedAgent;
   // 喧嘩・口論・職質・連行・収監など、他の住人に拘束されている間は自由に歩けない（botと同じ扱い）
-  const restrained = pa && (pa.isInJail || ['arguing','fighting','questioning','fleeing'].includes(pa.state));
+  const restrained = pa && (pa.isInJail || ['arguing','fighting','questioning','fleeing','injured'].includes(pa.state));
 
   if (restrained) {
     // 拘束状態が異常に長引いた場合の保険：一定時間で強制的に操作を復帰させ、
@@ -4080,13 +7072,34 @@ function updateCameraWASD(dt) {
   }
   if (pa) pa.restrainedTimer = 0;
 
+  // 公園の遊具で遊んでいる間は見た目のアニメーション（doPlayPark）に位置を任せる。
+  // 移動キーが押されたら遊びをやめて通常の操作に戻す。
+  if (pa && pa.alive && pa.state === 'playingPark') {
+    const anyKeyPlay = PRESSED_KEYS.w || PRESSED_KEYS.a || PRESSED_KEYS.s || PRESSED_KEYS.d;
+    const tmPlay = GAME.touchMove;
+    const anyTouchPlay = Math.sqrt(tmPlay.x * tmPlay.x + tmPlay.z * tmPlay.z) > 0.06;
+    if (anyKeyPlay || anyTouchPlay) {
+      pa.state = 'idle';
+      pa._playSpot = null;
+    } else {
+      return;
+    }
+  }
+
+  // パルクール挑戦中は台から台へのジャンプ移動をdoPlayerParkourが完全に制御するため、
+  // WASD操作は受け付けない（Eキーのタイミングタップのみで進行する）
+  if (pa && pa.alive && pa.state === 'parkourPlayer') {
+    return;
+  }
+
   // 水田を踏み荒らしたり他の住人にぶつかったりした場合、botと同じ扱いで毎フレーム反応させる
   // （キーを押している時だけでなく、立ち止まっている間も検知されるようにする）
   if (pa && pa.alive) {
     checkPaddyTrample(pa, dt);
     checkBump(pa, dt, true);
-    // 上のチェックで拘束状態に入った場合は、このフレームでの移動処理は行わない
-    if (pa.isInJail || ['arguing','fighting','questioning','fleeing'].includes(pa.state)) return;
+    // 上のチェックで拘束状態やラグドールに入った場合は、このフレームでの移動処理は行わない
+    // （ラグドール中はWASDで無理に位置を上書きせず、物理演算にすべて任せる）
+    if (pa.isInJail || ['arguing','fighting','questioning','fleeing','ragdoll','injured'].includes(pa.state)) return;
   }
 
   const anyKey = PRESSED_KEYS.w || PRESSED_KEYS.a || PRESSED_KEYS.s || PRESSED_KEYS.d;
@@ -4147,6 +7160,29 @@ function updateCameraWASD(dt) {
   }
 }
 
+// 歩行中に自分の手を軽く揺らして、実際に歩いている一人称視点らしさを出す
+function updatePlayerHandsBob(dt) {
+  if (!GAME.handsRig || GAME.cameraMode !== 'possess') return;
+  const pa = GAME.possessedAgent;
+  const moving = !!(pa && pa.alive && pa.state === 'moving');
+  GAME.handBobT = (GAME.handBobT || 0) + dt * (moving ? 8 : 1.6);
+  const bobAmp = moving ? 0.02 : 0.005;
+  const swayAmp = moving ? 0.014 : 0.003;
+  GAME.handsRig.position.y = -0.42 + Math.sin(GAME.handBobT) * bobAmp;
+  GAME.handsRig.position.x = Math.cos(GAME.handBobT * 0.5) * swayAmp;
+
+  // 発砲時の反動：右手が一瞬跳ね上がってから元の角度に戻る
+  if (GAME.handArms && GAME.handArms.right) {
+    if (GAME.handRecoilT > 0) {
+      GAME.handRecoilT = Math.max(0, GAME.handRecoilT - dt);
+      const k = GAME.handRecoilT / 0.15;
+      GAME.handArms.right.root.rotation.x = 0.22 - k * 0.35;
+    } else {
+      GAME.handArms.right.root.rotation.x = 0.22;
+    }
+  }
+}
+
 function updateCamera(dt) {
   if (GAME.cameraMode === 'follow' && GAME.followAgent) {
     const a = GAME.followAgent;
@@ -4162,17 +7198,28 @@ function updateCamera(dt) {
 function gameLoop() {
   const rawDt = GAME.engine.getDeltaTime() / 1000;
   updateCameraWASD(rawDt);
-  updateCrosshairHover();
-  updateBuildingLabels();
+  updatePlayerHandsBob(rawDt);
+  // クロスヘアの当たり判定・建物ラベル更新は負荷が高いため、低品質設定では数フレームに1回だけ実行する
+  GAME.hoverTickCount = (GAME.hoverTickCount || 0) + 1;
+  if (GAME.hoverTickCount % GAME.hoverSkip === 0) {
+    updateCrosshairHover();
+    updateBuildingLabels();
+  }
 
   if (GAME.interactCooldown > 0) GAME.interactCooldown -= rawDt;
   if (GAME.shootCooldown > 0) GAME.shootCooldown -= rawDt;
+  if (GAME.pushCooldown > 0) GAME.pushCooldown -= rawDt;
+  if (GAME.arsonCooldown > 0) GAME.arsonCooldown -= rawDt;
   if (GAME.possessMsgTimer > 0) {
     GAME.possessMsgTimer -= rawDt;
     if (GAME.possessMsgTimer <= 0) {
       const el = document.getElementById('phMsg');
       if (el) el.textContent = '';
     }
+  }
+  if (GAME.playerBubbleTimer > 0) {
+    GAME.playerBubbleTimer -= rawDt;
+    if (GAME.playerBubbleTimer <= 0) hidePlayerSpeechBubble();
   }
 
   if (GAME.paused) return;
@@ -4193,6 +7240,27 @@ function gameLoop() {
     }
     // 本日分の建物収益をリセット
     for (const b of GAME.buildings) b.dailyRevenue = 0;
+
+    // 自然な出産だけでは人口が増えにくいため、毎日強制的に2人を街に呼び込む（人口上限までは自動増加）
+    spawnImmigrant();
+    spawnImmigrant();
+
+    // チンピラは1日3人出現する（上限を超えた分は子供として街にやってくる）
+    spawnDailyThugsOrChildren();
+
+    // ヤンキーは1日2人出現する（体力2倍・攻撃力は剣士の3倍の強敵。上限を超えた分は子供として街にやってくる）
+    spawnDailyYankeesOrChildren();
+
+    // チンピラとヤンキーは毎日同じタイミングで街の中心部へ一斉に襲撃を仕掛けてくる
+    if (GAME.day % RAID_INTERVAL_DAYS === 0) {
+      triggerTownRaid();
+    }
+
+    // 水田の脇に、収穫した作物の入った段ボールが1日4個積み上がる
+    for (let n = 0; n < 4; n++) spawnCropBox();
+
+    // 日付が進むたびに、出産・移住記録と現在の日数をlocalStorageへ自動保存する
+    saveBirthRecords();
   }
 
   // 空と照明更新
@@ -4201,17 +7269,54 @@ function gameLoop() {
   // 天候
   updateWeather(dt);
 
-  // エージェント更新
+  // エージェント更新（カメラから遠い＝画面に映っていないエージェントはメッシュを非表示にし、
+  // 見た目のアニメーション更新をスキップするだけでなく、AI思考・経路探索などの処理自体も間引いて簡略化する＝カリング）
+  const camPos = GAME.camera.position;
   for (const a of GAME.agents) {
-    updateAgent(a, dt);
-    updateAgentHands(a, dt);
+    if (a.alive && a.mesh) {
+      const dx = a.mesh.position.x - camPos.x;
+      const dz = a.mesh.position.z - camPos.z;
+      const farAway = (dx*dx + dz*dz) > GAME.cullDistanceSq;
+      if (farAway !== a._culled) {
+        a._culled = farAway;
+        a.mesh.setEnabled(!farAway); // メッシュ階層ごと描画対象から外す
+      }
+    }
+
+    if (a._culled && GAME.farUpdateSkip > 1) {
+      // 画面外のエージェントは毎フレーム更新せず、経過時間を積み立てて数フレームに1回だけまとめて処理する
+      // （生活サイクル自体は進行させつつ、思考・経路探索の呼び出し回数を減らして負荷を下げる）
+      a._farAccumDt = (a._farAccumDt || 0) + dt;
+      if ((GAME.tickCount + (a.id || 0)) % GAME.farUpdateSkip !== 0) {
+        continue;
+      }
+      updateAgent(a, a._farAccumDt);
+      a._farAccumDt = 0;
+    } else {
+      updateAgent(a, dt);
+    }
+
+    if (!a._culled) updateAgentHands(a, dt);
   }
 
   // 火災
   updateFires(dt);
 
+  // 崩落直後の瓦礫が住人に直撃していないか判定
+  updateFallingDebris(dt);
+
+  // 建て直しが中断されたまま放置された瓦礫の再建予約を解除する
+  releaseStaleRebuildClaims();
+
+  // 誰にも予約されていない瓦礫がないか毎フレーム確認し、手が空いた建設員がいればすぐ向かわせる
+  sweepUnclaimedRuins();
+
   // 死体（物理演算で崩れ落ちる）
   updateCorpses(dt);
+
+  // プレイヤーが住民として死体を担いでいる場合、位置を追従させる
+  updatePlayerCarriedCorpse(dt);
+  updatePlayerCarriedCropBox(dt);
 
   // 選挙
   updateElections(dt);
@@ -4222,9 +7327,9 @@ function gameLoop() {
   // カメラ
   updateCamera(dt);
 
-  // UI更新（10フレームに1回）
+  // UI更新（品質設定に応じたフレーム間隔ごとに1回）
   GAME.tickCount++;
-  if (GAME.tickCount % 10 === 0) {
+  if (GAME.tickCount % GAME.uiUpdateInterval === 0) {
     updateUI();
     if (GAME.selectedAgent !== null) selectAgent(GAME.selectedAgent);
     if (GAME.possessedAgent) updatePlayerHud();
@@ -4232,33 +7337,53 @@ function gameLoop() {
 }
 
 // ---------- 初期化 ----------
+// ロード画面のテキストと進捗バーをまとめて更新する
+function setLoadProgress(text, pct) {
+  const lt = document.getElementById('loadText');
+  const fill = document.getElementById('loadBarFill');
+  const pctEl = document.getElementById('loadPct');
+  if (lt) lt.textContent = text;
+  if (fill) fill.style.width = pct + '%';
+  if (pctEl) pctEl.textContent = Math.round(pct) + '%';
+}
+
 function init() {
-  document.getElementById('loadText').textContent = ' Babylon.js エンジン初期化中...';
+  setLoadProgress(' Babylon.js エンジン初期化中...', 8);
+  loadGraphicsQuality();
   initEngine();
+  applyGraphicsQuality(GAME.graphicsQuality);
   initTTS();
 
-  document.getElementById('loadText').textContent = ' 街を建設中...';
+  setLoadProgress(' 街を建設中...', 25);
   setupTown();
   createStreetlights();
 
-  document.getElementById('loadText').textContent = ' 40人のAIエージェント生成中...';
+  setLoadProgress(' 40人のAIエージェント生成中...', 45);
   for (let i = 0; i < 40; i++) {
     createAgent(i);
   }
 
-  document.getElementById('loadText').textContent = ' 街の外れにチンピラが出現中...';
+  setLoadProgress(' 街の外れにチンピラが出現中...', 62);
   const THUG_COUNT = 6;
   for (let i = 0; i < THUG_COUNT; i++) {
     createThug(40 + i);
   }
 
-  document.getElementById('loadText').textContent = ' 過去に生まれた住人を復元中...';
+  setLoadProgress(' 街の外れにヤンキーが出現中...', 74);
+  const YANKEE_COUNT = 3;
+  for (let i = 0; i < YANKEE_COUNT; i++) {
+    createYankee(40 + THUG_COUNT + i);
+  }
+
+  setLoadProgress(' 過去に生まれた住人を復元中...', 88);
   loadBirthRecords();
   restoreBornAgents();
+  restorePlayerLifeIfAny();
 
-  document.getElementById('loadText').textContent = ' シミュレーション開始...';
+  setLoadProgress(' シミュレーション開始...', 100);
   addEvent('🌍 Emergence World が始まりました。' + getPopulation() + '人の住人が暮らす街', 'economy');
   addEvent('🕶️ 町から離れた場所にチンピラが住み着いている…近づくと危険だ', 'crime');
+  addEvent('🏍️ さらに遠くの外れにはヤンキーの集団も…チンピラよりずっと危険だ', 'crime');
   GAME.electionTimer = -120; // 2分後に最初の選挙（負から0へ）
 
   // レンダーループ
@@ -4313,11 +7438,34 @@ function init() {
     btn.classList.toggle('active', GAME.xrayMode);
   };
   document.getElementById('btnPossess').onclick = () => {
-    if (GAME.possessedAgent) {
-      exitPossession();
-    } else {
-      const target = findPossessionTarget();
-      enterPossession(target);
+    console.log('[btnPossess] クリック検知', { possessedAgent: GAME.possessedAgent && GAME.possessedAgent.name, hardcoreLife: GAME.hardcoreLife });
+    try {
+      if (GAME.possessedAgent) {
+        const before = GAME.possessedAgent;
+        exitPossession();
+        if (GAME.possessedAgent === before) {
+          // hardcoreLife等でスペクターに戻れなかった場合も、ここで確実に分かるようにする
+          showToast('🔒 今はスペクターに戻れません');
+          console.log('[btnPossess] exitPossessionが完了しませんでした（hardcoreLife中など）');
+        } else {
+          showToast('🌌 スペクターに戻りました');
+        }
+      } else {
+        const target = findPossessionTarget();
+        if (!target) {
+          showToast('⚠️ 乗り移れる住人が見つかりません');
+          showPlayerMsg('⚠️ 乗り移れる住人が見つかりません');
+          addEvent('⚠️ 乗り移れる住人がいません', 'social');
+          console.log('[btnPossess] 候補が見つかりませんでした。生存エージェント数:', GAME.agents.filter(a=>a.alive).length);
+          return;
+        }
+        enterPossession(target);
+        showToast('🧑 ' + target.name + ' になりました');
+      }
+    } catch (e) {
+      console.error('btnPossess処理でエラー', e);
+      showToast('⚠️ 操作に失敗しました: ' + (e && e.message ? e.message : e));
+      showPlayerMsg('⚠️ 操作に失敗しました。もう一度お試しください');
     }
   };
   document.getElementById('btnTTS').onclick = () => {
@@ -4328,7 +7476,34 @@ function init() {
     if (!GAME.ttsEnabled && 'speechSynthesis' in window) {
       speechSynthesis.cancel();
       GAME.ttsSpeaking = 0;
+      GAME.ttsBusyUntil = 0;
     }
+  };
+  document.getElementById('btnSettings').onclick = () => {
+    document.getElementById('settings-panel').classList.toggle('show');
+  };
+  document.getElementById('settings-close').onclick = () => {
+    document.getElementById('settings-panel').classList.remove('show');
+  };
+  document.querySelectorAll('#settings-panel .quality-btn').forEach(btn => {
+    btn.onclick = () => applyGraphicsQuality(btn.dataset.quality);
+  });
+  document.getElementById('btnNewLife').onclick = () => {
+    startNewLifeAsResident();
+  };
+  document.getElementById('btnNewLifeChild').onclick = () => {
+    startNewLifeAsChildResident();
+  };
+  document.getElementById('btnResetData').onclick = () => {
+    const ok = confirm('人口・出産の記録などのデータを全て消去し、街を最初からやり直します。よろしいですか？（この操作は取り消せません）');
+    if (!ok) return;
+    try {
+      localStorage.removeItem(BIRTH_STORAGE_KEY);
+      localStorage.removeItem(PLAYER_LIFE_KEY);
+    } catch (e) {
+      // localStorageが使えない環境では何もしない
+    }
+    location.reload();
   };
   document.getElementById('btnCloseDetail').onclick = () => {
     document.getElementById('agent-detail').classList.remove('show');
@@ -4358,7 +7533,10 @@ function init() {
     document.getElementById('toggleEventPanel').textContent = p.classList.contains('collapsed') ? '＋' : '－';
   };
   document.getElementById('btnTouchInteract').addEventListener('click', (e) => { e.preventDefault(); tryInteract(); });
+  document.getElementById('btnTouchJob').addEventListener('click', (e) => { e.preventDefault(); tryGetJob(); });
   document.getElementById('btnTouchGun').addEventListener('click', (e) => { e.preventDefault(); toggleGun(); });
+  document.getElementById('btnTouchPush').addEventListener('click', (e) => { e.preventDefault(); pushAgent(); });
+  document.getElementById('btnTouchArson').addEventListener('click', (e) => { e.preventDefault(); arsonBuilding(); });
 
   // スマホなど狭い画面では住人リスト/イベントログを最初は畳んでおく
   if (window.innerWidth < 860 || GAME.isTouchDevice) {
@@ -4568,7 +7746,13 @@ function setupTouchControls() {
 function updateCrosshairHover() {
   const w = GAME.engine.getRenderWidth();
   const h = GAME.engine.getRenderHeight();
-  const pickResult = GAME.scene.pick(w / 2, h / 2, (mesh) => !!(mesh.metadata && (mesh.metadata.agent || mesh.metadata.building)));
+  const pickResult = GAME.scene.pick(w / 2, h / 2, (mesh) => {
+    // predicateを渡すとBabylon標準のisPickable/isVisibleチェックが無視されるため、ここで明示的に判定する
+    if (!mesh.isVisible || !mesh.isEnabled()) return false;
+    if (!mesh.metadata) return false;
+    if (mesh.metadata.agent) return mesh.metadata.agent !== GAME.possessedAgent; // 憑依中の自分自身は除外
+    return !!mesh.metadata.building;
+  });
   const crosshair = document.getElementById('crosshair');
   if (pickResult && pickResult.hit && pickResult.pickedMesh) {
     const meta = pickResult.pickedMesh.metadata;
